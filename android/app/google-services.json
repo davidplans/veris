@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "347571404214",
+    "firebase_url": "https://patdeployments-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "patdeployments",
+    "storage_bucket": "patdeployments.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347571404214:android:1057852394141df2cb1517",
+        "android_client_info": {
+          "package_name": "ua.veris.health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "347571404214-tnqra07gcets7htde4qukhft2jtfo74a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUiJCbmUZAyIx2Vgtc-PK6O9ria8CdgGA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "347571404214-tnqra07gcets7htde4qukhft2jtfo74a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "347571404214-e2aleg7oipotn7tvh335ugnm9khhhp39.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.davidplans.patscreener"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
