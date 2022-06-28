@@ -4,7 +4,7 @@ import 'package:flutter_schema_health/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_schema_health/presentation/bloc/auth_event.dart';
 import 'package:flutter_schema_health/presentation/widgets/home_widget.dart';
 import 'package:flutter_schema_health/presentation/widgets/progress_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/settings_widget.dart';
+import 'package:flutter_schema_health/presentation/widgets/heart_beats_widget.dart';
 import 'package:flutter_schema_health/style/theme.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,14 +22,14 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const HomeWidget(),
     const ProgressWidget(),
-    const SettingsWidget(),
+    const IntroTabWidget(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Veris'),
         actions: <Widget>[
           IconButton(
             key: const Key('homePage_logout_iconButton'),
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
           // BottomNavigationBarItem(
           //     icon: Icon(Icons.perm_identity), label: 'Profile'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Settings'),
+              icon: Icon(Icons.favorite), label: 'Heart Beat'),
         ],
         currentIndex: _currentIndex,
         selectedItemColor: theme.primaryColor,
