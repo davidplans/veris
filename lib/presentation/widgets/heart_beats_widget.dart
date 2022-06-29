@@ -85,6 +85,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
   Widget build(BuildContext context) {
     return IntroSlider(
       slides: slides,
+      showSkipBtn: false,
       onDonePress: onDonePress,
     );
   }
