@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_schema_health/bloc_observer.dart';
 import 'package:flutter_schema_health/data/repositories/auth_repository.dart';
 import 'package:flutter_schema_health/health_app.dart';
+import 'package:flutter/services.dart';
 
 Future<void> main() {
   return BlocOverrides.runZoned(
@@ -13,6 +14,15 @@ Future<void> main() {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+            statusBarColor: Color(0XFF0F2042),
+            statusBarIconBrightness: Brightness.light,
+            systemNavigationBarColor: Color(0xFF000000),
+            systemNavigationBarIconBrightness: Brightness.dark),
+      );
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
       final authenticationRepository = AuthenticationRepository();
       runApp(HealthApp(
         authenticationRepository: authenticationRepository,

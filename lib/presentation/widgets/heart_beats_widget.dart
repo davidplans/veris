@@ -36,42 +36,53 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           ],
         ),
       ),
-      backgroundColor: const Color(0xfff5a623),
+      backgroundColor: const Color(0xff203152),
     ));
     slides.add(
       Slide(
         title: "STEP 2",
-      widgetDescription: Center(
-        child: Column(
-          children: const [
-            Text(
-              "Find a quiet place where you can sit comfortably upright for around 10t minutes. We`ll be recording your heart beats, so you there fore need to keep your hand still and in the correct position. Also, make sure you turn your phone`s volume up and don`t use earphones (plugged or bluetooth).",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 20.0),
-            ),
-
-          ],
+        widgetDescription: Center(
+          child: Column(
+            children: const [
+              Text(
+                "Find a quiet place where you can sit comfortably upright for around 10t minutes. We`ll be recording your heart beats, so you there fore need to keep your hand still and in the correct position. Also, make sure you turn your phone`s volume up and don`t use earphones (plugged or bluetooth).",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
+              ),
+            ],
+          ),
         ),
-      ),
         backgroundColor: const Color(0xff203152),
       ),
     );
     slides.add(
       Slide(
         title: "STEP 3",
-      widgetDescription: Center(
-        child: Column(
-          children: const [
-            Text(
-              "TODO",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 30.0),
+        styleTitle: const TextStyle(color: Color(0xff203152), fontSize: 30.0),
+        widgetDescription: Center(
+          child: Column(
+            children: const [
+              Image(
+                image: AssetImage("assets/hand.png"),
+                height: 200,
+              ),
+              Text(
+                "Getting ready to check your heartbeat",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18.0),
+              ),
+                          SizedBox(
+              height: 15,
             ),
-
-          ],
+              Text(
+                "We will shortly turn on the LED Flash and camera on this phone, and will use it to take your heart rate. Please place your index finger across both camera and flash.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14.0),
+              ),
+            ],
+          ),
         ),
-      ),
-        backgroundColor: const Color(0xff9932CC),
+        backgroundColor: const Color(0xff203152),
       ),
     );
   }
