@@ -8,11 +8,10 @@ import 'package:flutter_schema_health/presentation/widgets/heart_beats_widget.da
 import 'package:flutter_schema_health/style/theme.dart';
 
 class HomePage extends StatefulWidget {
-  
   const HomePage({Key? key}) : super(key: key);
 
   static Page page() => const MaterialPage<void>(child: HomePage());
-    static Route route() {
+  static Route route() {
     return MaterialPageRoute<void>(builder: (_) => const HomePage());
   }
 

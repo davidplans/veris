@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_schema_health/presentation/pages/home_page.dart';
+import 'package:flutter_schema_health/presentation/widgets/beats_slider_widget.dart';
 import 'package:intro_slider/intro_slider.dart';
 
 class IntroTabWidget extends StatefulWidget {
@@ -11,6 +12,7 @@ class IntroTabWidget extends StatefulWidget {
 
 class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
   List<Slide> slides = [];
+
 
   @override
   void initState() {
@@ -24,7 +26,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
             Text(
               "How well can you match a sound with your heartbeat.",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 30.0),
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
             ),
             SizedBox(
               height: 20,
@@ -32,7 +34,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
             Text(
               "Lets`s find out!",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 30.0),
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
             ),
           ],
         ),
@@ -62,22 +64,62 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
         widgetDescription: Center(
           child: Column(
             children: const [
-              Image(
-                image: AssetImage("assets/hand.png"),
-                height: 200,
-              ),
               Text(
-                "Getting ready to check your heartbeat",
+                "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18.0, color: Colors.white),
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
               ),
-              SizedBox(
-                height: 15,
-              ),
+            ],
+          ),
+        ),
+        backgroundColor: const Color(0xff203152),
+      ),
+    );
+    slides.add(
+      Slide(
+        title: "STEP 4",
+        widgetDescription: Center(
+          child: Column(
+            children: const [
               Text(
-                "We will shortly turn on the LED Flash and camera on this phone, and will use it to take your heart rate. Please place your index finger across both camera and flash.",
+                "Your objective is to find the point on the dial where the heartbeat and sound is in sync, by turning the dial left or right.",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14.0, color: Colors.white),
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: const Color(0xff203152),
+      ),
+    );
+    slides.add(
+      Slide(
+        title: "STEP 5",
+        widgetDescription: Center(
+          child: Column(
+            children: const [
+              Text(
+                "Want to know how this might look like?\n\nPress “next” to watch a short tutorial.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: const Color(0xff203152),
+      ),
+    );
+    slides.add(
+      Slide(
+        title: "STEP 6",
+        widgetDescription: Center(
+          child: Column(
+            children: const [
+              BeatsSlider(),
+              Text(
+                "After you have matched the sound with your heartbeat, you will be asked how sure you are about the answer you gave.\n\nPress “confirm” then “continue” to start the following trial. In this task, there will be 20 trials in total.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
               ),
             ],
           ),
