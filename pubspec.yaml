@@ -36,6 +36,7 @@ dependencies:
   google_fonts: ^3.0.1
   flow_builder: ^0.0.9
   intro_slider: ^3.0.9
+  just_audio: ^0.9.27
 
   # Heart
   charts_flutter: ^0.12.0
