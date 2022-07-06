@@ -48,7 +48,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           child: Column(
             children: const [
               Text(
-                "Find a quiet place where you can sit comfortably upright for around 10t minutes. We`ll be recording your heart beats, so you there fore need to keep your hand still and in the correct position. Also, make sure you turn your phone`s volume up and don`t use earphones (plugged or bluetooth).",
+                "First, find a quiet place where you can comfortably sit upright with your earphones on for around 10 minutes. We will begin by capturing a couple of minutes of your heart rate, to get a sense for how your heart does its thing.",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
