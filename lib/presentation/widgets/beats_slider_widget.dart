@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -18,11 +16,9 @@ class _BeatsSliderState extends State<BeatsSlider> {
   void initState() {
     super.initState();
     _getAssets();
-    log("INIT");
   }
 
   _getAssets() async {
-    log("ASSETS");
     await player
         .setAudioSource(AudioSource.uri(
             Uri.parse('https://www.soundjay.com/buttons/sounds/beep-04.mp3')))
@@ -35,7 +31,6 @@ class _BeatsSliderState extends State<BeatsSlider> {
   _playBeep(double speed) {
     player.setSpeed(double.parse((speed / 60).toStringAsFixed(1)));
     player.play();
-    log("PLAY");
     // player.setAsset("assets/sounds/beep.mp3").then((value) => player.play());
   }
 
@@ -51,16 +46,18 @@ class _BeatsSliderState extends State<BeatsSlider> {
   @override
   void dispose() {
     player.stop();
-    log("DISPOSE");
+    player.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    log("BUILD");
     return Column(
       children: [
-        Text(_currentSliderValue.round().toString(), style: const TextStyle(color: Colors.white, fontSize: 30),),
+        Text(
+          _currentSliderValue.round().toString(),
+          style: const TextStyle(color: Colors.white, fontSize: 30),
+        ),
         Slider(
           value: _currentSliderValue,
           max: 200,

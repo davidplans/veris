@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_schema_health/presentation/pages/home_page.dart';
 import 'package:flutter_schema_health/presentation/widgets/beats_slider_widget.dart';
+import 'package:flutter_schema_health/style/theme.dart';
 import 'package:intro_slider/intro_slider.dart';
 
 class IntroTabWidget extends StatefulWidget {
@@ -12,7 +13,6 @@ class IntroTabWidget extends StatefulWidget {
 
 class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
   List<Slide> slides = [];
-
 
   @override
   void initState() {
@@ -127,6 +127,58 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
         backgroundColor: const Color(0xff203152),
       ),
     );
+    slides.add(
+      Slide(
+        pathImage: "assets/images/hand.png",
+        heightImage: 150,
+        widgetDescription: Center(
+          child: Column(
+            children: const [
+              Text(
+                "You can feel your heartbeat in different places in your body, such as your chest or your fingers.You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: const Color(0xff203152),
+      ),
+    );
+    slides.add(
+      Slide(
+        title: "STEP 8",
+        widgetDescription: Center(
+          child: Column(
+            children: const [
+              Text(
+                "For the duration of this task, please do not actively try to feel your pulse with your hand; we are only interested in what you feel! You might feel your heartbeat in various bodily locations. Just make sure you pick one and stick to using that one during the task.\n\nWhen you are ready to start, please sit comfortably upright with your earphones on and press “next”.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: const Color(0xff203152),
+      ),
+    );
+    slides.add(
+      Slide(
+        title: "STEP 9",
+        widgetDescription: Center(
+          child: Column(
+            children: const [
+              Text(
+                "You will now get a chance to do two practice trials.\n\nFocus on feeling your heartbeat and try to match the sounds to your own heartbeat. ",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: const Color(0xff203152),
+      ),
+    );
   }
 
   Future<void> _readyDialog() async {
@@ -164,6 +216,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
       slides: slides,
       showSkipBtn: false,
       colorDot: Colors.white,
+      colorActiveDot: theme.primaryColor,
       onDonePress: _readyDialog,
     );
   }
