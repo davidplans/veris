@@ -4,6 +4,7 @@ import 'package:flutter_schema_health/presentation/widgets/step10_widget.dart';
 import 'package:flutter_schema_health/presentation/widgets/step4_widget.dart';
 import 'package:flutter_schema_health/presentation/widgets/step6_widget.dart';
 import 'package:flutter_schema_health/presentation/widgets/step9_widget.dart';
+import 'package:flutter_schema_health/presentation/widgets/trial1_widget.dart';
 import 'package:flutter_schema_health/presentation/widgets/trial2_widget.dart';
 import 'package:flutter_schema_health/presentation/widgets/trial4_widget.dart';
 import 'package:flutter_schema_health/style/theme.dart';
@@ -145,8 +146,10 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
         ),
         PageViewModel(
           title: "STEP 11",
-          body:
-              "You can feel your heartbeat in different places in your body, such as your chest or your fingers.You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
+          bodyWidget: const Text(
+            "You can feel your heartbeat in different places in your body, such as your chest or your fingers.You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
+            style: TextStyle(fontSize: 16.0),
+          ),
           decoration: pageDecoration,
           image: _buildImage('mannequin2.png'),
           // reverse: true,
@@ -165,15 +168,17 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
         ),
         PageViewModel(
           title: "PRACTICE TRIAL 1:",
-          bodyWidget: const Text(
-            "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.",
-            style: TextStyle(fontSize: 16.0),
-          ),
           image: _buildImage('knob_with_arrows.png'),
+          bodyWidget: const Text(
+              "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.", style: TextStyle(fontSize: 16.0)),
           decoration: pageDecoration,
           footer: ElevatedButton(
             onPressed: () {
-              introKey.currentState?.animateScroll(10);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Trial1Widget();
+                  });
             },
             style: ElevatedButton.styleFrom(
               primary: theme.primaryColor,
@@ -182,7 +187,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
               ),
             ),
             child: const Text(
-              'Confirm',
+              'Move',
               style: TextStyle(color: Colors.white),
             ),
           ),
