@@ -15,13 +15,13 @@ class _BeatsSliderState extends State<BeatsSlider> {
   @override
   void initState() {
     super.initState();
-    _getAssets();
+    // _getAssets();
   }
 
   _getAssets() async {
     await player
         .setAudioSource(AudioSource.uri(
-            Uri.parse('https://www.soundjay.com/buttons/sounds/beep-04.mp3')))
+            Uri.parse('assets/sounds/beep.mp3')))
         .then((value) {
       player.setLoopMode(LoopMode.all);
       _playBeep(_currentSliderValue);

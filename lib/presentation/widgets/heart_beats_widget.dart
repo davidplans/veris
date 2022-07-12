@@ -62,6 +62,32 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
       isProgress: false,
       pages: [
         PageViewModel(
+          title: "PRACTICE TRIAL 1:",
+          image: _buildImage('knob_with_arrows.png'),
+          bodyWidget: const Text(
+              "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.", style: TextStyle(fontSize: 16.0)),
+          decoration: pageDecoration,
+          footer: ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Trial1Widget();
+                  });
+            },
+            style: ElevatedButton.styleFrom(
+              primary: theme.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            child: const Text(
+              'Move',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        PageViewModel(
           title: "STEP 1",
           body:
               "How well can you match a sound with your heartbeat?\n\nLet’s find out!",
@@ -166,32 +192,10 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
               "You will now get a chance to do two practice trials.\n\nFocus on feeling your heartbeat and try to match the sounds to your own heartbeat.",
           decoration: pageDecoration,
         ),
-        PageViewModel(
-          title: "PRACTICE TRIAL 1:",
-          image: _buildImage('knob_with_arrows.png'),
-          bodyWidget: const Text(
-              "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.", style: TextStyle(fontSize: 16.0)),
-          decoration: pageDecoration,
-          footer: ElevatedButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Trial1Widget();
-                  });
-            },
-            style: ElevatedButton.styleFrom(
-              primary: theme.primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-            child: const Text(
-              'Move',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
+        //########### PRACTICE TRIAL 1: #################
+
+         //########### END #################
+        
         PageViewModel(
           title: "",
           bodyWidget: Trial2Widget(),
