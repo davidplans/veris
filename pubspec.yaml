@@ -40,6 +40,7 @@ dependencies:
   just_audio: ^0.9.27
   introduction_screen: ^3.0.2
   webview_flutter: ^3.0.4
+  svg_path_parser: ^1.0.0
 
   # Heart
   charts_flutter: ^0.12.0

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_schema_health/presentation/pages/web_page.dart';
+import 'package:flutter_schema_health/presentation/widgets/select_body_widget.dart';
 import 'package:flutter_schema_health/presentation/widgets/step10_widget.dart';
 import 'package:flutter_schema_health/presentation/widgets/step4_widget.dart';
 import 'package:flutter_schema_health/presentation/widgets/step6_widget.dart';
@@ -61,32 +62,8 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
       // ),
       isProgress: false,
       pages: [
-        PageViewModel(
-          title: "PRACTICE TRIAL 1:",
-          image: _buildImage('knob_with_arrows.png'),
-          bodyWidget: const Text(
-              "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.", style: TextStyle(fontSize: 16.0)),
-          decoration: pageDecoration,
-          footer: ElevatedButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Trial1Widget();
-                  });
-            },
-            style: ElevatedButton.styleFrom(
-              primary: theme.primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-            child: const Text(
-              'Move',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
+ 
+
         PageViewModel(
           title: "STEP 1",
           body:
@@ -192,9 +169,32 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
               "You will now get a chance to do two practice trials.\n\nFocus on feeling your heartbeat and try to match the sounds to your own heartbeat.",
           decoration: pageDecoration,
         ),
-        //########### PRACTICE TRIAL 1: #################
-
-         //########### END #################
+        PageViewModel(
+          title: "PRACTICE TRIAL 1:",
+          image: _buildImage('knob_with_arrows.png'),
+          bodyWidget: const Text(
+              "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.", style: TextStyle(fontSize: 16.0)),
+          decoration: pageDecoration,
+          footer: ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Trial1Widget();
+                  });
+            },
+            style: ElevatedButton.styleFrom(
+              primary: theme.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            child: const Text(
+              'Move',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
         
         PageViewModel(
           title: "",
@@ -244,7 +244,11 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           decoration: pageDecoration,
           footer: ElevatedButton(
             onPressed: () {
-              // introKey.currentState?.animateScroll(0);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SelectBodyWidget();
+                  });
             },
             style: ElevatedButton.styleFrom(
               primary: theme.primaryColor,
@@ -253,7 +257,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
               ),
             ),
             child: const Text(
-              'Confirm',
+              'Select',
               style: TextStyle(color: Colors.white),
             ),
           ),

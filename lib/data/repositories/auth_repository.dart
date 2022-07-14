@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter_schema_health/data/models/user.dart';
 import 'package:flutter_schema_health/data/repositories/cache_client.dart';
-
 
 /// {@template sign_up_with_email_and_password_failure}
 /// Thrown if during the sign up process if a failure occurs.
@@ -96,14 +96,13 @@ class AuthenticationRepository {
   AuthenticationRepository({
     CacheClient? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
-   
   })  : _cache = cache ?? CacheClient(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
 
   final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
 
-
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   /// User cache key.
   /// Should only be used for testing purposes.
@@ -133,17 +132,23 @@ class AuthenticationRepository {
   /// Throws a [SignUpWithEmailAndPasswordFailure] if an exception occurs.
   Future<void> signUp({required String email, required String password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      firebase_auth.UserCredential userCredential =
+          await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      users.add({
+        'user_name': "New User",
+        'user_email': email,
+        'user_id': userCredential.user?.uid,
+      }).then((value) => print("User Added")).catchError((error) => print("Failing to add user: $error"));
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
       throw const SignUpWithEmailAndPasswordFailure();
     }
   }
-
 
   /// Signs in with the provided [email] and [password].
   ///

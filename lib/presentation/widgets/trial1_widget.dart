@@ -17,60 +17,56 @@ class Trial1Widget extends StatefulWidget {
 class _Trial1WidgetState extends State<Trial1Widget> {
   double finalAngle = 0.0;
   final player = AudioPlayer();
-  double _currentValue = 60;
+  // final player2 = AudioPlayer();
+  final double _currentValue = 60;
   final double _durationToOneSec = 1.1605;
-  bool isEndTouch = false;
+  final AudioSource source =
+      AudioSource.uri(Uri.parse('asset:///assets/sounds/beep2.mp3'));
   Timer _timer = Timer.periodic(const Duration(seconds: 60), (t) {});
 
   @override
   void initState() {
     super.initState();
-    _getAssets();
+    _playBeep(_currentValue);
   }
 
-  _getAssets() async {
-    await player
-        .setAudioSource(
-            AudioSource.uri(Uri.parse('asset:///assets/sounds/beep2.mp3')))
-        .then((value) {
-      _playBeep(_currentValue);
-    });
-  }
+  // _getAssets() {
+  //   player.setAudioSource(source).then((value) {
+  //     _playBeep(_currentValue);
+  //   });
+  // }
 
   _playBeep(double speed) {
-    print("BEEP");
-    // String s = player.duration.toString();
-    // print("ВРЕМЯ1 " + s);
-    if (speed >= 60) {
-      player.setLoopMode(LoopMode.all);
-      player.setSpeed(
-          // beep.mp3 duration 0.862 / 1.1602 = 1.000 sec
-          double.parse(((speed / 60) / _durationToOneSec).toStringAsFixed(3)));
+    player.setAudioSource(source).then((value) {
+      if (speed >= 60) {
+        player.setLoopMode(LoopMode.all);
+        player.setSpeed(
+            // beep.mp3 duration 0.862 / 1.1602 = 1.000 sec
+            double.parse(
+                ((speed / 60) / _durationToOneSec).toStringAsFixed(3)));
 
-      player.play();
-    } else if (speed <= 59) {
-      _timer.cancel();
-      player.pause();
-      // player.setLoopMode(LoopMode.off);
-      player.setSpeed(1.0);
-      
-      _timer = Timer.periodic(const Duration(milliseconds: 5000), (t) {
-        // TODO One beep in miliseconds
-        
         player.play();
-        
-        print("END");
-        // t.cancel();
+      } else if (speed <= 59) {
+        player.setLoopMode(LoopMode.off);
+        // _timer.cancel();
+        print("TIMLES " + speed.toString());
+        print("TIMLES " + (1000 / (60 / (speed))).round().toString());
 
-      });
+        _timer = Timer.periodic(Duration(milliseconds: ((60 / (speed))*1000).round()), (t) {
+          player.stop();
+          player.setAudioSource(source);
+          player.play();
 
-    }
+          print("END");
+          // t.cancel();
+        });
+      }
+    });
   }
 
   _changeKnob(double value) {
     player.pause().then((v) {
       setState(() {
-        // _currentValue = value;
         _playBeep(value);
       });
     });
@@ -80,6 +76,8 @@ class _Trial1WidgetState extends State<Trial1Widget> {
   void dispose() {
     player.stop();
     player.dispose();
+    // player2.stop();
+    // player2.dispose();
     _timer.cancel();
     super.dispose();
   }
@@ -116,6 +114,7 @@ class _Trial1WidgetState extends State<Trial1Widget> {
                           if (((touchPositionFromCenter.direction * 180 / pi) +
                                   _currentValue) >=
                               60) {
+                                _timer.cancel();
                             finalAngle = touchPositionFromCenter.direction;
                             // _changeKnob(double.parse(
                             //     ((touchPositionFromCenter.direction * 180 / pi) + _currentValue)
@@ -128,6 +127,7 @@ class _Trial1WidgetState extends State<Trial1Widget> {
                               ((touchPositionFromCenter.direction * 180 / pi) +
                                       _currentValue) >=
                                   0) {
+                                    _timer.cancel();
                             finalAngle = touchPositionFromCenter.direction;
                             // _changeKnob(double.parse(
                             //     ((touchPositionFromCenter.direction * 180 / pi) + _currentValue)
@@ -138,12 +138,14 @@ class _Trial1WidgetState extends State<Trial1Widget> {
                     },
                     onPanEnd: (details) {
                       if (((finalAngle * 180 / pi) + _currentValue) >= 60) {
+                        _timer.cancel();
                         _changeKnob(double.parse(
                             ((finalAngle * 180 / pi) + _currentValue)
                                 .toStringAsFixed(0)));
                       } else if (((finalAngle * 180 / pi) + _currentValue) <=
                               59 &&
                           ((finalAngle * 180 / pi) + _currentValue) >= 0) {
+                        _timer.cancel();
                         _changeKnob(double.parse(
                             ((finalAngle * 180 / pi) + _currentValue)
                                 .toStringAsFixed(0)));

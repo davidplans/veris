@@ -13,7 +13,7 @@ class _Trial4WidgetState extends State<Trial4Widget> {
     return Column(children: const [
       Text(
           "In the last run, where did you feel your heart-beat? Tap on the drawing below to identify the relevant area."),
-      Image(image: AssetImage("assets/images/mannequin2.png")),
+      Image(image: AssetImage("assets/images/mannequin2.png"), height: 300,),
       Text("Please select an area")
     ]);
   }
