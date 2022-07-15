@@ -138,11 +138,21 @@ class AuthenticationRepository {
         password: password,
       );
 
-      users.add({
-        'user_name': "New User",
-        'user_email': email,
-        'user_id': userCredential.user?.uid,
-      }).then((value) => print("User Added")).catchError((error) => print("Failing to add user: $error"));
+      users
+          .doc(userCredential.user!.uid)
+          .set({
+            'user_name': "New User",
+            'user_email': email,
+            'user_id': userCredential.user!.uid,
+            'user_photo': null,
+            'baselines': null,
+            'startDate': null,
+            'endDate' : null,
+            'numRuns' : null,
+            'syncroTraining': null
+          }, SetOptions(merge: true))
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failing to add user: $error"));
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
