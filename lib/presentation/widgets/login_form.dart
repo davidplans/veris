@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/presentation/cubit/login_cubit.dart';
-import 'package:flutter_schema_health/presentation/cubit/login_state.dart';
-import 'package:flutter_schema_health/presentation/pages/signup_page.dart';
-import 'package:flutter_schema_health/style/theme.dart';
+import 'package:Veris/presentation/cubit/login_cubit.dart';
+import 'package:Veris/presentation/cubit/login_state.dart';
+import 'package:Veris/presentation/pages/signup_page.dart';
+import 'package:Veris/style/theme.dart';
 import 'package:formz/formz.dart';
-
-
 
 class LoginForm extends StatelessWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -103,7 +101,8 @@ class _LoginButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return state.status.isSubmissionInProgress
-            ? const CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(Color(0xFF189B8D)))
+            ? const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF189B8D)))
             : ElevatedButton(
                 key: const Key('loginForm_continue_raisedButton'),
                 style: ElevatedButton.styleFrom(

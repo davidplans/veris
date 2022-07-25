@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/data/repositories/auth_repository.dart';
-import 'package:flutter_schema_health/presentation/cubit/signup_cubit.dart';
-import 'package:flutter_schema_health/presentation/widgets/signup_form.dart';
-
-
+import 'package:Veris/data/repositories/auth_repository.dart';
+import 'package:Veris/presentation/cubit/signup_cubit.dart';
+import 'package:Veris/presentation/widgets/signup_form.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);

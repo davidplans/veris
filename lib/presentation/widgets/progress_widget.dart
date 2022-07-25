@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_schema_health/presentation/utils/chart.dart';
+import 'package:Veris/presentation/utils/chart.dart';
 import 'package:wakelock/wakelock.dart';
 
 class ProgressWidget extends StatefulWidget {
@@ -12,8 +12,8 @@ class ProgressWidget extends StatefulWidget {
   State<ProgressWidget> createState() => _ProgressWidgetState();
 }
 
-class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProviderStateMixin {
-
+class _ProgressWidgetState extends State<ProgressWidget>
+    with SingleTickerProviderStateMixin {
   bool _toggled = false; // toggle button value
   List<SensorValue> _data = <SensorValue>[]; // array to store the values
   CameraController? _controller;
@@ -43,7 +43,7 @@ class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProvid
 
   @override
   void dispose() {
-    if(_timer != null){
+    if (_timer != null) {
       _timer!.cancel();
     }
     _toggled = false;
@@ -91,7 +91,7 @@ class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProvid
                                     ),
                               Container(
                                 alignment: Alignment.center,
-                                padding:const EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4),
                                 child: Text(
                                   _toggled
                                       ? "Cover both the camera and the flash with your finger"
@@ -114,7 +114,7 @@ class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProvid
                           child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget> [
+                        children: <Widget>[
                           const Text(
                             "Estimated BPM",
                             style: TextStyle(fontSize: 18, color: Colors.grey),
@@ -168,7 +168,7 @@ class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProvid
     );
   }
 
-    void _clearData() {
+  void _clearData() {
     // create array of 128 ~= 255/2
     _data.clear();
     int now = DateTime.now().millisecondsSinceEpoch;
@@ -204,7 +204,7 @@ class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProvid
   }
 
   void _disposeController() {
-    if(_controller != null){
+    if (_controller != null) {
       _controller!.dispose();
     }
     _controller = null;

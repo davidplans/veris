@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_schema_health">
+    package="com.davidplans.veris">
    <application
-        android:label="flutter_schema_health"
+        android:label="Veris"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

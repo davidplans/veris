@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/data/models/user.dart';
-import 'package:flutter_schema_health/data/repositories/auth_repository.dart';
-import 'package:flutter_schema_health/presentation/bloc/auth_event.dart';
-import 'package:flutter_schema_health/presentation/bloc/auth_state.dart';
-
-
+import 'package:Veris/data/models/user.dart';
+import 'package:Veris/data/repositories/auth_repository.dart';
+import 'package:Veris/presentation/bloc/auth_event.dart';
+import 'package:Veris/presentation/bloc/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required AuthenticationRepository authenticationRepository})

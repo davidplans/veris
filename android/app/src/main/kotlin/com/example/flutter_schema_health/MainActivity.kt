@@ -1,4 +1,4 @@
-package com.example.flutter_schema_health
+package com.davidplans.veris
 
 import io.flutter.embedding.android.FlutterActivity
 

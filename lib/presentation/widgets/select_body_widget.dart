@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_schema_health/data/models/body.dart';
-import 'package:flutter_schema_health/presentation/utils/parser.dart';
-import 'package:flutter_schema_health/presentation/utils/size_controller.dart';
+import 'package:Veris/data/models/body.dart';
+import 'package:Veris/presentation/utils/parser.dart';
+import 'package:Veris/presentation/utils/size_controller.dart';
 
 class SelectBodyWidget extends StatefulWidget {
   @override

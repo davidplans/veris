@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/presentation/bloc/auth_bloc.dart';
-import 'package:flutter_schema_health/presentation/bloc/auth_event.dart';
-import 'package:flutter_schema_health/presentation/widgets/home_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/progress_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/heart_beats_widget.dart';
-import 'package:flutter_schema_health/style/theme.dart';
+import 'package:Veris/presentation/bloc/auth_bloc.dart';
+import 'package:Veris/presentation/bloc/auth_event.dart';
+import 'package:Veris/presentation/widgets/home_widget.dart';
+import 'package:Veris/presentation/widgets/progress_widget.dart';
+import 'package:Veris/presentation/widgets/heart_beats_widget.dart';
+import 'package:Veris/style/theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

@@ -1,14 +1,13 @@
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/data/repositories/auth_repository.dart';
-import 'package:flutter_schema_health/presentation/bloc/auth_bloc.dart';
-import 'package:flutter_schema_health/presentation/bloc/auth_state.dart';
-import 'package:flutter_schema_health/presentation/routes/routes.dart';
-import 'package:flutter_schema_health/style/theme.dart';
+import 'package:Veris/data/repositories/auth_repository.dart';
+import 'package:Veris/presentation/bloc/auth_bloc.dart';
+import 'package:Veris/presentation/bloc/auth_state.dart';
+import 'package:Veris/presentation/routes/routes.dart';
+import 'package:Veris/style/theme.dart';
 
 class HealthApp extends StatelessWidget {
-  
   const HealthApp({
     Key? key,
     required AuthenticationRepository authenticationRepository,
@@ -35,7 +34,7 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-return MaterialApp(
+    return MaterialApp(
       theme: theme,
       debugShowCheckedModeBanner: false,
       home: FlowBuilder<AuthStatus>(
@@ -43,6 +42,5 @@ return MaterialApp(
         onGeneratePages: onGenerateAppViewPages,
       ),
     );
- 
   }
 }

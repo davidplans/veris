@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/presentation/cubit/signup_cubit.dart';
-import 'package:flutter_schema_health/presentation/cubit/signup_state.dart';
-import 'package:flutter_schema_health/style/theme.dart';
+import 'package:Veris/presentation/cubit/signup_cubit.dart';
+import 'package:Veris/presentation/cubit/signup_state.dart';
+import 'package:Veris/style/theme.dart';
 import 'package:formz/formz.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -126,7 +126,8 @@ class _SignUpButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return state.status.isSubmissionInProgress
-            ? const CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(Color(0xFF189B8D)))
+            ? const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF189B8D)))
             : ElevatedButton(
                 key: const Key('signUpForm_continue_raisedButton'),
                 style: ElevatedButton.styleFrom(

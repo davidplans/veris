@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_schema_health/data/models/user.dart';
-
-
+import 'package:Veris/data/models/user.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -13,7 +11,6 @@ abstract class AuthEvent extends Equatable {
 class AppLogoutRequested extends AuthEvent {}
 
 class AppUserChanged extends AuthEvent {
-
   const AppUserChanged(this.user);
 
   final User user;

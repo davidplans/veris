@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/data/repositories/auth_repository.dart';
-import 'package:flutter_schema_health/presentation/cubit/login_cubit.dart';
-import 'package:flutter_schema_health/presentation/widgets/login_form.dart';
+import 'package:Veris/data/repositories/auth_repository.dart';
+import 'package:Veris/presentation/cubit/login_cubit.dart';
+import 'package:Veris/presentation/widgets/login_form.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);

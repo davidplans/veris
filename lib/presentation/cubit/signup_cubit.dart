@@ -1,10 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/data/repositories/auth_repository.dart';
-import 'package:flutter_schema_health/presentation/cubit/signup_state.dart';
-import 'package:flutter_schema_health/presentation/utils/form_inputs.dart';
+import 'package:Veris/data/repositories/auth_repository.dart';
+import 'package:Veris/presentation/cubit/signup_state.dart';
+import 'package:Veris/presentation/utils/form_inputs.dart';
 import 'package:formz/formz.dart';
-
-
 
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit(this._authenticationRepository) : super(const SignUpState());
@@ -25,7 +23,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     );
   }
 
-   void passwordChanged(String value) {
+  void passwordChanged(String value) {
     final password = Password.dirty(value);
     final confirmedPassword = ConfirmedPassword.dirty(
       password: password.value,

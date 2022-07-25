@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_schema_health/presentation/widgets/beats_slider_widget.dart';
+import 'package:Veris/presentation/widgets/beats_slider_widget.dart';
 import 'dart:math';
 
-import 'package:flutter_schema_health/style/theme.dart';
+import 'package:Veris/style/theme.dart';
 import 'package:just_audio/just_audio.dart';
 
 class Trial1Widget extends StatefulWidget {
@@ -52,7 +52,8 @@ class _Trial1WidgetState extends State<Trial1Widget> {
         print("TIMLES " + speed.toString());
         print("TIMLES " + (1000 / (60 / (speed))).round().toString());
 
-        _timer = Timer.periodic(Duration(milliseconds: ((60 / (speed))*1000).round()), (t) {
+        _timer = Timer.periodic(
+            Duration(milliseconds: ((60 / (speed)) * 1000).round()), (t) {
           player.stop();
           player.setAudioSource(source);
           player.play();
@@ -114,7 +115,7 @@ class _Trial1WidgetState extends State<Trial1Widget> {
                           if (((touchPositionFromCenter.direction * 180 / pi) +
                                   _currentValue) >=
                               60) {
-                                _timer.cancel();
+                            _timer.cancel();
                             finalAngle = touchPositionFromCenter.direction;
                             // _changeKnob(double.parse(
                             //     ((touchPositionFromCenter.direction * 180 / pi) + _currentValue)
@@ -127,7 +128,7 @@ class _Trial1WidgetState extends State<Trial1Widget> {
                               ((touchPositionFromCenter.direction * 180 / pi) +
                                       _currentValue) >=
                                   0) {
-                                    _timer.cancel();
+                            _timer.cancel();
                             finalAngle = touchPositionFromCenter.direction;
                             // _changeKnob(double.parse(
                             //     ((touchPositionFromCenter.direction * 180 / pi) + _currentValue)

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_schema_health/presentation/pages/web_page.dart';
-import 'package:flutter_schema_health/presentation/widgets/select_body_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/step10_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/step4_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/step6_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/step9_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/trial1_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/trial2_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/trial4_widget.dart';
-import 'package:flutter_schema_health/style/theme.dart';
+import 'package:Veris/presentation/pages/web_page.dart';
+import 'package:Veris/presentation/widgets/select_body_widget.dart';
+import 'package:Veris/presentation/widgets/step10_widget.dart';
+import 'package:Veris/presentation/widgets/step4_widget.dart';
+import 'package:Veris/presentation/widgets/step6_widget.dart';
+import 'package:Veris/presentation/widgets/step9_widget.dart';
+import 'package:Veris/presentation/widgets/trial1_widget.dart';
+import 'package:Veris/presentation/widgets/trial2_widget.dart';
+import 'package:Veris/presentation/widgets/trial4_widget.dart';
+import 'package:Veris/style/theme.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 class IntroTabWidget extends StatefulWidget {
@@ -62,8 +62,6 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
       // ),
       isProgress: false,
       pages: [
- 
-
         PageViewModel(
           title: "STEP 1",
           body:
@@ -173,7 +171,8 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           title: "PRACTICE TRIAL 1:",
           image: _buildImage('knob_with_arrows.png'),
           bodyWidget: const Text(
-              "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.", style: TextStyle(fontSize: 16.0)),
+              "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.",
+              style: TextStyle(fontSize: 16.0)),
           decoration: pageDecoration,
           footer: ElevatedButton(
             onPressed: () {
@@ -195,7 +194,6 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
             ),
           ),
         ),
-        
         PageViewModel(
           title: "",
           bodyWidget: Trial2Widget(),

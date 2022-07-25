@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:flutter_schema_health/data/models/user.dart';
-import 'package:flutter_schema_health/data/repositories/cache_client.dart';
+import 'package:Veris/data/models/user.dart';
+import 'package:Veris/data/repositories/cache_client.dart';
 
 /// {@template sign_up_with_email_and_password_failure}
 /// Thrown if during the sign up process if a failure occurs.
@@ -147,8 +147,8 @@ class AuthenticationRepository {
             'user_photo': null,
             'baselines': null,
             'startDate': null,
-            'endDate' : null,
-            'numRuns' : null,
+            'endDate': null,
+            'numRuns': null,
             'syncroTraining': null
           }, SetOptions(merge: true))
           .then((value) => print("User Added"))

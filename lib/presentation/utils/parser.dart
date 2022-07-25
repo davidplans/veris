@@ -1,8 +1,7 @@
-import 'package:flutter_schema_health/data/models/body.dart';
+import 'package:Veris/data/models/body.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import './size_controller.dart';
-
 
 class Parser {
   static Parser? _instance;
@@ -17,10 +16,7 @@ class Parser {
   Parser._init();
 
   Future<List<Body>> svgToCityList(String country) async {
-
-    final svgCountry = await rootBundle.loadString(
-      'assets/images/$country'
-    );
+    final svgCountry = await rootBundle.loadString('assets/images/$country');
 
     List<Body> bodyList = [];
 

@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_schema_health/presentation/utils/form_inputs.dart';
+import 'package:Veris/presentation/utils/form_inputs.dart';
 import 'package:formz/formz.dart';
-
-
 
 class LoginState extends Equatable {
   const LoginState({
