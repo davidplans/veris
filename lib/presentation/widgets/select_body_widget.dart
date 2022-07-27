@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:Veris/data/models/body.dart';
 import 'package:Veris/presentation/utils/parser.dart';
@@ -15,7 +16,26 @@ class _SelectBodyWidgetState extends State<SelectBodyWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Selected : ${selectedBody?.title ?? ''}')),
+      appBar: AppBar(
+        title: Text('Selected : ${selectedBody?.title ?? ''}'),
+        actions: [
+          ElevatedButton(
+            onPressed: () async {
+
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.blue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            child: const Text(
+              'Confirm',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
       backgroundColor: const Color(0xFF2A2A2A),
       body: Center(
         child: Container(
@@ -98,7 +118,7 @@ class BodyPickerState extends State<BodyPicker> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        for (var city in _bodyList) _buildStackItem(city),
+        for (var body in _bodyList) _buildStackItem(body),
       ],
     );
   }

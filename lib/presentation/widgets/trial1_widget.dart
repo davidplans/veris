@@ -1,9 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:Veris/presentation/widgets/beats_slider_widget.dart';
 import 'dart:math';
-
 import 'package:Veris/style/theme.dart';
 import 'package:just_audio/just_audio.dart';
 

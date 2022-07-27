@@ -1,15 +1,19 @@
+import 'package:Veris/data/models/body.dart';
+import 'package:Veris/presentation/utils/parser.dart';
+import 'package:Veris/presentation/utils/size_controller.dart';
+import 'package:Veris/presentation/widgets/select_body_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/presentation/pages/web_page.dart';
-import 'package:Veris/presentation/widgets/select_body_widget.dart';
+
 import 'package:Veris/presentation/widgets/step10_widget.dart';
 import 'package:Veris/presentation/widgets/step4_widget.dart';
-import 'package:Veris/presentation/widgets/step6_widget.dart';
-import 'package:Veris/presentation/widgets/step9_widget.dart';
 import 'package:Veris/presentation/widgets/trial1_widget.dart';
 import 'package:Veris/presentation/widgets/trial2_widget.dart';
 import 'package:Veris/presentation/widgets/trial4_widget.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+
+import 'package:video_player/video_player.dart';
 
 class IntroTabWidget extends StatefulWidget {
   const IntroTabWidget({Key? key}) : super(key: key);
@@ -20,9 +24,44 @@ class IntroTabWidget extends StatefulWidget {
 
 class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
   final introKey = GlobalKey<IntroductionScreenState>();
+  late VideoPlayerController controller1, controller2;
+
+  @override
+  void initState() {
+    loadVideoPlayer();
+    // print("init");
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller1.dispose();
+    controller2.dispose();
+    super.dispose();
+  }
 
   Widget _buildImage(String assetName, [double width = 350]) {
     return Image.asset('assets/images/$assetName', width: width);
+  }
+
+  loadVideoPlayer() {
+    controller1 = VideoPlayerController.asset(
+        "assets/videos/heart_beat_sound_out_sync.mp4");
+    controller1.addListener(() {
+      setState(() {});
+    });
+    controller1.initialize().then((value) {
+      setState(() {});
+    });
+
+    controller2 = VideoPlayerController.asset(
+        "assets/videos/video_for_MAD_task_final.mp4");
+    controller2.addListener(() {
+      setState(() {});
+    });
+    controller2.initialize().then((value) {
+      setState(() {});
+    });
   }
 
   @override
@@ -40,15 +79,24 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
     return IntroductionScreen(
       key: introKey,
       globalBackgroundColor: Colors.white,
-      globalHeader: const Align(
+      globalHeader: Align(
         alignment: Alignment.topRight,
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.only(top: 16, right: 16),
-            // child: _buildImage('hand.png', 100),
+            padding: const EdgeInsets.only(top: 16, right: 16),
+            child: Text(""),
           ),
         ),
       ),
+      onChange: (value) {
+        if (controller1.value.isPlaying) {
+          controller1.pause();
+        }
+
+        if (controller2.value.isPlaying) {
+          controller2.pause();
+        }
+      },
       // globalFooter: SizedBox(
       //   width: double.infinity,
       //   height: 60,
@@ -103,10 +151,56 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
         ),
         PageViewModel(
           title: "STEP 6",
-          bodyWidget: Step6Widget(),
+          bodyWidget: Container(
+              child: Column(children: [
+            AspectRatio(
+              aspectRatio: controller1.value.aspectRatio,
+              child: VideoPlayer(controller1),
+            ),
+            Container(
+                child: VideoProgressIndicator(controller1,
+                    allowScrubbing: true,
+                    colors: const VideoProgressColors(
+                      backgroundColor: Colors.redAccent,
+                      playedColor: Colors.green,
+                      bufferedColor: Colors.purple,
+                    ))),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        if (controller1.value.isPlaying) {
+                          controller1.pause();
+                        } else {
+                          controller1.play();
+                        }
+                        // setState(() {});
+                      },
+                      icon: Icon(
+                        controller1.value.isPlaying
+                            ? Icons.stop
+                            : Icons.play_arrow,
+                        size: 40,
+                      )),
+                  // IconButton(
+                  //     onPressed: () {
+                  //       controller.seekTo(const Duration(seconds: 0));
+                  //       setState(() {});
+                  //     },
+                  //     icon: const Icon(Icons.stop))
+                ],
+              ),
+            ),
+            Container(
+                child: const Center(
+                    child: Text(
+              "It might seem like there is a delay between the sounds and the heartbeats you feel.\n\nPlay the video below to hear an example!",
+              style: TextStyle(fontSize: 18.0),
+            )))
+          ])),
           decoration: pageDecoration,
-          // image: _buildImage('icon.png'),
-          // reverse: true,
         ),
         PageViewModel(
           title: "STEP 7",
@@ -122,7 +216,50 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
         ),
         PageViewModel(
           title: "STEP 9",
-          bodyWidget: Step9Widget(),
+          bodyWidget: Container(
+              width: 250,
+              child: Column(children: [
+                AspectRatio(
+                  aspectRatio: controller2.value.aspectRatio,
+                  child: VideoPlayer(controller2),
+                ),
+                Container(
+                    child: VideoProgressIndicator(controller2,
+                        allowScrubbing: true,
+                        colors: const VideoProgressColors(
+                          backgroundColor: Colors.redAccent,
+                          playedColor: Colors.green,
+                          bufferedColor: Colors.purple,
+                        ))),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            if (controller2.value.isPlaying) {
+                              controller2.pause();
+                            } else {
+                              controller2.play();
+                            }
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            controller2.value.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow,
+                            size: 40,
+                          )),
+                      // IconButton(
+                      //     onPressed: () {
+                      //       controller2.seekTo(const Duration(seconds: 0));
+                      //       setState(() {});
+                      //     },
+                      //     icon: const Icon(Icons.stop))
+                    ],
+                  ),
+                ),
+              ])),
           decoration: pageDecoration,
         ),
         PageViewModel(
@@ -250,9 +387,9 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
             },
             style: ElevatedButton.styleFrom(
               primary: theme.primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
+              // shape: RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.circular(8.0),
+              // ),
             ),
             child: const Text(
               'Select',
