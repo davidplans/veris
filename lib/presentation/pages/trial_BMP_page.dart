@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:Veris/data/models/user.dart';
-import 'package:Veris/data/repositories/auth_repository.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
+import 'package:Veris/presentation/pages/body_map_page.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/presentation/utils/chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
 
 class TrialBMPPage extends StatefulWidget {
@@ -38,16 +39,17 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   double? _avg; // store the average value during calculation
   DateTime? _now; // store the now Datetime
   Timer? _timer; // timer for image processing
-  int _start = 120;
+  int _start = 30;
   Timer? _timerDuration; // timer for duration
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   late User user;
+  int countTrials = 0;
 
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(duration: Duration(milliseconds: 500), vsync: this);
+    _animationController = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
     _animationController!
       ..addListener(() {
         setState(() {
@@ -135,6 +137,13 @@ class _TrialBMPPageState extends State<TrialBMPPage>
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
+                          Text(
+                            '$countTrials/20',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          const SizedBox(
+                            height: 40,
+                          ),
                           const Text(
                             "Estimated BPM",
                             style: TextStyle(fontSize: 18, color: Colors.grey),
@@ -154,17 +163,24 @@ class _TrialBMPPageState extends State<TrialBMPPage>
               child: Center(
                 child: Transform.scale(
                   scale: _iconScale,
-                  child: _toggled
-                      ? Text('$_start')
+                  child: countTrials < 2
+                      ? _toggled
+                          ? Text('$_start')
+                          : ElevatedButton(
+                              child: Text('START'),
+                              onPressed: () {
+                                if (_toggled) {
+                                  _untoggle();
+                                } else {
+                                  _toggle();
+                                }
+                              },
+                            )
                       : ElevatedButton(
-                          child: Text('START'),
-                          onPressed: () {
-                            if (_toggled) {
-                              _untoggle();
-                            } else {
-                              _toggle();
-                            }
-                          },
+                          onPressed: () => Navigator.of(context).push<void>(
+                            BodySelectPage.route(),
+                          ),
+                          child: const Text('Continue'),
                         ),
                 ),
               ),
@@ -213,7 +229,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     });
   }
 
-  void _untoggle() {
+  void _untoggle() async {
+    final prefs = await SharedPreferences.getInstance();
     _disposeController();
     Wakelock.disable();
     _animationController!.stop();
@@ -221,6 +238,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     _timerDuration!.cancel();
     setState(() {
       _toggled = false;
+      countTrials++;
     });
 
     DateTime now = DateTime.now();
@@ -228,19 +246,23 @@ class _TrialBMPPageState extends State<TrialBMPPage>
 
     final docData = {
       "instantBpms": _bpmFirebase,
-      "startDate": now,
-      "endDate": now,
-      "numRuns": 1
+      // "startDate": now,
+      // "endDate": now,
+      // "numRuns": countTests,
+      // "numTrials": 1
     };
     users
         .doc(user.id)
-        .collection('baselines')
+        .collection('trials')
         .doc(formattedDate)
+        .collection('baselines')
+        .doc()
         .set(docData)
         .onError((e, _) => print("Error writing document: $e"));
-
-    // TODO change up to 120
-    _start = 120;
+    prefs.setString('trialId', formattedDate);
+    prefs.setString('userId', user.id);
+    prefs.setInt('countTrials', countTrials);
+    _start = 30;
     _bpmFirebase = <double>[];
   }
 

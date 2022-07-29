@@ -1,28 +1,61 @@
-
-import 'package:flutter/material.dart';
 import 'package:Veris/data/models/body.dart';
 import 'package:Veris/presentation/utils/parser.dart';
 import 'package:Veris/presentation/utils/size_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+class BodySelectPage extends StatefulWidget {
+  const BodySelectPage({Key? key}) : super(key: key);
 
-class SelectBodyWidget extends StatefulWidget {
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const BodySelectPage());
+  }
+
   @override
-  State<SelectBodyWidget> createState() => _SelectBodyWidgetState();
+  State<BodySelectPage> createState() => _BodySelectPageState();
 }
 
-class _SelectBodyWidgetState extends State<SelectBodyWidget> {
+class _BodySelectPageState extends State<BodySelectPage> {
   Body? selectedBody;
   final GlobalKey<BodyPickerState> _bodyKey = GlobalKey();
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Selected : ${selectedBody?.title ?? ''}'),
+        automaticallyImplyLeading: false,
         actions: [
           ElevatedButton(
             onPressed: () async {
-              
+              final prefs = await SharedPreferences.getInstance();
+              final trialId = prefs.getString('trialId');
+              final userId = prefs.getString('userId');
+              final countTrials = prefs.getInt('countTrials');
+
+              final docData = {
+                "startDate": DateTime.now(),
+                "endDate": DateTime.now(),
+                "numRuns": countTrials,
+                "numTrials": 1,
+                "selectedBody": selectedBody?.title,
+              };
+
+              users
+                  .doc(userId)
+                  .collection('trials')
+                  .doc(trialId)
+                  .set(docData, SetOptions(merge: true));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Stored!"),
+                ),
+              );
+              // Navigator.of(context).push<void>(
+              //   KnobPage.route(),
+              // );
             },
             style: ElevatedButton.styleFrom(
               primary: Colors.blue,

@@ -1,6 +1,5 @@
 
-import 'package:Veris/presentation/pages/trial_BMP.dart';
-import 'package:Veris/presentation/widgets/select_body_widget.dart';
+import 'package:Veris/presentation/pages/trial_BMP_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/presentation/widgets/step10_widget.dart';
 import 'package:Veris/presentation/widgets/step4_widget.dart';

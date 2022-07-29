@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-class BeatsSlider extends StatefulWidget {
-  const BeatsSlider({Key? key}) : super(key: key);
+class KnobPage extends StatefulWidget {
+  const KnobPage({Key? key}) : super(key: key);
+
+    static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const KnobPage());
+  }
 
   @override
-  State<BeatsSlider> createState() => _BeatsSliderState();
+  State<KnobPage> createState() => _KnobPageState();
 }
 
-class _BeatsSliderState extends State<BeatsSlider> {
+class _KnobPageState extends State<KnobPage> {
   double _currentSliderValue = 60;
   final player = AudioPlayer();
 
