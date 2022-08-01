@@ -6,6 +6,7 @@ import 'package:Veris/presentation/pages/body_map_page.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/presentation/utils/chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,6 +46,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   late User user;
   int countTrials = 0;
+  String _formattedDate = '';
 
   @override
   void initState() {
@@ -57,6 +59,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
           _iconScale = 1.0 + _animationController!.value * 0.4;
         });
       });
+    DateTime now = DateTime.now();
+    _formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
   }
 
   @override
@@ -235,6 +239,18 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       setState(() {
         _toggled = true;
       });
+
+      Map<String, dynamic> docData = {
+        "startDate": DateTime.now(),
+        "numTrials": 1,
+      };
+
+      if (countTrials > 0) {
+        docData = {};
+      }
+
+      users.doc(user.id).collection('trials').doc(_formattedDate).set(docData, SetOptions(merge: true));
+
       // after is toggled
       _initTimer();
       _countDown();
@@ -254,27 +270,20 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       countTrials++;
     });
 
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
-
     final docData = {
       "instantBpms": _bpmFirebase,
-      // "startDate": now,
-      // "endDate": now,
-      // "numRuns": countTests,
-      // "numTrials": 1
     };
     if (_bpmFirebase != null) {
       users
           .doc(user.id)
           .collection('trials')
-          .doc(formattedDate)
+          .doc(_formattedDate)
           .collection('baselines')
           .doc()
-          .set(docData)
+          .set(docData, SetOptions(merge: true))
           .onError((e, _) => print("Error writing document: $e"));
 
-      prefs.setString('trialId', formattedDate);
+      prefs.setString('trialId', _formattedDate);
       prefs.setString('userId', user.id);
       prefs.setInt('countTrials', countTrials);
     }

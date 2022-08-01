@@ -3,8 +3,10 @@ import 'dart:math';
 
 import 'package:Veris/presentation/pages/home_page.dart';
 import 'package:Veris/style/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class KnobPage extends StatefulWidget {
   const KnobPage({Key? key}) : super(key: key);
@@ -27,12 +29,14 @@ class _KnobPageState extends State<KnobPage> {
       AudioSource.uri(Uri.parse('asset:///assets/sounds/beep2.mp3'));
   Timer _timer = Timer.periodic(const Duration(seconds: 60), (t) {});
   bool _isStarting = false;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  @override
-  void initState() {
-    super.initState();
-    // _playBeep(_currentValue);
-  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _playBeep(_currentValue);
+  // }
 
   // _getAssets() {
   //   player.setAudioSource(source).then((value) {
@@ -53,16 +57,12 @@ class _KnobPageState extends State<KnobPage> {
       } else if (speed <= 59) {
         player.setLoopMode(LoopMode.off);
         // _timer.cancel();
-        print("TIMLES " + speed.toString());
-        print("TIMLES " + (1000 / (60 / (speed))).round().toString());
 
         _timer = Timer.periodic(
             Duration(milliseconds: ((60 / (speed)) * 1000).round()), (t) {
           player.stop();
           player.setAudioSource(source);
           player.play();
-
-          print("END");
           // t.cancel();
         });
       }
@@ -95,6 +95,14 @@ class _KnobPageState extends State<KnobPage> {
     super.dispose();
   }
 
+  String _calculateBeatsToString(){
+    return ((finalAngle * 180 / pi) + _currentValue).toStringAsFixed(0);
+  }
+
+    double _calculateBeatsToDouble(){
+    return ((finalAngle * 180 / pi) + _currentValue);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +112,7 @@ class _KnobPageState extends State<KnobPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(((finalAngle * 180 / pi) + _currentValue).toStringAsFixed(0),
+              Text(_calculateBeatsToString(),
                   style: const TextStyle(
                     fontSize: 50,
                   )),
@@ -150,38 +158,36 @@ class _KnobPageState extends State<KnobPage> {
                       );
                     },
                     onPanEnd: (details) {
-                      if (((finalAngle * 180 / pi) + _currentValue) >= 60) {
+                      if (_calculateBeatsToDouble() >= 60) {
                         _timer.cancel();
                         _changeKnob(double.parse(
-                            ((finalAngle * 180 / pi) + _currentValue)
-                                .toStringAsFixed(0)));
-                      } else if (((finalAngle * 180 / pi) + _currentValue) <=
+                            _calculateBeatsToString()));
+                      } else if (_calculateBeatsToDouble() <=
                               59 &&
-                          ((finalAngle * 180 / pi) + _currentValue) >= 0) {
+                          _calculateBeatsToDouble() >= 0) {
                         _timer.cancel();
                         _changeKnob(double.parse(
-                            ((finalAngle * 180 / pi) + _currentValue)
-                                .toStringAsFixed(0)));
+                            _calculateBeatsToString()));
                       }
                     },
-                    child: Transform.rotate(
+                    child: _isStarting ? Transform.rotate(
                       angle: finalAngle,
                       child: const Image(
                         image: AssetImage("assets/images/knob.png"),
                       ),
-                    ),
-                  );
+                    ) : null,
+                  ) ;
                 }),
               ),
               const SizedBox(height: 50),
               ElevatedButton(
-                onPressed: () {
+                onPressed: !_isStarting ? () {
                   _playBeep(_currentValue);
                   setState(() {
                     _isStarting = true;
                   });
                   
-                },
+                } : null,
                 style: ElevatedButton.styleFrom(
                   primary: theme.primaryColor,
                   shape: RoundedRectangleBorder(
@@ -195,13 +201,30 @@ class _KnobPageState extends State<KnobPage> {
               ),
               ElevatedButton(
                 onPressed: _isStarting
-                    ? () {
+                    ? () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  final trialId = prefs.getString('trialId');
+                  final userId = prefs.getString('userId');
+            
+                  final docData = {
+                    "compareBeats" : _calculateBeatsToDouble().round(),
+                    "endDate" : DateTime.now(),
+                  };
+            
+                  users
+                      .doc(userId)
+                      .collection('trials')
+                      .doc(trialId)
+                      .set(docData, SetOptions(merge: true));
+
+
                         Navigator.of(context).push<void>(
                           HomePage.route(),
                         );
                         player.stop();
                         player.dispose();
                         _timer.cancel();
+                        
                       }
                     : null,
                 style: ElevatedButton.styleFrom(

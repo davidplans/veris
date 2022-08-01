@@ -66,10 +66,7 @@ class _BodySelectPageState extends State<BodySelectPage> {
                   final countTrials = prefs.getInt('countTrials');
             
                   final docData = {
-                    "startDate": DateTime.now(),
-                    "endDate": DateTime.now(),
                     "numRuns": countTrials,
-                    "numTrials": 1,
                     "selectedBody": selectedBody?.title,
                   };
             
