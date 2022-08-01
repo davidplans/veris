@@ -1,4 +1,5 @@
 import 'package:Veris/data/models/body.dart';
+import 'package:Veris/presentation/pages/knob_page.dart';
 import 'package:Veris/presentation/utils/parser.dart';
 import 'package:Veris/presentation/utils/size_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,72 +28,78 @@ class _BodySelectPageState extends State<BodySelectPage> {
       appBar: AppBar(
         title: Text('Selected : ${selectedBody?.title ?? ''}'),
         automaticallyImplyLeading: false,
-        actions: [
-          ElevatedButton(
-            onPressed: () async {
-              final prefs = await SharedPreferences.getInstance();
-              final trialId = prefs.getString('trialId');
-              final userId = prefs.getString('userId');
-              final countTrials = prefs.getInt('countTrials');
-
-              final docData = {
-                "startDate": DateTime.now(),
-                "endDate": DateTime.now(),
-                "numRuns": countTrials,
-                "numTrials": 1,
-                "selectedBody": selectedBody?.title,
-              };
-
-              users
-                  .doc(userId)
-                  .collection('trials')
-                  .doc(trialId)
-                  .set(docData, SetOptions(merge: true));
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Stored!"),
-                ),
-              );
-              // Navigator.of(context).push<void>(
-              //   KnobPage.route(),
-              // );
-            },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.blue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-            child: const Text(
-              'Confirm',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
       ),
       backgroundColor: const Color(0xFF2A2A2A),
       body: Center(
-        child: Container(
-          color: const Color(0xFF2A2A2A),
-          child: InteractiveViewer(
-            scaleEnabled: true,
-            panEnabled: true,
-            constrained: true,
-            child: BodyPicker(
-              key: _bodyKey,
-              width: double.infinity,
-              height: double.infinity,
-              body: "body.svg",
-              onChanged: (body) {
-                setState(() {
-                  selectedBody = body;
-                });
-              },
-              actAsToggle: true,
-              selectedColor: Colors.lightBlueAccent,
-              strokeColor: Colors.white24,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              color: const Color(0xFF2A2A2A),
+              child: InteractiveViewer(
+                scaleEnabled: true,
+                panEnabled: true,
+                constrained: true,
+                child: BodyPicker(
+                  key: _bodyKey,
+                  width: double.infinity,
+                  height: double.infinity,
+                  body: "body.svg",
+                  onChanged: (body) {
+                    setState(() {
+                      selectedBody = body;
+                    });
+                  },
+                  actAsToggle: true,
+                  selectedColor: Colors.lightBlueAccent,
+                  strokeColor: Colors.white24,
+                ),
+              ),
             ),
-          ),
+            Positioned(
+              bottom: 25,
+              child: ElevatedButton(
+                onPressed: selectedBody?.title != null ? () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  final trialId = prefs.getString('trialId');
+                  final userId = prefs.getString('userId');
+                  final countTrials = prefs.getInt('countTrials');
+            
+                  final docData = {
+                    "startDate": DateTime.now(),
+                    "endDate": DateTime.now(),
+                    "numRuns": countTrials,
+                    "numTrials": 1,
+                    "selectedBody": selectedBody?.title,
+                  };
+            
+                  users
+                      .doc(userId)
+                      .collection('trials')
+                      .doc(trialId)
+                      .set(docData, SetOptions(merge: true));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Stored!"),
+                    ),
+                  );
+                  Navigator.of(context).push<void>(
+                    KnobPage.route(),
+                  );
+                } : null,
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: const Text(
+                  'Confirm',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -6,6 +6,10 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+    <string>Use Camera for finger monitoring </string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Use Microphone for finger monitoring </string>
 	<key>CFBundleDisplayName</key>
 	<string>Veris</string>
 	<key>CFBundleExecutable</key>

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Veris/data/models/user.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
 import 'package:Veris/presentation/pages/body_map_page.dart';
+import 'package:Veris/style/theme.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -167,7 +168,12 @@ class _TrialBMPPageState extends State<TrialBMPPage>
                       ? _toggled
                           ? Text('$_start')
                           : ElevatedButton(
-                              child: Text('START'),
+                              style: ElevatedButton.styleFrom(
+                                primary: theme.primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
                               onPressed: () {
                                 if (_toggled) {
                                   _untoggle();
@@ -175,10 +181,17 @@ class _TrialBMPPageState extends State<TrialBMPPage>
                                   _toggle();
                                 }
                               },
+                              child: const Text('START'),
                             )
                       : ElevatedButton(
                           onPressed: () => Navigator.of(context).push<void>(
                             BodySelectPage.route(),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: theme.primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
                           ),
                           child: const Text('Continue'),
                         ),
@@ -251,17 +264,21 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       // "numRuns": countTests,
       // "numTrials": 1
     };
-    users
-        .doc(user.id)
-        .collection('trials')
-        .doc(formattedDate)
-        .collection('baselines')
-        .doc()
-        .set(docData)
-        .onError((e, _) => print("Error writing document: $e"));
-    prefs.setString('trialId', formattedDate);
-    prefs.setString('userId', user.id);
-    prefs.setInt('countTrials', countTrials);
+    if (_bpmFirebase != null) {
+      users
+          .doc(user.id)
+          .collection('trials')
+          .doc(formattedDate)
+          .collection('baselines')
+          .doc()
+          .set(docData)
+          .onError((e, _) => print("Error writing document: $e"));
+
+      prefs.setString('trialId', formattedDate);
+      prefs.setString('userId', user.id);
+      prefs.setInt('countTrials', countTrials);
+    }
+
     _start = 30;
     _bpmFirebase = <double>[];
   }
