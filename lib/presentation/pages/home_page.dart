@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Veris'),
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
             key: const Key('homePage_logout_iconButton'),

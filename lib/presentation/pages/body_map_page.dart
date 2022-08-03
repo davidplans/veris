@@ -1,4 +1,5 @@
 import 'package:Veris/data/models/body.dart';
+import 'package:Veris/presentation/pages/home_page.dart';
 import 'package:Veris/presentation/pages/knob_page.dart';
 import 'package:Veris/presentation/utils/parser.dart';
 import 'package:Veris/presentation/utils/size_controller.dart';
@@ -22,12 +23,24 @@ class _BodySelectPageState extends State<BodySelectPage> {
   final GlobalKey<BodyPickerState> _bodyKey = GlobalKey();
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
+  _setSelect() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('selectedBody', (selectedBody?.title).toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Selected : ${selectedBody?.title ?? ''}'),
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+              onPressed: () => Navigator.of(context).push<void>(
+                    HomePage.route(),
+                  ),
+              icon: const Icon(Icons.home))
+        ],
       ),
       backgroundColor: const Color(0xFF2A2A2A),
       body: Center(
@@ -59,31 +72,33 @@ class _BodySelectPageState extends State<BodySelectPage> {
             Positioned(
               bottom: 25,
               child: ElevatedButton(
-                onPressed: selectedBody?.title != null ? () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  final trialId = prefs.getString('trialId');
-                  final userId = prefs.getString('userId');
-                  final countTrials = prefs.getInt('countTrials');
-            
-                  final docData = {
-                    "numRuns": countTrials,
-                    "selectedBody": selectedBody?.title,
-                  };
-            
-                  users
-                      .doc(userId)
-                      .collection('trials')
-                      .doc(trialId)
-                      .set(docData, SetOptions(merge: true));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Stored!"),
-                    ),
-                  );
-                  Navigator.of(context).push<void>(
-                    KnobPage.route(),
-                  );
-                } : null,
+                onPressed: selectedBody?.title != null
+                    ? () {
+                        _setSelect();
+                        // final trialId = prefs.getString('trialId');
+                        // final userId = prefs.getString('userId');
+                        // final countTrials = prefs.getInt('countTrials');
+
+                        // final docData = {
+                        //   "numRuns": countTrials,
+                        //   "selectedBody": selectedBody?.title,
+                        // };
+
+                        // users
+                        //     .doc(userId)
+                        //     .collection('trials')
+                        //     .doc(trialId)
+                        //     .set(docData, SetOptions(merge: true));
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   const SnackBar(
+                        //     content: Text("Stored!"),
+                        //   ),
+                        // );
+                        Navigator.of(context).push<void>(
+                          KnobPage.route(),
+                        );
+                      }
+                    : null,
                 style: ElevatedButton.styleFrom(
                   primary: Colors.blue,
                   shape: RoundedRectangleBorder(

@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:Veris/data/models/user.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
 import 'package:Veris/presentation/pages/body_map_page.dart';
+import 'package:Veris/presentation/pages/home_page.dart';
+import 'package:Veris/presentation/pages/knob_page.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/presentation/utils/chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,15 +42,22 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   double? _avg; // store the average value during calculation
   DateTime? _now; // store the now Datetime
   Timer? _timer; // timer for image processing
-  int _start = 30;
+  int _start = 10;
   Timer? _timerDuration; // timer for duration
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-  late User user;
-  int countTrials = 0;
-  String _formattedDate = '';
+
+  final int _configMaxTrials = 5;
+  final int _configRangeBodySelect = 2;
+  int _countTrials = 0;
+  int _currentStep = 1;
+  List<int> listSelectSteps = [];
+  bool _isFinished = false;
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  // Map<String, List<double>> _trialBPMArray = {};
 
   @override
-  void initState() {
+  initState() {
     super.initState();
     _animationController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
@@ -59,8 +67,20 @@ class _TrialBMPPageState extends State<TrialBMPPage>
           _iconScale = 1.0 + _animationController!.value * 0.4;
         });
       });
-    DateTime now = DateTime.now();
-    _formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+
+    listSelectSteps.add(_currentStep);
+    _getNumTrial();
+  }
+
+  _getNumTrial() {
+    String formattedDate =
+        DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
+    _prefs.then((SharedPreferences p) {
+      _countTrials = p.getInt('numRuns') ?? 0;
+      p.setInt('maxTrials', _configMaxTrials);
+      p.setString('startDate', formattedDate);
+      print('COUNT $_countTrials');
+    });
   }
 
   @override
@@ -81,10 +101,18 @@ class _TrialBMPPageState extends State<TrialBMPPage>
 
   @override
   Widget build(BuildContext context) {
-    user = context.select((AuthBloc bloc) => bloc.state.user);
-
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () => Navigator.of(context).push<void>(
+                    HomePage.route(),
+                  ),
+              icon: const Icon(Icons.home))
+        ],
+        automaticallyImplyLeading: false,
+      ),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -142,13 +170,6 @@ class _TrialBMPPageState extends State<TrialBMPPage>
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            '$countTrials/20',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
                           const Text(
                             "Estimated BPM",
                             style: TextStyle(fontSize: 18, color: Colors.grey),
@@ -167,39 +188,43 @@ class _TrialBMPPageState extends State<TrialBMPPage>
               flex: 1,
               child: Center(
                 child: Transform.scale(
-                  scale: _iconScale,
-                  child: countTrials < 2
-                      ? _toggled
-                          ? Text('$_start')
-                          : ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: theme.primaryColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
+                    scale: _iconScale,
+                    child: _isFinished
+                        ? ElevatedButton(
+                            onPressed: () =>
+                                (listSelectSteps.contains(_countTrials))
+                                    ? Navigator.of(context)
+                                        .push<void>(BodySelectPage.route())
+                                    : Navigator.of(context)
+                                        .push<void>(KnobPage.route()),
+                            style: ElevatedButton.styleFrom(
+                              primary: theme.primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                              onPressed: () {
-                                if (_toggled) {
-                                  _untoggle();
-                                } else {
-                                  _toggle();
-                                }
-                              },
-                              child: const Text('START'),
-                            )
-                      : ElevatedButton(
-                          onPressed: () => Navigator.of(context).push<void>(
-                            BodySelectPage.route(),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: theme.primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                          ),
-                          child: const Text('Continue'),
-                        ),
-                ),
+                            child: const Text('Continue'),
+                          )
+                        : _toggled
+                            ? Text('$_start')
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: theme.primaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  if (_toggled) {
+                                    _untoggle();
+                                  } else {
+                                    _toggle();
+                                    await _calculateStep(_configMaxTrials,
+                                        _configRangeBodySelect);
+                                  }
+                                },
+                                child: const Text('START'),
+                              )),
               ),
             ),
             Expanded(
@@ -220,6 +245,15 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     );
   }
 
+  _calculateStep(int total, int range) {
+    while (total >= _currentStep) {
+      _currentStep += range;
+      if (_currentStep <= total) {
+        listSelectSteps.add(_currentStep);
+      }
+    }
+  }
+
   void _clearData() {
     // create array of 128 ~= 255/2
     _data.clear();
@@ -233,23 +267,27 @@ class _TrialBMPPageState extends State<TrialBMPPage>
 
   void _toggle() {
     _clearData();
-    _initController().then((onValue) {
+    _initController().then((onValue) async {
       Wakelock.enable();
       _animationController!.repeat(reverse: true);
       setState(() {
         _toggled = true;
       });
 
-      Map<String, dynamic> docData = {
-        "startDate": DateTime.now(),
-        "numTrials": 1,
-      };
+      // Map<String, dynamic> docData = {
+      //   "startDate": DateTime.now(),
+      //   "numTrials": 1,
+      // };
 
-      if (countTrials > 0) {
-        docData = {};
-      }
+      // if (countTrials > 0) {
+      //   docData = {};
+      // }
 
-      users.doc(user.id).collection('trials').doc(_formattedDate).set(docData, SetOptions(merge: true));
+      // users
+      //     .doc(user.id)
+      //     .collection('trials')
+      //     .doc(_formattedDate)
+      //     .set(docData, SetOptions(merge: true));
 
       // after is toggled
       _initTimer();
@@ -259,36 +297,49 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   }
 
   void _untoggle() async {
-    final prefs = await SharedPreferences.getInstance();
+    final stringList = _bpmFirebase.map((e) => e.toString()).toList();
+    // final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
     _disposeController();
     Wakelock.disable();
     _animationController!.stop();
     _animationController!.value = 0.0;
     _timerDuration!.cancel();
     setState(() {
+      _prefs.then((SharedPreferences p) {
+        _countTrials++;
+        p.setInt('numRuns', _countTrials);
+        p.setStringList('instantBPM', stringList);
+        print(p.getInt("numRuns").toString());
+      });
+      // _countTrials++;
       _toggled = false;
-      countTrials++;
+      _isFinished = true;
     });
 
-    final docData = {
-      "instantBpms": _bpmFirebase,
-    };
-    if (_bpmFirebase != null) {
-      users
-          .doc(user.id)
-          .collection('trials')
-          .doc(_formattedDate)
-          .collection('baselines')
-          .doc()
-          .set(docData, SetOptions(merge: true))
-          .onError((e, _) => print("Error writing document: $e"));
+    // _trialBPMArray[unixTime] = _bpmFirebase;
+    // prefs.setStringList('instantBPM', stringList);
+    // prefs.setString('startDate', DateTime.now().toString());
+    // prefs.setInt('numRuns', countTrials);
 
-      prefs.setString('trialId', _formattedDate);
-      prefs.setString('userId', user.id);
-      prefs.setInt('countTrials', countTrials);
-    }
+    // final docData = {
+    //   "instantBpms": _bpmFirebase,
+    // };
+    // if (_bpmFirebase != null) {
+    //   users
+    //       .doc(user.id)
+    //       .collection('trials')
+    //       .doc(_formattedDate)
+    //       .collection('baselines')
+    //       .doc()
+    //       .set(docData, SetOptions(merge: true))
+    //       .onError((e, _) => print("Error writing document: $e"));
 
-    _start = 30;
+    // prefs.setString('trialId', _formattedDate);
+    // prefs.setString('userId', user.id);
+    // prefs.setInt('countTrials', countTrials);
+    // }
+
+    _start = 10;
     _bpmFirebase = <double>[];
   }
 
@@ -330,7 +381,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
         _image = image;
       });
     } catch (Exception) {
-      debugPrint("My Error");
+      debugPrint("Camera Error");
     }
   }
 

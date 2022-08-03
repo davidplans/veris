@@ -1,4 +1,3 @@
-
 import 'package:Veris/presentation/pages/trial_BMP_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/presentation/widgets/step10_widget.dart';
@@ -9,6 +8,7 @@ import 'package:Veris/presentation/widgets/trial4_widget.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:video_player/video_player.dart';
 
@@ -83,7 +83,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
       //         child: Text(""),
       //       ),
       //     ),
-     
+
       // ),
       onChange: (value) {
         if (controller1.value.isPlaying) {
@@ -402,7 +402,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
         //   image: _buildImage('mannequin2.png'),
         //   footer: ElevatedButton(
         //     onPressed: () {
-             
+
         //     },
         //     style: ElevatedButton.styleFrom(
         //       primary: theme.primaryColor,
@@ -417,7 +417,11 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
         //   ),
         // ),
       ],
-      onDone: () => Navigator.of(context).push<void>(TrialBMPPage.route()),
+      onDone: () async {
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setInt('numRuns', 0);
+        Navigator.of(context).push<void>(TrialBMPPage.route());
+      },
       //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
       showSkipButton: false,
       skipOrBackFlex: 0,
