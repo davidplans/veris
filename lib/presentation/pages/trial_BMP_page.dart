@@ -96,6 +96,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     Wakelock.disable();
     _animationController!.stop();
     _animationController!.dispose();
+    print('DISPOSE');
     super.dispose();
   }
 
@@ -106,9 +107,12 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       appBar: AppBar(
         actions: [
           IconButton(
-              onPressed: () => Navigator.of(context).push<void>(
-                    HomePage.route(),
-                  ),
+              onPressed: () {
+                Navigator.of(context).push<void>(
+                  HomePage.route(),
+                );
+                _untoggle();
+              },
               icon: const Icon(Icons.home))
         ],
         automaticallyImplyLeading: false,
@@ -303,7 +307,10 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     Wakelock.disable();
     _animationController!.stop();
     _animationController!.value = 0.0;
-    _timerDuration!.cancel();
+    if(_timerDuration != null){
+      _timerDuration!.cancel();
+    }
+    
     setState(() {
       _prefs.then((SharedPreferences p) {
         _countTrials++;
