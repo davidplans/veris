@@ -42,7 +42,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   double? _avg; // store the average value during calculation
   DateTime? _now; // store the now Datetime
   Timer? _timer; // timer for image processing
-  int _start = 10;
+  int _start = 60;
   Timer? _timerDuration; // timer for duration
 
   final int _configMaxTrials = 5;
@@ -346,7 +346,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     // prefs.setInt('countTrials', countTrials);
     // }
 
-    _start = 10;
+    _start = 60;
     _bpmFirebase = <double>[];
   }
 
