@@ -79,9 +79,9 @@ class _ProgressWidgetState extends State<ProgressWidget> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        print(_formatDate(snapshot.data!.docs[index]
-                            .get('startDate')
-                            .toDate()));
+                        // print(_formatDate(snapshot.data!.docs[index]
+                        //     .get('startDate')
+                        //     .toDate()));
                       },
                       title: Text(_formatDate(snapshot.data!.docs[index]
                           .get('startDate')
