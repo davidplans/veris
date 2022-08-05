@@ -37,11 +37,12 @@ class _KnobPageState extends State<KnobPage> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   late User user;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _playBeep(_currentValue);
-  // }
+  @override
+  void initState() {
+    super.initState();
+    user = context.select((AuthBloc bloc) => bloc.state.user);
+    // _playBeep(_currentValue);
+  }
 
   // _getAssets() {
   //   player.setAudioSource(source).then((value) {
@@ -105,6 +106,7 @@ class _KnobPageState extends State<KnobPage> {
   }
 
   double _calculateBeatsToDouble() {
+    
     return ((finalAngle * 180 / pi) + _currentValue);
   }
 
