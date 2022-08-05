@@ -40,7 +40,7 @@ class _KnobPageState extends State<KnobPage> {
   @override
   void initState() {
     super.initState();
-    user = context.select((AuthBloc bloc) => bloc.state.user);
+    
     // _playBeep(_currentValue);
   }
 
