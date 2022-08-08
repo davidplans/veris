@@ -420,6 +420,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
       onDone: () async {
         final prefs = await SharedPreferences.getInstance();
         prefs.setInt('numRuns', 0);
+        prefs.setInt('completeTrials', 0);
         Navigator.of(context).push<void>(TrialBMPPage.route());
       },
       //onSkip: () => _onIntroEnd(context), // You can override onSkip callback

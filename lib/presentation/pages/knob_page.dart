@@ -228,6 +228,9 @@ class _KnobPageState extends State<KnobPage> {
                         final numRuns = prefs.getInt('numRuns');
                         final instantBPM = prefs.getStringList('instantBPM');
 
+                        prefs.setInt('completeTrials', numRuns ?? 0);
+
+
                         DateTime formatDate = DateTime.now();
                         if (startDate != null) {
                           DateFormat format = DateFormat('yyyy-MM-dd – kk:mm');
@@ -253,7 +256,7 @@ class _KnobPageState extends State<KnobPage> {
 
                         final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
 
-                        print(instantBPM);
+                        // print(instantBPM);
 
                         users
                             .doc(user.id)
@@ -269,6 +272,13 @@ class _KnobPageState extends State<KnobPage> {
                                     .set(trialData, SetOptions(merge: true))
                                     .then((value) {
                                   if (maxTrials == numRuns) {
+                                    
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            duration: Duration(seconds: 3),
+                            content: Text("Thank you. \n Data stored!"),
+                          ),
+                        );
                                     Navigator.of(context).push<void>(
                                       HomePage.route(),
                                     );

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:Veris/data/models/user.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
@@ -42,13 +43,14 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   double? _avg; // store the average value during calculation
   DateTime? _now; // store the now Datetime
   Timer? _timer; // timer for image processing
-  int _start = 60;
+  int _start = 15;
   Timer? _timerDuration; // timer for duration
 
   final int _configMaxTrials = 5;
   final int _configRangeBodySelect = 2;
   int _countTrials = 0;
   int _currentStep = 1;
+  int _completeTrials = 0;
   List<int> listSelectSteps = [];
   bool _isFinished = false;
 
@@ -58,6 +60,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
 
   @override
   initState() {
+    _getNumTrial();
     super.initState();
     _animationController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
@@ -69,7 +72,6 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       });
 
     listSelectSteps.add(_currentStep);
-    _getNumTrial();
   }
 
   _getNumTrial() {
@@ -77,8 +79,10 @@ class _TrialBMPPageState extends State<TrialBMPPage>
         DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
     _prefs.then((SharedPreferences p) {
       _countTrials = p.getInt('numRuns') ?? 0;
+      _completeTrials = p.getInt('completeTrials') ?? 0;
       p.setInt('maxTrials', _configMaxTrials);
       p.setString('startDate', formattedDate);
+      setState(() {});
       print('COUNT $_countTrials');
     });
   }
@@ -100,6 +104,17 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     super.dispose();
   }
 
+  // Widget _showImage() {
+  //   return  Container(
+  //     width: 200,
+  //     height: 200,
+  //     decoration: const BoxDecoration(
+  //         image: DecorationImage(
+  //             image: ExactAssetImage('assets/images/readjust.jpg'),
+  //             fit: BoxFit.cover)),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,131 +133,157 @@ class _TrialBMPPageState extends State<TrialBMPPage>
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-                flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(18),
-                          ),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              _controller != null && _toggled
-                                  ? AspectRatio(
-                                      aspectRatio:
-                                          _controller!.value.aspectRatio,
-                                      child: CameraPreview(_controller!),
-                                    )
-                                  : Container(
-                                      padding: const EdgeInsets.all(12),
-                                      alignment: Alignment.center,
-                                      color: Colors.grey,
-                                    ),
-                              Container(
+        child: Stack(
+          children: [
+            Column(
+              children: <Widget>[
+                Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(18),
+                              ),
+                              child: Stack(
+                                fit: StackFit.expand,
                                 alignment: Alignment.center,
-                                padding: const EdgeInsets.all(4),
-                                child: Text(
-                                  _toggled
-                                      ? "Cover both the camera and the flash with your finger"
-                                      : "Camera feed will display here",
-                                  style: TextStyle(
-                                      backgroundColor: _toggled
-                                          ? Colors.white
-                                          : Colors.transparent),
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                          child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          const Text(
-                            "Estimated BPM",
-                            style: TextStyle(fontSize: 18, color: Colors.grey),
-                          ),
-                          Text(
-                            (_bpm > 30 && _bpm < 150 ? _bpm.toString() : "--"),
-                            style: const TextStyle(
-                                fontSize: 32, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      )),
-                    ),
-                  ],
-                )),
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Transform.scale(
-                    scale: _iconScale,
-                    child: _isFinished
-                        ? ElevatedButton(
-                            onPressed: () =>
-                                (listSelectSteps.contains(_countTrials))
-                                    ? Navigator.of(context)
-                                        .push<void>(BodySelectPage.route())
-                                    : Navigator.of(context)
-                                        .push<void>(KnobPage.route()),
-                            style: ElevatedButton.styleFrom(
-                              primary: theme.primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                                children: <Widget>[
+                                  _controller != null && _toggled
+                                      ? AspectRatio(
+                                          aspectRatio:
+                                              _controller!.value.aspectRatio,
+                                          child: CameraPreview(_controller!),
+                                        )
+                                      : Container(
+                                          padding: const EdgeInsets.all(12),
+                                          alignment: Alignment.center,
+                                          color: Colors.grey,
+                                        ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.all(4),
+                                    child: Text(
+                                      _toggled
+                                          ? "Cover both the camera and the flash with your finger"
+                                          : "Camera feed will display here",
+                                      style: TextStyle(
+                                          backgroundColor: _toggled
+                                              ? Colors.white
+                                              : Colors.transparent),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            child: const Text('Continue'),
-                          )
-                        : _toggled
-                            ? Text('$_start')
-                            : ElevatedButton(
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Center(
+                              child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              const Text(
+                                "Config:",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text('Total trials $_configMaxTrials'),
+                              Text(
+                                  'BodySelect after $_configRangeBodySelect steps'),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Complete trial $_completeTrials of $_configMaxTrials",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              const Text(
+                                "Estimated BPM",
+                                style:
+                                    TextStyle(fontSize: 18, color: Colors.grey),
+                              ),
+                              Text(
+                                (_bpm > 30 && _bpm < 150
+                                    ? _bpm.toString()
+                                    : "--"),
+                                style: const TextStyle(
+                                    fontSize: 32, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )),
+                        ),
+                      ],
+                    )),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Transform.scale(
+                        scale: _iconScale,
+                        child: _isFinished
+                            ? ElevatedButton(
+                                onPressed: () =>
+                                    (listSelectSteps.contains(_countTrials))
+                                        ? Navigator.of(context)
+                                            .push<void>(BodySelectPage.route())
+                                        : Navigator.of(context)
+                                            .push<void>(KnobPage.route()),
                                 style: ElevatedButton.styleFrom(
                                   primary: theme.primaryColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
-                                onPressed: () async {
-                                  if (_toggled) {
-                                    _untoggle();
-                                  } else {
-                                    _toggle();
-                                    await _calculateStep(_configMaxTrials,
-                                        _configRangeBodySelect);
-                                  }
-                                },
-                                child: const Text('START'),
-                              )),
-              ),
+                                child: const Text('Continue'),
+                              )
+                            : _toggled
+                                ? Text('$_start')
+                                : ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: theme.primaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      if (_toggled) {
+                                        _untoggle();
+                                      } else {
+                                        _toggle();
+                                        await _calculateStep(_configMaxTrials,
+                                            _configRangeBodySelect);
+                                      }
+                                    },
+                                    child: const Text('START'),
+                                  )),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    margin: const EdgeInsets.all(12),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
+                        color: Colors.white),
+                    child: Chart(_data),
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                margin: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                    color: Colors.white),
-                child: Chart(_data),
-              ),
-            ),
+            // _bpm > 30 && _bpm < 150 ? Container() : _toggled ? Center(child: Image.asset('assets/images/readjust.png' )): Container(),
           ],
         ),
       ),
@@ -307,10 +348,10 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     Wakelock.disable();
     _animationController!.stop();
     _animationController!.value = 0.0;
-    if(_timerDuration != null){
+    if (_timerDuration != null) {
       _timerDuration!.cancel();
     }
-    
+
     setState(() {
       _prefs.then((SharedPreferences p) {
         _countTrials++;
@@ -346,8 +387,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     // prefs.setInt('countTrials', countTrials);
     // }
 
-    _start = 60;
-    _bpmFirebase = <double>[];
+    _start = 15;
+    _bpmFirebase.clear();
   }
 
   void _disposeController() {
@@ -407,11 +448,13 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
             image.planes.first.bytes.length;
+    // print(_avg.toString());
     if (_data.length >= _windowLen) {
       _data.removeAt(0);
     }
     setState(() {
       _data.add(SensorValue(_now!, 255 - _avg!));
+      // print(_data);
     });
   }
 
@@ -440,6 +483,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
         if (value.value > _m) _m = value.value;
       });
       _threshold = (_m + _avg) / 2;
+      // print(_threshold);
       _bpm = 0;
       _counter = 0;
       _previous = 0;
@@ -457,7 +501,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       }
       if (_counter > 0) {
         _bpm = _bpm / _counter;
-        print('BMP $_bpm');
+        // print('BMP $_bpm');
 
         _bpmFirebase.add(_bpm);
 
@@ -470,3 +514,19 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     }
   }
 }
+
+// class ImageDialog extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dialog(
+//       child: Container(
+//         width: 50,
+//         height: 50,
+//         decoration: const BoxDecoration(
+//             image: DecorationImage(
+//                 image: ExactAssetImage('assets/images/readjust.jpg'),
+//                 fit: BoxFit.cover)),
+//       ),
+//     );
+//   }
+// }
