@@ -1,5 +1,6 @@
 import 'package:Veris/data/models/user.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
+import 'package:Veris/presentation/widgets/trial_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +41,8 @@ class _ProgressWidgetState extends State<ProgressWidget> {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: users
             .doc(user.id)
-            .collection('trials').orderBy('startDate', descending: true)
+            .collection('trials')
+            .orderBy('startDate', descending: true)
             // .doc('startDate')
             .snapshots(),
         builder: (context, snapshot) {
@@ -55,6 +57,9 @@ class _ProgressWidgetState extends State<ProgressWidget> {
             return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: ((context, index) {
+                  DocumentSnapshot document = snapshot.data!.docs[index];
+                  final String title = _formatDate(document.get('startDate').toDate());
+
                   return Container(
                     margin: const EdgeInsets.only(
                         left: 20, top: 20, bottom: 20, right: 20),
@@ -78,14 +83,17 @@ class _ProgressWidgetState extends State<ProgressWidget> {
                       ],
                     ),
                     child: ListTile(
+                      
                       onTap: () {
-                        // print(_formatDate(snapshot.data!.docs[index]
-                        //     .get('startDate')
-                        //     .toDate()));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TrialWidget(docId: document.id, userId: user.id, trialTitle: title,),
+                          ),
+                        );
                       },
-                      title: Text(_formatDate(snapshot.data!.docs[index]
-                          .get('startDate')
-                          .toDate())),
+                      title:
+                          Text(title),
                     ),
                   );
                   // var result = snapshot.data.documents[index][];
