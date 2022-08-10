@@ -36,11 +36,12 @@ class _KnobPageState extends State<KnobPage> {
   bool _isStarting = false;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   late User user;
+  late int lastSetNumber;
 
   @override
   void initState() {
     super.initState();
-    
+
     // _playBeep(_currentValue);
   }
 
@@ -106,7 +107,6 @@ class _KnobPageState extends State<KnobPage> {
   }
 
   double _calculateBeatsToDouble() {
-    
     return ((finalAngle * 180 / pi) + _currentValue);
   }
 
@@ -226,10 +226,10 @@ class _KnobPageState extends State<KnobPage> {
                         final maxTrials = prefs.getInt('maxTrials');
                         final startDate = prefs.getString('startDate');
                         final numRuns = prefs.getInt('numRuns');
+                        var numSet = prefs.getInt('numSet') ?? 0;
                         final instantBPM = prefs.getStringList('instantBPM');
 
                         prefs.setInt('completeTrials', numRuns ?? 0);
-
 
                         DateTime formatDate = DateTime.now();
                         if (startDate != null) {
@@ -254,40 +254,53 @@ class _KnobPageState extends State<KnobPage> {
                           "endDate": DateTime.now(),
                         };
 
-                        final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
+                        final String unixTime =
+                            (DateTime.now().millisecondsSinceEpoch).toString();
 
-                        // print(instantBPM);
+                        numSet++;
 
+                        // prefs.setInt('numSet', numSet);
+                        final lastSetData = {"last_set_number": numSet};
                         users
                             .doc(user.id)
-                            .collection('trials')
-                            .doc(unixTime)
-                            .collection('baseline')
-                            .doc()
-                            .set(instantBPMData)
-                            .then((value) => users
-                                    .doc(user.id)
-                                    .collection('trials')
-                                    .doc(unixTime)
-                                    .set(trialData, SetOptions(merge: true))
-                                    .then((value) {
-                                  if (maxTrials == numRuns) {
-                                    
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            duration: Duration(seconds: 3),
-                            content: Text("Thank you. \n Data stored!"),
-                          ),
-                        );
-                                    Navigator.of(context).push<void>(
-                                      HomePage.route(),
-                                    );
-                                  } else {
-                                    Navigator.of(context).push<void>(
-                                      TrialBMPPage.route(),
-                                    );
-                                  }
-                                }));
+                            .set(lastSetData, SetOptions(merge: true))
+                            .whenComplete(() {
+                          users
+                              .doc(user.id)
+                              .collection('sets')
+                              .doc(numSet.toString())
+                              .collection('trials')
+                              .doc(unixTime)
+                              .collection('baseline')
+                              .doc()
+                              .set(instantBPMData)
+                              .then((value) {
+                            users
+                                .doc(user.id)
+                                .collection('sets')
+                                .doc(numSet.toString())
+                                .collection('trials')
+                                .doc(unixTime)
+                                .set(trialData, SetOptions(merge: true))
+                                .then((value) {
+                              if (maxTrials == numRuns) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(seconds: 5),
+                                    content: Text("Data stored! \n Thank you."),
+                                  ),
+                                );
+                                Navigator.of(context).push<void>(
+                                  HomePage.route(),
+                                );
+                              } else {
+                                Navigator.of(context).push<void>(
+                                  TrialBMPPage.route(),
+                                );
+                              }
+                            });
+                          });
+                        });
 
                         player.stop();
                         player.dispose();

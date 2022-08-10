@@ -145,6 +145,8 @@ class AuthenticationRepository {
             'user_email': email,
             'user_id': userCredential.user!.uid,
             'user_photo': null,
+            'last_set_number': 0,
+
           }, SetOptions(merge: true))
           .then((value) => print("User Added"))
           .catchError((error) => print("Failing to add user: $error"));

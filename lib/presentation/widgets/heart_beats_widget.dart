@@ -1,4 +1,7 @@
+import 'package:Veris/data/models/user.dart';
+import 'package:Veris/presentation/bloc/auth_bloc.dart';
 import 'package:Veris/presentation/pages/trial_BMP_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/presentation/widgets/step10_widget.dart';
 import 'package:Veris/presentation/widgets/step4_widget.dart';
@@ -22,6 +25,7 @@ class IntroTabWidget extends StatefulWidget {
 class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
   final introKey = GlobalKey<IntroductionScreenState>();
   late VideoPlayerController controller1, controller2;
+  late User user;
 
   @override
   void initState() {
@@ -63,6 +67,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
+    user = context.select((AuthBloc bloc) => bloc.state.user);
 
     const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
@@ -421,6 +426,16 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
         final prefs = await SharedPreferences.getInstance();
         prefs.setInt('numRuns', 0);
         prefs.setInt('completeTrials', 0);
+        final docRef =
+            FirebaseFirestore.instance.collection('users').doc(user.id);
+        docRef.get().then(
+          (DocumentSnapshot doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            prefs.setInt('numSet', data['last_set_number'] ?? 0);
+          },
+          onError: (e) => print("Error getting document: $e"),
+        );
+
         Navigator.of(context).push<void>(TrialBMPPage.route());
       },
       //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
