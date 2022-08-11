@@ -224,17 +224,22 @@ class _KnobPageState extends State<KnobPage> {
 
                         final selectedBody = prefs.getString('selectedBody');
                         final maxTrials = prefs.getInt('maxTrials');
-                        final startDate = prefs.getString('startDate');
+                        final startTrial = prefs.getString('startTrial');
+                        final startSet = prefs.getString('startSet');
                         final numRuns = prefs.getInt('numRuns');
                         var numSet = prefs.getInt('numSet') ?? 0;
                         final instantBPM = prefs.getStringList('instantBPM');
 
                         prefs.setInt('completeTrials', numRuns ?? 0);
 
-                        DateTime formatDate = DateTime.now();
-                        if (startDate != null) {
-                          DateFormat format = DateFormat('yyyy-MM-dd – kk:mm');
-                          formatDate = format.parse(startDate);
+                        DateTime formatDateTrial = DateTime.now();
+                        DateTime formatDateSet = DateTime.now();
+                        DateFormat format = DateFormat('yyyy-MM-dd – kk:mm');
+                        if (startTrial != null) {
+                          formatDateTrial = format.parse(startTrial);
+                        }
+                        if (startSet != null) {
+                          formatDateSet = format.parse(startSet);
                         }
                         List<double> doubleInstantBPM = [];
                         if (instantBPM != null) {
@@ -242,16 +247,17 @@ class _KnobPageState extends State<KnobPage> {
                               instantBPM.map(double.parse).toList();
                         }
 
-                        final instantBPMData = {
-                          "instantBPMs": doubleInstantBPM,
+                        final setData = {
+                          "startSet": formatDateSet,
                         };
 
                         final trialData = {
                           "numRuns": numRuns,
-                          "startDate": formatDate,
+                          "startTrial": formatDateTrial,
                           "selectedBody": selectedBody,
                           "compareBeats": _calculateBeatsToDouble().round(),
                           "endDate": DateTime.now(),
+                          "instantBPMs": doubleInstantBPM,
                         };
 
                         final String unixTime =
@@ -269,11 +275,7 @@ class _KnobPageState extends State<KnobPage> {
                               .doc(user.id)
                               .collection('sets')
                               .doc(numSet.toString())
-                              .collection('trials')
-                              .doc(unixTime)
-                              .collection('baseline')
-                              .doc()
-                              .set(instantBPMData)
+                              .set(setData, SetOptions(merge: true))
                               .then((value) {
                             users
                                 .doc(user.id)

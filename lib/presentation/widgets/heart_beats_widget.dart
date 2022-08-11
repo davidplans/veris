@@ -10,6 +10,7 @@ import 'package:Veris/presentation/widgets/trial2_widget.dart';
 import 'package:Veris/presentation/widgets/trial4_widget.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -424,8 +425,11 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
       ],
       onDone: () async {
         final prefs = await SharedPreferences.getInstance();
+        String formattedDate =
+            DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
         prefs.setInt('numRuns', 0);
         prefs.setInt('completeTrials', 0);
+        prefs.setString('startSet', formattedDate);
         final docRef =
             FirebaseFirestore.instance.collection('users').doc(user.id);
         docRef.get().then(

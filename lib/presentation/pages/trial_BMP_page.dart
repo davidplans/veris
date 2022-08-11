@@ -81,7 +81,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       _countTrials = p.getInt('numRuns') ?? 0;
       _completeTrials = p.getInt('completeTrials') ?? 0;
       p.setInt('maxTrials', _configMaxTrials);
-      p.setString('startDate', formattedDate);
+      p.setString('startTrial', formattedDate);
       setState(() {});
       print('COUNT $_countTrials');
     });
@@ -319,21 +319,6 @@ class _TrialBMPPageState extends State<TrialBMPPage>
         _toggled = true;
       });
 
-      // Map<String, dynamic> docData = {
-      //   "startDate": DateTime.now(),
-      //   "numTrials": 1,
-      // };
-
-      // if (countTrials > 0) {
-      //   docData = {};
-      // }
-
-      // users
-      //     .doc(user.id)
-      //     .collection('trials')
-      //     .doc(_formattedDate)
-      //     .set(docData, SetOptions(merge: true));
-
       // after is toggled
       _initTimer();
       _countDown();
@@ -364,28 +349,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       _isFinished = true;
     });
 
-    // _trialBPMArray[unixTime] = _bpmFirebase;
-    // prefs.setStringList('instantBPM', stringList);
-    // prefs.setString('startDate', DateTime.now().toString());
-    // prefs.setInt('numRuns', countTrials);
 
-    // final docData = {
-    //   "instantBpms": _bpmFirebase,
-    // };
-    // if (_bpmFirebase != null) {
-    //   users
-    //       .doc(user.id)
-    //       .collection('trials')
-    //       .doc(_formattedDate)
-    //       .collection('baselines')
-    //       .doc()
-    //       .set(docData, SetOptions(merge: true))
-    //       .onError((e, _) => print("Error writing document: $e"));
 
-    // prefs.setString('trialId', _formattedDate);
-    // prefs.setString('userId', user.id);
-    // prefs.setInt('countTrials', countTrials);
-    // }
 
     _start = 60;
     _bpmFirebase.clear();
