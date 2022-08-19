@@ -228,7 +228,10 @@ class _KnobPageState extends State<KnobPage> {
                         final startSet = prefs.getString('startSet');
                         final numRuns = prefs.getInt('numRuns');
                         var numSet = prefs.getInt('numSet') ?? 0;
-                        final instantBPM = prefs.getStringList('instantBPM');
+                        final instantBPMs = prefs.getStringList('instantBPMs');
+                        final instantPeriods = prefs.getStringList('instantPeriods');
+                        final averagePeriods = prefs.getStringList('averagePeriods');
+                        final instantErrs = prefs.getStringList('instantErrs');
 
                         prefs.setInt('completeTrials', numRuns ?? 0);
 
@@ -241,11 +244,31 @@ class _KnobPageState extends State<KnobPage> {
                         if (startSet != null) {
                           formatDateSet = format.parse(startSet);
                         }
-                        List<double> doubleInstantBPM = [];
-                        if (instantBPM != null) {
-                          doubleInstantBPM =
-                              instantBPM.map(double.parse).toList();
+
+                        List<double> doubleInstantBPMs = [];
+                        if (instantBPMs != null) {
+                          doubleInstantBPMs =
+                              instantBPMs.map(double.parse).toList();
                         }
+                        
+                        List<double> doubleInstantPeriods = [];
+                        if (instantPeriods != null) {
+                          doubleInstantPeriods =
+                              instantPeriods.map(double.parse).toList();
+                        }
+                        
+                        List<double> doubleAveragePeriods = [];
+                        if (averagePeriods != null) {
+                          doubleAveragePeriods =
+                              averagePeriods.map(double.parse).toList();
+                        }
+                        
+                        List<double> doubleInstantErrs= [];
+                        if (instantErrs != null) {
+                          doubleInstantErrs =
+                              instantErrs.map(double.parse).toList();
+                        }
+
 
                         final setData = {
                           "startSet": formatDateSet,
@@ -257,7 +280,11 @@ class _KnobPageState extends State<KnobPage> {
                           "selectedBody": selectedBody,
                           "compareBeats": _calculateBeatsToDouble().round(),
                           "endDate": DateTime.now(),
-                          "instantBPMs": doubleInstantBPM,
+                          "instantBPMs": doubleInstantBPMs,
+                          "instantPeriods": doubleInstantPeriods,
+                          "averagePeriods": doubleAveragePeriods,
+                          "instantErrs": doubleInstantErrs,
+
                         };
 
                         final String unixTime =

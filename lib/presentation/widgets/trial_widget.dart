@@ -35,7 +35,7 @@ body:      FutureBuilder<DocumentSnapshot>(
         }
 
         if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
+          return const Text("Document does not exist");
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
@@ -64,16 +64,18 @@ body:      FutureBuilder<DocumentSnapshot>(
                           ),
                         ],
                       ),
-                      child: Column(children: [
-                        Text( widget.trialTitle, style: TextStyle(fontSize: 25),),
-                        SizedBox(height: 20,),
-                        
-                        for (var beat in instantBPMs) Text(beat.toString())
-                      ],
-                                            
-                      // print(element.toString());
-                    
-                        
+                      child: SingleChildScrollView(
+                        child: Column(children: [
+                          Text( widget.trialTitle, style: const TextStyle(fontSize: 25),),
+                          const SizedBox(height: 20,),
+                          
+                          for (var beat in instantBPMs) Text(beat.toString())
+                        ],
+                                              
+                        // print(element.toString());
+                                          
+                          
+                        ),
                       ),
                     );
         }

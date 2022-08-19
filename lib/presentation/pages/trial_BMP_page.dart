@@ -31,7 +31,11 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     with SingleTickerProviderStateMixin {
   bool _toggled = false; // toggle button value
   List<SensorValue> _data = <SensorValue>[]; // array to store the values
-  List<double> _bpmFirebase = <double>[];
+  List<double> _instantBPMs = <double>[];
+  List<double> _instantPeriods = <double>[];
+  List<double> _averagePeriods = <double>[];
+  List<double> _instantErrs = <double>[];
+
   CameraController? _controller;
   double _alpha = 0.3; // factor for the mean value
   AnimationController? _animationController;
@@ -327,8 +331,14 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   }
 
   void _untoggle() async {
-    final stringList = _bpmFirebase.map((e) => e.toString()).toList();
-    // final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
+    final instantBPMs = _instantBPMs.map((e) => e.toString()).toList();
+    final instantPeriods = _instantPeriods.map((e) => e.toString()).toList();
+    final averagePeriods = _averagePeriods.map((e) => e.toString()).toList();
+    final instantErrs = _averagePeriods.map((e) => e.toString()).toList();
+    print(instantBPMs);
+    print(instantPeriods);
+    print(averagePeriods);
+    print(instantErrs);
     _disposeController();
     Wakelock.disable();
     _animationController!.stop();
@@ -341,19 +351,22 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       _prefs.then((SharedPreferences p) {
         _countTrials++;
         p.setInt('numRuns', _countTrials);
-        p.setStringList('instantBPM', stringList);
-        print(p.getInt("numRuns").toString());
+        p.setStringList('instantBPMs', instantBPMs);
+        p.setStringList('instantPeriods', instantPeriods);
+        p.setStringList('averagePeriods', averagePeriods);
+        p.setStringList('instantErrs', instantErrs);
+        // print(p.getInt("numRuns").toString());
       });
       // _countTrials++;
       _toggled = false;
       _isFinished = true;
     });
 
-
-
-
-    _start = 60;
-    _bpmFirebase.clear();
+    // _start = 30;
+    _instantBPMs.clear();
+    _instantPeriods.clear();
+    _averagePeriods.clear();
+    _instantErrs.clear();
   }
 
   void _disposeController() {
@@ -467,8 +480,31 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       if (_counter > 0) {
         _bpm = _bpm / _counter;
         // print('BMP $_bpm');
+        double previousInstantPeriod = 0;
+        if (_instantPeriods.isNotEmpty) {
+          previousInstantPeriod = _instantPeriods[_instantPeriods.length - 1];
+          print("PREVIOUS  $previousInstantPeriod");
+        }
 
-        _bpmFirebase.add(_bpm);
+        _instantBPMs.add(_bpm);
+        final double instantPeriod = 60 / _bpm;
+        _instantPeriods.add(instantPeriod);
+        int count = _instantPeriods.length;
+        double sum = _instantPeriods.fold<double>(
+            0, (double sum, double item) => sum + item);
+        double averagePeriod = sum / count;
+        _averagePeriods.add(averagePeriod);
+
+        print("Instance  $instantPeriod");
+        print("Count $count");
+        print("Average $averagePeriod");
+        if (previousInstantPeriod != 0) {
+          final instantErr = previousInstantPeriod - instantPeriod;
+          _instantErrs.add(instantErr);
+          print("Err  $instantErr");
+        }
+
+        print("+++++++++++++++++++++++");
 
         setState(() {
           this._bpm = ((1 - _alpha) * this._bpm + _alpha * _bpm).toInt();
