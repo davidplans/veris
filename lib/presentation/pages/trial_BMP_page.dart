@@ -50,8 +50,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   int _start = 60;
   Timer? _timerDuration; // timer for duration
 
-  final int _configMaxTrials = 5;
-  final int _configRangeBodySelect = 2;
+  int _configMaxTrials = 0;
+  int _configStepBodySelect = 0;
   int _countTrials = 0;
   int _currentStep = 1;
   int _completeTrials = 0;
@@ -59,11 +59,14 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   bool _isFinished = false;
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final CollectionReference config =
+      FirebaseFirestore.instance.collection('config');
 
   // Map<String, List<double>> _trialBPMArray = {};
 
   @override
   initState() {
+    _getConfig();
     _getNumTrial();
     super.initState();
     _animationController = AnimationController(
@@ -89,6 +92,20 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       setState(() {});
       print('COUNT $_countTrials');
     });
+  }
+
+  _getConfig() {
+    final docRef = config.doc("veris");
+    docRef.get().then(
+      (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        setState(() {
+          _configMaxTrials = data['maxTrialsConfig'];
+          _configStepBodySelect = data['stepToBodySelect'];
+        });
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
   }
 
   @override
@@ -201,13 +218,14 @@ class _TrialBMPPageState extends State<TrialBMPPage>
                               ),
                               Text('Total trials $_configMaxTrials'),
                               Text(
-                                  'BodySelect after $_configRangeBodySelect steps'),
+                                  'BodySelect after $_configStepBodySelect steps'),
                               const SizedBox(
                                 height: 20,
                               ),
                               Text(
                                 "Complete trial $_completeTrials of $_configMaxTrials",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(
                                 height: 20,
@@ -232,47 +250,53 @@ class _TrialBMPPageState extends State<TrialBMPPage>
                 Expanded(
                   flex: 1,
                   child: Center(
-                    child: Transform.scale(
-                        scale: _iconScale,
-                        child: _isFinished
-                            ? ElevatedButton(
-                                onPressed: () =>
-                                    (listSelectSteps.contains(_countTrials))
-                                        ? Navigator.of(context)
-                                            .push<void>(BodySelectPage.route())
-                                        : Navigator.of(context)
-                                            .push<void>(KnobPage.route()),
-                                style: ElevatedButton.styleFrom(
-                                  primary: theme.primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                ),
-                                child: const Text('Continue'),
-                              )
-                            : _toggled
-                                ? Text('$_start')
-                                : ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: theme.primaryColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
+                    child: Column(
+                      children: [
+                        Transform.scale(
+                          scale: _iconScale,
+                          child: _isFinished
+                              ? ElevatedButton(
+                                  onPressed: () =>
+                                      (listSelectSteps.contains(_countTrials))
+                                          ? Navigator.of(context)
+                                              .push<void>(BodySelectPage.route())
+                                          : Navigator.of(context)
+                                              .push<void>(KnobPage.route()),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: theme.primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    onPressed: () async {
-                                      if (_toggled) {
-                                        _untoggle();
-                                      } else {
-                                        _toggle();
-                                        await _calculateStep(_configMaxTrials,
-                                            _configRangeBodySelect);
-                                      }
-                                    },
-                                    child: const Text('START'),
-                                  )),
+                                  ),
+                                  child: const Text('Continue'),
+                                )
+                              : _toggled
+                                  ? Text('$_start')
+                                  : ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: theme.primaryColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                      ),
+                                      onPressed: _configMaxTrials != 0 && _configStepBodySelect != 0 ? () async {
+                                        if (_toggled) {
+                                          _untoggle();
+                                        } else {
+                                          _toggle();
+                                          await _calculateStep(_configMaxTrials,
+                                              _configStepBodySelect);
+                                        }
+                                      } : null,
+                                      child: const Text('START'),
+                                    ),
+                        ),
+                        _configMaxTrials != 0 && _configStepBodySelect != 0 ?  Container() : const Text("No Internet Connection!", style: TextStyle(color: Colors.red),),
+                      ],
+                    ),
                   ),
                 ),
+
                 Expanded(
                   flex: 1,
                   child: Container(
@@ -335,10 +359,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     final instantPeriods = _instantPeriods.map((e) => e.toString()).toList();
     final averagePeriods = _averagePeriods.map((e) => e.toString()).toList();
     final instantErrs = _averagePeriods.map((e) => e.toString()).toList();
-    print(instantBPMs);
-    print(instantPeriods);
-    print(averagePeriods);
-    print(instantErrs);
+
     _disposeController();
     Wakelock.disable();
     _animationController!.stop();
