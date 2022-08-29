@@ -1,4 +1,4 @@
-import 'package:Veris/presentation/widgets/surveys.dart';
+import 'package:Veris/presentation/widgets/surveys_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';

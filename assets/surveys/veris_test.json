@@ -1,0 +1,2040 @@
+{
+    "properties": {
+      "study_name": "Veris_Test",
+      "study_id": "LRTENFG",
+      "created_by": "David Plans & Jonathan Bird",
+      "instructions": "This survey will help us measure your mood in the workplace",
+      "post_url": "https://digit.ac.uk/enrol/veris_test.php",
+      "empty_msg": "You're all up to date.",
+      "banner_url": "https://digit.ac.uk/enrol/digit_lab_background.jpg",
+      "support_url": "https://digit.ac.uk",
+      "support_email": "digitlab-admin@exeter.ac.uk",
+      "conditions": [
+        "All"], 
+      "cache": false,
+      "ethics": "This study was approved by the University of Exeter Business School (UEBS #123456789)",
+      "pls": "https://getschema.app/pls-file-link.pdf"
+    },
+    "modules": [
+      {
+        "type": "survey",
+        "name": "About You",
+        "submit_text": "Submit",
+        "condition": "All",
+        "alerts": {
+          "title": "Welcome to the study",
+          "message": "Tap to open app",
+          "start_offset": 0,
+          "duration": 1,
+          "times": [
+            {
+              "hours": 8,
+              "minutes": 30
+            }
+          ],
+          "random": false,
+          "random_interval": 0,
+          "sticky": false,
+          "sticky_label": "",
+          "timeout": false,
+          "timeout_after": 0
+        },
+        "graph": {
+          "display": false
+        },
+        "sections": [
+          {
+            "name": "About You",
+            "questions": [
+              {
+                "id": "about_you_q1",
+                "type": "text",
+                "subtype": "numeric",
+                "text": "What is your age (in years)?",
+                "required": false              
+              },
+              {
+                "id": "about_you_q2",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "Female",
+                  "Male",
+                  "Other",
+                  "Prefer not to say"],
+                "shuffle": false,
+                "text": "What is your sex?",
+                "required": true    
+              },
+              {
+                "id": "about_you_q3",
+                "type": "text",
+                "subtype": "long",
+                "text": "What is your nationality?",
+                "required": false
+              },
+              {
+                "id": "about_you_q4",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "Asian or Asian British",
+                  "Black, African, Black British or Caribbean",
+                  "Mixed or multiple ethnic groups",
+                  "White",
+                  "Another ethnic group",
+                  "Prefer not to say"],
+                "shuffle": false,
+                "text": "What is your ethnic group?",
+                "required": true  
+              },
+              {
+                "id": "about_you_q4.1",
+                "type": "text",
+                "subtype": "long",
+                "text": "Please specify your ethnic group:",
+                "required": false,
+                "hide_id": "about_you_q4",
+                "hide_value": "Another ethnic group",
+                "hide_if": false
+              },
+              {
+                "id": "about_you_q5",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "Single",
+                  "Married",
+                  "Civil partnered",
+                  "Divorced",
+                  "Widowed",
+                  "Prefer not to say"],
+                "shuffle": false,
+                "text": "What is your marital status?",
+                "required": true  
+              },
+              {
+                "id": "about_you_q6",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "No academic qualifications",
+                  "GCSE/O-Level",
+                  "NVQ",
+                  "BTEC",
+                  "A-Level",
+                  "Undergraduate degree",
+                  "Postgraduate degree",
+                  "Doctoral degree",
+                  "Prefer not to say"],
+                "shuffle": false,
+                "text": "What is the highest academic qualification that you have attained?",
+                "required": true  
+              },
+              {
+                "id": "about_you_q7",
+                "type": "text",
+                "subtype": "numeric",
+                "text": "What is your height (in cm)?",
+                "required": false              
+              },
+              {
+                "id": "about_you_q8",
+                "type": "text",
+                "subtype": "numeric",
+                "text": "What is your weight (in kg)?",
+                "required": false             
+              },
+              {
+                "id": "about_you_q9",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "Yes",
+                  "No",
+                  "Prefer not to say"],
+                "shuffle": false,
+                "text": "Do you suffer with one or more chronic health conditions?",
+                "required": true    
+              },
+              {
+                "id": "about_you_q9.1",
+                "type": "text",
+                "subtype": "short",
+                "text": "Please can you briefly describe your chronic health condition(s):",
+                "required": false,
+                "hide_id": "about_you_q9",
+                "hide_value": "Yes",
+                "hide_if": false
+              },
+              {
+                "id": "about_you_q10",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "Yes",
+                  "No",
+                  "Prefer not to say"],
+                "shuffle": false,
+                "text": "Do you have a disability?",
+                "required": true    
+              },
+              {
+                "id": "about_you_q10.1",
+                "type": "text",
+                "subtype": "short",
+                "text": "Please can you briefly describe the nature of your disability or disabilities:",
+                "required": false,
+                "hide_id": "about_you_q10",
+                "hide_value": "Yes",
+                "hide_if": false
+              },
+              {
+                "id": "about_you_q11",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "Yes",
+                  "No",
+                  "Prefer not to say"],
+                "shuffle": false,
+                "text": "Do you have access to green space (e.g., a park) within walking distance from your home?",
+                "required": true    
+              },
+              {
+                "id": "about_you_q12",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "Yes",
+                  "No",
+                  "Prefer not to say"],
+                "shuffle": false,
+                "text": "Are you a pet owner?",
+                "required": true    
+              }
+            ],
+            "shuffle": false
+          }
+        ],
+        "uuid": "module_about_you",
+        "unlock_after": [],
+        "shuffle": false
+      },
+      {
+        "type": "survey",
+        "name": "Questionnaires 1",
+        "submit_text": "Submit",
+        "condition": "All",
+        "alerts": {
+          "title": "Time to check in!",
+          "message": "Tap to open the app",
+          "start_offset": 0,
+          "duration": 1,
+          "times": [
+            {
+              "hours": 18,
+              "minutes": 0
+            }            
+          ],  
+          "random": false,
+          "random_interval": 0,
+          "sticky": false,
+          "sticky_label": "",
+          "timeout": false,
+          "timeout_after": 90
+        },
+        "graph": {
+          "display": false
+        },
+        "sections": [
+          {
+            "name": "DASS-21",
+            "questions": [
+              {
+                "id": "dass_21_ins",
+                "type": "instruction",
+                "text": "Please read each statement and indicate how much the statement applied to you <b>over the past week</b>. There are no right or wrong answers. Do not spend too much time on any statement.<br><br>The rating scale is as follows:<ul><li>Did not apply to me at all - Never (0)<li>Applied to me to some degree, or some of the time - Sometimes (1)<li>Applied to me to a considerable degree, or a good part of time - Often (2)<li>Applied to me very much, or most of the time - Almost always (3)</ul>",
+                "required": false              
+              },
+              {
+                "id": "dass_21_q1",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I found it hard to wind down.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q2",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I was aware of dryness of my mouth.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q3",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I couldn't seem to experience any positive feeling at all.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q4",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I experienced breathing difficulty (e.g., excessively rapid breathing, breathlessness in the absence of physical exertion).",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q5",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I found it difficult to work up the initiative to do things.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q6",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I tended to over-react to situations.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q7",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I experienced trembling (e.g., in the hands).",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q8",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I felt that I was using a lot of nervous energy.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q9",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I was worried about situations in which I might panic and make a fool of myself.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q10",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I felt that I had nothing to look forward to.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q11",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I found myself getting agitated.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q12",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I found it difficult to relax.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q13",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I felt down-hearted and blue.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q14",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I was intolerant of anything that kept me from getting on with what I was doing.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q15",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I felt I was close to panic.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q16",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I was unable to become enthusiastic about anything.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q17",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I felt I wasn't worth much as a person.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q18",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I felt that I was rather touchy.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q19",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I was aware of the action of my heart in the absence of physical exertion (e.g., sense of heart rate increase, heart missing a beat).",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q20",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I felt scared without any good reason.",
+                "required": true    
+              },
+              {
+                "id": "dass_21_q21",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Sometimes)",
+                  "2 (Often)",
+                  "3 (Almost always)"],
+                "shuffle": false,
+                "text": "I felt that life was meaningless.",
+                "required": true    
+              }
+            ],
+            "shuffle": false
+          },
+          {
+            "name": "IAS",
+            "questions": [
+              {
+                "id": "ias_ins",
+                "type": "instruction",
+                "text": "Below are several statements regarding how accurately you can perceive specific bodily sensations. Please rate on the scale how well you believe you can perceive each specific signal. For example, if you often feel you need to urinate and then realise you do not need to when you go to the toilet you would rate your accuracy perceiving this bodily signal as low.<br><br>Please only rate how well you can perceive these signal without using external cues, for example, if you can only perceive how fast your heart is beating when you measure it by taking your pulse this would <b>not</b> count as accurate internal perception.<br><br>The rating scale is as follows:<ul><li>Strongly disagree (1)<li>Disagree (2)<li>Neither agree or disagree (3)<li>Agree (4)<li>Strongly agree (5)</ul>",
+                "required": false              
+              },
+              {
+                "id": "ias_q1",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when my heart is beating fast.",
+                "required": true    
+              },
+              {
+                "id": "ias_q2",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am hungry.",
+                "required": true    
+              },
+              {
+                "id": "ias_q3",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am breathing fast.",
+                "required": true    
+              },
+              {
+                "id": "ias_q4",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am thirsty.",
+                "required": true    
+              },
+              {
+                "id": "ias_q5",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I need to urinate.",
+                "required": true    
+              },
+              {
+                "id": "ias_q6",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I need to defecate.",
+                "required": true    
+              },
+              {
+                "id": "ias_q7",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I encounter different tastes.",
+                "required": true    
+              },
+              {
+                "id": "ias_q8",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am going to vomit.",
+                "required": true    
+              },
+              {
+                "id": "ias_q9",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am going to sneeze.",
+                "required": true    
+              },
+              {
+                "id": "ias_q10",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am going to cough.",
+                "required": true    
+              },
+              {
+                "id": "ias_q11",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am hot/cold.",
+                "required": true    
+              },
+              {
+                "id": "ias_q12",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am sexually aroused.",
+                "required": true    
+              },
+              {
+                "id": "ias_q13",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am going to pass wind.",
+                "required": true    
+              },
+              {
+                "id": "ias_q14",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am going to burp.",
+                "required": true    
+              },
+              {
+                "id": "ias_q15",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when my muscles are tired/sore.",
+                "required": true    
+              },
+              {
+                "id": "ias_q16",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am going to get a bruise.",
+                "required": true    
+              },
+              {
+                "id": "ias_q17",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when I am in pain.",
+                "required": true    
+              },
+              {
+                "id": "ias_q18",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when my blood sugar is low.",
+                "required": true    
+              },
+              {
+                "id": "ias_q19",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when someone is touching me affectionately rather than non-affectionately.",
+                "required": true    
+              },
+              {
+                "id": "ias_q20",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when something is going to be ticklish.",
+                "required": true    
+              },
+              {
+                "id": "ias_q21",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Strongly disagree)",
+                  "2 (Disagree)",
+                  "3 (Neither agree or disagree)",
+                  "4 (Agree)",
+                  "5 (Strongly agree)"],
+                "shuffle": false,
+                "text": "I can always accurately perceive when something is going to be itchy.",
+                "required": true    
+              }
+            ],
+            "shuffle": false
+          }
+        ],
+        "uuid": "module_questionnaires_1",
+        "unlock_after": [ "module_about_you" ],
+        "shuffle": false
+      },
+      {
+        "type": "survey",
+        "name": "Questionnaires 2",
+        "submit_text": "Submit",
+        "condition": "All",
+        "alerts": {
+          "title": "Time to check in!",
+          "message": "Tap to open the app",
+          "start_offset": 1,
+          "duration": 1,
+          "times": [
+            {
+              "hours": 18,
+              "minutes": 0
+            }            
+          ],  
+          "random": false,
+          "random_interval": 0,
+          "sticky": false,
+          "sticky_label": "",
+          "timeout": false,
+          "timeout_after": 90
+        },
+        "graph": {
+          "display": false
+        },
+        "sections": [
+          {            
+            "name": "STAI",
+            "questions": [
+              {
+                "id": "stai_y1_ins",
+                "type": "instruction",
+                "text": "A number of statements which people have used to describe themselves are given below. Read each statement and then select the appropriate response to indicate how you feel <b>right now</b>, that is, <b> at this moment</b>. There are no right or wrong answers. Do not spend too much time on any one statement but give the answer which seems to describe your present feelings best.<br><br>The rating scale is as follows:<ul><li>Not at all (1)<li>Somewhat (2)<li>Moderately so (3)<li>Very much so (4)</ul>",
+                "required": false              
+              },
+              {
+                "id": "stai_y1_q1",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel calm.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q2",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel secure.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q3",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I am tense.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q4",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel strained.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q5",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel at ease.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q6",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel upset.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q7",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I am presently worrying over possible misfortunes.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q8",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel satisfied.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q9",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel frightened.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q10",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel comfortable.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q11",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel self-confident.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q12",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel nervous.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q13",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I am jittery.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q14",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel indecisive.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q15",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I am relaxed.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q16",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel content.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q17",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I am worried.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q18",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel confused.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q19",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel steady.",
+                "required": true    
+              },
+              {
+                "id": "stai_y1_q20",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Not at all)",
+                  "2 (Somewhat)",
+                  "3 (Moderately so)",
+                  "4 (Very much so)"],
+                "shuffle": false,
+                "text": "I feel pleasant.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_ins",
+                "type": "instruction",
+                "text": "A number of statements which people have used to describe themselves are given below. Read each statement and then select the appropriate response to indicate how you <b>generally</b> feel. There are no right or wrong answers. Do not spend too much time on any one statement but give the answer which seems to describe how you generally feel.<br><br>The rating scale is as follows:<ul><li>Almost never (1)<li>Sometimes (2)<li>Often (3)<li>Almost always (4)</ul>",
+                "required": false              
+              },
+              {
+                "id": "stai_y2_q1",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I feel pleasant.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q2",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I feel nervous and restless.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q3",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I feel satisfied with myself.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q4",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I wish I could be as happy as others seem to be.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q5",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I feel like a failure.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q6",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I feel rested.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q7",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I am 'calm, cool, and collected.'",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q8",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I feel that difficulties are piling up so that I cannot overcome them.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q9",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I worry too much over something that really doesn't matter.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q10",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I am happy.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q11",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I have disturbing thoughts.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q12",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I lack self-confidence.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q13",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I feel secure.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q14",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I make decisions easily.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q15",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I feel inadequate.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q16",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I am content.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q17",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "Some unimportant thought runs through my mind and bothers me.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q18",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I take disappointments so keenly that I can't put them out of my mind.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q19",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I am a steady person.",
+                "required": true    
+              },
+              {
+                "id": "stai_y2_q20",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "1 (Almost never)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Almost always)"],
+                "shuffle": false,
+                "text": "I get in a state of tension or turmoil as I think over my recent concerns and interests.",
+                "required": true    
+              }
+            ],
+            "shuffle": false
+          },
+          {
+            "name": "GAD-7",
+            "questions": [
+              {
+                "id": "gad7_ins",
+                "type": "instruction",
+                "text": "Over the <b>last 2 weeks</b>, how often have you been bothered by any of the following problems?<br><br>The rating scale is as follows:<ul><li>Not at all (0)<li>Several days (1)<li>More than half the days (2)<li>Nearly everyday (3)</ul>",
+                "required": false              
+              },
+              {
+                "id": "gad7_q1",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Feeling nervous, anxious or on edge.",
+                "required": true    
+              },
+              {
+                "id": "gad7_q2",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Not being able to stop or control worrying.",
+                "required": true    
+              },
+              {
+                "id": "gad7_q3",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Worrying too much about different things.",
+                "required": true    
+              },
+              {
+                "id": "gad7_q4",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Trouble relaxing.",
+                "required": true    
+              },
+              {
+                "id": "gad7_q5",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Being so restless that it is hard to sit still.",
+                "required": true    
+              },
+              {
+                "id": "gad7_q6",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Becoming easily annoyed or irritable.",
+                "required": true    
+              },
+              {
+                "id": "gad7_q7",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Feeling afraid as if something awful might happen.",
+                "required": true    
+              }
+            ],
+            "shuffle": false
+          }          
+        ],
+        "uuid": "module_questionnaires_2",
+        "unlock_after": [],
+        "shuffle": false
+      },
+      {
+        "type": "survey",
+        "name": "Questionnaires 3",
+        "submit_text": "Submit",
+        "condition": "All",
+        "alerts": {
+          "title": "Time to check in!",
+          "message": "Tap to open the app",
+          "start_offset": 2,
+          "duration": 1,
+          "times": [
+            {
+              "hours": 18,
+              "minutes": 0
+            }            
+          ],  
+          "random": false,
+          "random_interval": 0,
+          "sticky": false,
+          "sticky_label": "",
+          "timeout": false,
+          "timeout_after": 90
+        },
+        "graph": {
+          "display": false
+        },
+        "sections": [
+          {            
+            "name": "PHQ-9",
+            "questions": [
+              {
+                "id": "phq9_ins",
+                "type": "instruction",
+                "text": "Over the <b>last 2 weeks</b>, how often have you been bothered by any of the following problems?<br><br>The rating scale is as follows:<ul><li>Not at all (0)<li>Several days (1)<li>More than half the days (2)<li>Nearly everyday (3)</ul>",
+                "required": false              
+              },
+              {
+                "id": "phq9_q1",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Little interest or pleasure in doing things.",
+                "required": true    
+              },
+              {
+                "id": "phq9_q2",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Feeling down, depressed, or hopeless.",
+                "required": true    
+              },
+              {
+                "id": "phq9_q3",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Trouble falling or staying asleep, or sleeping too much.",
+                "required": true    
+              },
+              {
+                "id": "phq9_q4",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Feeling tired or having little energy.",
+                "required": true    
+              },
+              {
+                "id": "phq9_q5",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Poor appetite or overeating.",
+                "required": true    
+              },
+              {
+                "id": "phq9_q6",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Feeling bad about yourself - or that you are a failure or have let yourself or your family down.",
+                "required": true    
+              },
+              {
+                "id": "phq9_q7",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Trouble concentrating on things, such as reading the newspaper or watching television.",
+                "required": true    
+              },
+              {
+                "id": "phq9_q8",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Moving or speaking so slowly that other people could have noticed? Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual.",
+                "required": true    
+              },
+              {
+                "id": "phq9_q9",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Not at all)",
+                  "1 (Several days)",
+                  "2 (More than half the days)",
+                  "3 (Nearly everyday)"],
+                "shuffle": false,
+                "text": "Thoughts that you would be better off dead or of hurting yourself in some way.",
+                "required": true    
+              }
+            ],
+            "shuffle": false
+          },
+          {
+            "name": "TEQ",
+            "questions": [
+              {
+                "id": "teq_ins",
+                "type": "instruction",
+                "text": "Below is a list of statements. Please read each statement carefully and rate how frequently you feel or act in the manner described. There are no right or wrong answers or trick questions. Please answer each question as honestly as you can.<br><br>The rating scale is as follows:<ul><li>Never (0)<li>Rarely (1)<li>Sometimes (2)<li>Often (3)<li>Always (4)</ul>",
+                "required": false              
+              },
+              {
+                "id": "teq_q1",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "When someone else is feeling excited, I tend to get excited too.",
+                "required": true    
+              },
+              {
+                "id": "teq_q2",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "Other people's misfortunes do not disturb me a great deal.",
+                "required": true    
+              },
+              {
+                "id": "teq_q3",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "It upsets me to see someone being treated disrespectfully.",
+                "required": true    
+              },
+              {
+                "id": "teq_q4",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I remain unaffected when someone close to me is happy.",
+                "required": true    
+              },
+              {
+                "id": "teq_q5",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I enjoy making other people feel better.",
+                "required": true    
+              },
+              {
+                "id": "teq_q6",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I have tender, concerned feelings for people less fortunate than me.",
+                "required": true    
+              },
+              {
+                "id": "teq_q7",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "When a friend starts to talk about her or his problems, I try to steer the conversation towards something else.",
+                "required": true    
+              },
+              {
+                "id": "teq_q8",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I can tell when others are sad even when they do not say anything.",
+                "required": true    
+              },
+              {
+                "id": "teq_q9",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I find that I am 'in tune' with other people's moods.",
+                "required": true    
+              },
+              {
+                "id": "teq_q10",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I do not feel sympathy for people who cause their own serious illnesses.",
+                "required": true    
+              },
+              {
+                "id": "teq_q11",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I become irritated when someone cries.",
+                "required": true    
+              },
+              {
+                "id": "teq_q12",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I am not really interested in how other people feel.",
+                "required": true    
+              },
+              {
+                "id": "teq_q13",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I get a strong urge to help when I see someone who is upset.",
+                "required": true    
+              },
+              {
+                "id": "teq_q14",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "When I see someone being treated unfairly, I do not feel very much pity for them.",
+                "required": true    
+              },
+              {
+                "id": "teq_q15",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "I find it silly for people to cry out of happiness.",
+                "required": true    
+              },
+              {
+                "id": "teq_q16",
+                "type": "multi",
+                "radio": true,
+                "modal": false,
+                "options": [
+                  "0 (Never)",
+                  "1 (Rarely)",
+                  "2 (Sometimes)",
+                  "3 (Often)",
+                  "4 (Always)"],
+                "shuffle": false,
+                "text": "When I see someone being taken advantage of, I feel kind of protective towards him or her.",
+                "required": true    
+              }
+            ],
+            "shuffle": false
+          }
+        ],
+        "uuid": "module_questionnaires_3",
+        "unlock_after": [],
+        "shuffle": false
+      }
+    ]
+  }
