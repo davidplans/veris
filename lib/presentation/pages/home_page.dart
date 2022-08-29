@@ -1,3 +1,4 @@
+import 'package:Veris/presentation/widgets/surveys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const HomeWidget(),
     const ProgressWidget(),
+    const SurveysWidget(),
     const IntroTabWidget(),
   ];
 
@@ -44,21 +46,24 @@ class _HomePageState extends State<HomePage> {
       ),
       body: pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: Colors.blue,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           // BottomNavigationBarItem(
           //     icon: Icon(Icons.favorite), label: 'Heart'),
           BottomNavigationBarItem(
               icon: Icon(Icons.trending_up), label: 'My progress'),
-          // BottomNavigationBarItem(
-          //     icon: Icon(Icons.perm_identity), label: 'Profile'),
+          BottomNavigationBarItem(
+               icon: Icon(Icons.bar_chart), label: 'Survey'),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite), label: 'Heart Beat'),
         ],
         currentIndex: _currentIndex,
-        selectedItemColor: theme.primaryColor,
-        backgroundColor: theme.primaryColorDark,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        selectedItemColor: Colors.amber,
+        backgroundColor: const Color(0XFF0F2042),
         onTap: (value) {
           setState(() => _currentIndex = value);
         },
