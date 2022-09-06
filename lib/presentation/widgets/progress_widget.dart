@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:just_audio/just_audio.dart';
+
 
 class ProgressWidget extends StatefulWidget {
   const ProgressWidget({Key? key}) : super(key: key);
