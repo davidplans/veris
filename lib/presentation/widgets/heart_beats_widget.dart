@@ -120,193 +120,193 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           // image: _buildImage('hand.png'),
           decoration: pageDecoration,
         ),
-        // PageViewModel(
-        //   title: "STEP 2",
-        //   body:
-        //       "First, find a quiet place where you can comfortably sit upright with your earphones on for around 10 minutes. We will begin by capturing a couple of minutes of your heart rate, to get a sense for how your heart does its thing.",
-        //   // image: _buildImage('hand.png'),
-        //   decoration: pageDecoration,
-        // ),
-        // PageViewModel(
-        //   title: "Getting ready to check your heartbeat.",
-        //   bodyWidget: Column(
-        //     children: const [
-        //       Text(
-        //           "We will shortly turn on the LED Flash and camera on this phone, and will use it to take your heart rate. Please place your index finger across both camera and flash."),
-        //     ],
-        //   ),
-        //   image: _buildImage('hand.png'),
-        //   decoration: pageDecoration,
-        // ),
-        // PageViewModel(
-        //   title: "Checking your heartbeat",
-        //   // body:
-        //   //     "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
-        //   image: _buildImage('hand.png'),
-        //   bodyWidget: Step4Widget(),
-        //   decoration: pageDecoration,
-        // ),
-        // PageViewModel(
-        //   title: "STEP 5",
-        //   body:
-        //       "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
-        //   decoration: pageDecoration,
-        // ),
-        // PageViewModel(
-        //   title: "STEP 6",
-        //   bodyWidget: Container(
-        //       child: Column(children: [
-        //     AspectRatio(
-        //       aspectRatio: controller1.value.aspectRatio,
-        //       child: VideoPlayer(controller1),
-        //     ),
-        //     Container(
-        //         child: VideoProgressIndicator(controller1,
-        //             allowScrubbing: true,
-        //             colors: const VideoProgressColors(
-        //               backgroundColor: Colors.redAccent,
-        //               playedColor: Colors.green,
-        //               bufferedColor: Colors.purple,
-        //             ))),
-        //     Container(
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.center,
-        //         children: [
-        //           IconButton(
-        //               onPressed: () {
-        //                 if (controller1.value.isPlaying) {
-        //                   controller1.pause();
-        //                 } else {
-        //                   controller1.play();
-        //                 }
-        //                 // setState(() {});
-        //               },
-        //               icon: Icon(
-        //                 controller1.value.isPlaying
-        //                     ? Icons.stop
-        //                     : Icons.play_arrow,
-        //                 size: 40,
-        //               )),
-        //           // IconButton(
-        //           //     onPressed: () {
-        //           //       controller.seekTo(const Duration(seconds: 0));
-        //           //       setState(() {});
-        //           //     },
-        //           //     icon: const Icon(Icons.stop))
-        //         ],
-        //       ),
-        //     ),
-        //     Container(
-        //         child: const Center(
-        //             child: Text(
-        //       "It might seem like there is a delay between the sounds and the heartbeats you feel.\n\nPlay the video below to hear an example!",
-        //       style: TextStyle(fontSize: 18.0),
-        //     )))
-        //   ])),
-        //   decoration: pageDecoration,
-        // ),
-        // PageViewModel(
-        //   title: "STEP 7",
-        //   body:
-        //       "Your objective is to find the point on the dial where the heartbeat and sound is in sync, by turning the dial left or right.",
-        //   decoration: pageDecoration,
-        // ),
-        // PageViewModel(
-        //   title: "STEP 8",
-        //   body:
-        //       "Want to know how this might look like?\n\nPress “->” to watch a short tutorial.",
-        //   decoration: pageDecoration,
-        // ),
-        // PageViewModel(
-        //   title: "STEP 9",
-        //   bodyWidget: Container(
-        //       width: 250,
-        //       child: Column(children: [
-        //         AspectRatio(
-        //           aspectRatio: controller2.value.aspectRatio,
-        //           child: VideoPlayer(controller2),
-        //         ),
-        //         Container(
-        //             child: VideoProgressIndicator(controller2,
-        //                 allowScrubbing: true,
-        //                 colors: const VideoProgressColors(
-        //                   backgroundColor: Colors.redAccent,
-        //                   playedColor: Colors.green,
-        //                   bufferedColor: Colors.purple,
-        //                 ))),
-        //         Container(
-        //           child: Row(
-        //             mainAxisAlignment: MainAxisAlignment.center,
-        //             children: [
-        //               IconButton(
-        //                   onPressed: () {
-        //                     if (controller2.value.isPlaying) {
-        //                       controller2.pause();
-        //                     } else {
-        //                       controller2.play();
-        //                     }
-        //                     setState(() {});
-        //                   },
-        //                   icon: Icon(
-        //                     controller2.value.isPlaying
-        //                         ? Icons.pause
-        //                         : Icons.play_arrow,
-        //                     size: 40,
-        //                   )),
-        //               // IconButton(
-        //               //     onPressed: () {
-        //               //       controller2.seekTo(const Duration(seconds: 0));
-        //               //       setState(() {});
-        //               //     },
-        //               //     icon: const Icon(Icons.stop))
-        //             ],
-        //           ),
-        //         ),
-        //       ])),
-        //   decoration: pageDecoration,
-        // ),
-        // PageViewModel(
-        //   title: "STEP 10",
-        //   bodyWidget: Step10Widget(),
-        //   decoration: pageDecoration,
-        //   footer: ElevatedButton(
-        //     onPressed: () {
-        //       // introKey.currentState?.animateScroll(0);
-        //     },
-        //     style: ElevatedButton.styleFrom(
-        //       primary: theme.primaryColor,
-        //       shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(8.0),
-        //       ),
-        //     ),
-        //     child: const Text(
-        //       'Confirm',
-        //       style: TextStyle(color: Colors.white),
-        //     ),
-        //   ),
-        // ),
-        // PageViewModel(
-        //   title: "STEP 11",
-        //   bodyWidget: const Text(
-        //     "You can feel your heartbeat in different places in your body, such as your chest or your fingers.You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
-        //     style: TextStyle(fontSize: 16.0),
-        //   ),
-        //   decoration: pageDecoration,
-        //   image: _buildImage('mannequin2.png'),
-        //   // reverse: true,
-        // ),
-        // PageViewModel(
-        //   title: "STEP 12",
-        //   body:
-        //       "For the duration of this task, please do not actively try to feel your pulse with your hand; we are only interested in what you feel! You might feel your heartbeat in various bodily locations. Just make sure you pick one and stick to using that one during the task.\n\nWhen you are ready to start, please sit comfortably upright with your earphones on and press “continue”.",
-        //   decoration: pageDecoration,
-        // ),
-        // PageViewModel(
-        //   title: "STEP 13",
-        //   body:
-        //       "You will now get a chance to do two practice trials.\n\nFocus on feeling your heartbeat and try to match the sounds to your own heartbeat.",
-        //   decoration: pageDecoration,
-        // ),
+        PageViewModel(
+          title: "STEP 2",
+          body:
+              "First, find a quiet place where you can comfortably sit upright with your earphones on for around 10 minutes. We will begin by capturing a couple of minutes of your heart rate, to get a sense for how your heart does its thing.",
+          // image: _buildImage('hand.png'),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "Getting ready to check your heartbeat.",
+          bodyWidget: Column(
+            children: const [
+              Text(
+                  "We will shortly turn on the LED Flash and camera on this phone, and will use it to take your heart rate. Please place your index finger across both camera and flash."),
+            ],
+          ),
+          image: _buildImage('hand.png'),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "Checking your heartbeat",
+          // body:
+          //     "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
+          image: _buildImage('hand.png'),
+          bodyWidget: Step4Widget(),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "STEP 5",
+          body:
+              "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "STEP 6",
+          bodyWidget: Container(
+              child: Column(children: [
+            AspectRatio(
+              aspectRatio: controller1.value.aspectRatio,
+              child: VideoPlayer(controller1),
+            ),
+            Container(
+                child: VideoProgressIndicator(controller1,
+                    allowScrubbing: true,
+                    colors: const VideoProgressColors(
+                      backgroundColor: Colors.redAccent,
+                      playedColor: Colors.green,
+                      bufferedColor: Colors.purple,
+                    ))),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        if (controller1.value.isPlaying) {
+                          controller1.pause();
+                        } else {
+                          controller1.play();
+                        }
+                        // setState(() {});
+                      },
+                      icon: Icon(
+                        controller1.value.isPlaying
+                            ? Icons.stop
+                            : Icons.play_arrow,
+                        size: 40,
+                      )),
+                  // IconButton(
+                  //     onPressed: () {
+                  //       controller.seekTo(const Duration(seconds: 0));
+                  //       setState(() {});
+                  //     },
+                  //     icon: const Icon(Icons.stop))
+                ],
+              ),
+            ),
+            Container(
+                child: const Center(
+                    child: Text(
+              "It might seem like there is a delay between the sounds and the heartbeats you feel.\n\nPlay the video below to hear an example!",
+              style: TextStyle(fontSize: 18.0),
+            )))
+          ])),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "STEP 7",
+          body:
+              "Your objective is to find the point on the dial where the heartbeat and sound is in sync, by turning the dial left or right.",
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "STEP 8",
+          body:
+              "Want to know how this might look like?\n\nPress “->” to watch a short tutorial.",
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "STEP 9",
+          bodyWidget: Container(
+              width: 250,
+              child: Column(children: [
+                AspectRatio(
+                  aspectRatio: controller2.value.aspectRatio,
+                  child: VideoPlayer(controller2),
+                ),
+                Container(
+                    child: VideoProgressIndicator(controller2,
+                        allowScrubbing: true,
+                        colors: const VideoProgressColors(
+                          backgroundColor: Colors.redAccent,
+                          playedColor: Colors.green,
+                          bufferedColor: Colors.purple,
+                        ))),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            if (controller2.value.isPlaying) {
+                              controller2.pause();
+                            } else {
+                              controller2.play();
+                            }
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            controller2.value.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow,
+                            size: 40,
+                          )),
+                      // IconButton(
+                      //     onPressed: () {
+                      //       controller2.seekTo(const Duration(seconds: 0));
+                      //       setState(() {});
+                      //     },
+                      //     icon: const Icon(Icons.stop))
+                    ],
+                  ),
+                ),
+              ])),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "STEP 10",
+          bodyWidget: Step10Widget(),
+          decoration: pageDecoration,
+          footer: ElevatedButton(
+            onPressed: () {
+              // introKey.currentState?.animateScroll(0);
+            },
+            style: ElevatedButton.styleFrom(
+              primary: theme.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            child: const Text(
+              'Confirm',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        PageViewModel(
+          title: "STEP 11",
+          bodyWidget: const Text(
+            "You can feel your heartbeat in different places in your body, such as your chest or your fingers.You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
+            style: TextStyle(fontSize: 16.0),
+          ),
+          decoration: pageDecoration,
+          image: _buildImage('mannequin2.png'),
+          // reverse: true,
+        ),
+        PageViewModel(
+          title: "STEP 12",
+          body:
+              "For the duration of this task, please do not actively try to feel your pulse with your hand; we are only interested in what you feel! You might feel your heartbeat in various bodily locations. Just make sure you pick one and stick to using that one during the task.\n\nWhen you are ready to start, please sit comfortably upright with your earphones on and press “continue”.",
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "STEP 13",
+          body:
+              "You will now get a chance to do two practice trials.\n\nFocus on feeling your heartbeat and try to match the sounds to your own heartbeat.",
+          decoration: pageDecoration,
+        ),
         // PageViewModel(
         //   title: "PRACTICE TRIAL 1:",
         //   image: _buildImage('knob_with_arrows.png'),

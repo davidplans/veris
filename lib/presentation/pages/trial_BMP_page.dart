@@ -66,8 +66,6 @@ class _TrialBMPPageState extends State<TrialBMPPage>
 
   @override
   initState() {
-    _getConfig();
-    _getNumTrial();
     super.initState();
     _animationController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
@@ -77,7 +75,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
           _iconScale = 1.0 + _animationController!.value * 0.4;
         });
       });
-
+    _getConfig();
+    _getNumTrial();
     listSelectSteps.add(_currentStep);
   }
 
@@ -96,12 +95,14 @@ class _TrialBMPPageState extends State<TrialBMPPage>
 
   _getConfig() {
     final docRef = config.doc("veris");
+
     docRef.get().then(
       (DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
+        print(data.toString());
         setState(() {
-          _configMaxTrials = data['maxTrialsConfig'];
-          _configStepBodySelect = data['stepToBodySelect'];
+          _configMaxTrials = data['maxTrialsConfig'] ?? 20;
+          _configStepBodySelect = data['stepToBodySelect'] ?? 5;
         });
       },
       onError: (e) => print("Error getting document: $e"),
@@ -256,12 +257,12 @@ class _TrialBMPPageState extends State<TrialBMPPage>
                           scale: _iconScale,
                           child: _isFinished
                               ? ElevatedButton(
-                                  onPressed: () =>
-                                      (listSelectSteps.contains(_countTrials))
-                                          ? Navigator.of(context)
-                                              .push<void>(BodySelectPage.route())
-                                          : Navigator.of(context)
-                                              .push<void>(KnobPage.route()),
+                                  onPressed: () => (listSelectSteps
+                                          .contains(_countTrials))
+                                      ? Navigator.of(context)
+                                          .push<void>(BodySelectPage.route())
+                                      : Navigator.of(context)
+                                          .push<void>(KnobPage.route()),
                                   style: ElevatedButton.styleFrom(
                                     primary: theme.primaryColor,
                                     shape: RoundedRectangleBorder(
@@ -276,27 +277,36 @@ class _TrialBMPPageState extends State<TrialBMPPage>
                                       style: ElevatedButton.styleFrom(
                                         primary: theme.primaryColor,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
                                         ),
                                       ),
-                                      onPressed: _configMaxTrials != 0 && _configStepBodySelect != 0 ? () async {
-                                        if (_toggled) {
-                                          _untoggle();
-                                        } else {
-                                          _toggle();
-                                          await _calculateStep(_configMaxTrials,
-                                              _configStepBodySelect);
-                                        }
-                                      } : null,
+                                      onPressed: _configMaxTrials != 0 &&
+                                              _configStepBodySelect != 0
+                                          ? () async {
+                                              if (_toggled) {
+                                                _untoggle();
+                                              } else {
+                                                _toggle();
+                                                await _calculateStep(
+                                                    _configMaxTrials,
+                                                    _configStepBodySelect);
+                                              }
+                                            }
+                                          : null,
                                       child: const Text('START'),
                                     ),
                         ),
-                        _configMaxTrials != 0 && _configStepBodySelect != 0 ?  Container() : const Text("No Internet Connection!", style: TextStyle(color: Colors.red),),
+                        _configMaxTrials != 0 && _configStepBodySelect != 0
+                            ? Container()
+                            : const Text(
+                                "No Internet Connection!",
+                                style: TextStyle(color: Colors.red),
+                              ),
                       ],
                     ),
                   ),
                 ),
-
                 Expanded(
                   flex: 1,
                   child: Container(
