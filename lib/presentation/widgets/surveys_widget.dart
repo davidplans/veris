@@ -82,7 +82,7 @@ class _SurveysWidgetState extends State<SurveysWidget> {
                   width: double.infinity,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 222, 223, 156),
+                    color: Colors.amber,
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
