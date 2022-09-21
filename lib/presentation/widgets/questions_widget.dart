@@ -33,8 +33,11 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                 final task = snapshot.data!;
                 return kit.SurveyKit(
                   onResult: (kit.SurveyResult result) {
+                    print(widget.questions.toString());
                     for (var stepResult in result.results) {
+                      stepResult.id;
                       for (var questionResult in stepResult.results) {
+                        print(questionResult.id!.id);
                         print(questionResult.valueIdentifier.toString());
                       }
                     }
@@ -46,7 +49,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                   task: task,
                   showProgress: true,
                   localizations: const {
-                    // 'cancel': 'Cancel',
+                    'cancel': 'Cancel',
                     'next': 'Next',
                   },
                   themeData: Theme.of(context).copyWith(
@@ -211,12 +214,14 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
           break;
       }
     }
-    steps.add(        CompletionStep(
-          stepIdentifier: StepIdentifier(id: '321'),
-          text: 'Thanks for taking the survey!',
-          title: 'Done!',
-          buttonText: 'Submit survey',
-        ),);
+    steps.add(
+      CompletionStep(
+        stepIdentifier: StepIdentifier(id: 'completeId'),
+        text: 'Thanks for taking the survey!',
+        title: 'Done!',
+        buttonText: 'Submit survey',
+      ),
+    );
     var task = kit.NavigableTask(id: kit.TaskIdentifier(), steps: steps);
     return Future.value(task);
     // Widget w = Container();

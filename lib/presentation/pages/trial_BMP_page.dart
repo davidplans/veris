@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:Veris/data/models/user.dart';
@@ -35,6 +36,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   List<double> _instantPeriods = <double>[];
   List<double> _averagePeriods = <double>[];
   List<double> _instantErrs = <double>[];
+  List<double> _currentDelays = <double>[];
+  List<double> _knobScales = <double>[];
 
   CameraController? _controller;
   double _alpha = 0.3; // factor for the mean value
@@ -57,6 +60,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   int _completeTrials = 0;
   List<int> listSelectSteps = [];
   bool _isFinished = false;
+  late double _currentKnobValue;
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final CollectionReference config =
@@ -77,6 +81,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       });
     _getConfig();
     _getNumTrial();
+    _currentKnobValue = _randomGen(-1, 1);
     listSelectSteps.add(_currentStep);
   }
 
@@ -368,7 +373,9 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     final instantBPMs = _instantBPMs.map((e) => e.toString()).toList();
     final instantPeriods = _instantPeriods.map((e) => e.toString()).toList();
     final averagePeriods = _averagePeriods.map((e) => e.toString()).toList();
-    final instantErrs = _averagePeriods.map((e) => e.toString()).toList();
+    final instantErrs = _instantErrs.map((e) => e.toString()).toList();
+    final currentDelays = _currentDelays.map((e) => e.toString()).toList();
+    final knobScales = _knobScales.map((e) => e.toString()).toList();
 
     _disposeController();
     Wakelock.disable();
@@ -386,6 +393,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
         p.setStringList('instantPeriods', instantPeriods);
         p.setStringList('averagePeriods', averagePeriods);
         p.setStringList('instantErrs', instantErrs);
+        p.setStringList('knobScales', knobScales);
+        p.setStringList('currentDelays', currentDelays);
         // print(p.getInt("numRuns").toString());
       });
       // _countTrials++;
@@ -398,6 +407,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     _instantPeriods.clear();
     _averagePeriods.clear();
     _instantErrs.clear();
+    _currentDelays.clear();
+    _knobScales.clear();
   }
 
   void _disposeController() {
@@ -424,6 +435,12 @@ class _TrialBMPPageState extends State<TrialBMPPage>
         }
       },
     );
+  }
+
+  _randomGen(min, max) {
+    Random random = Random();
+    double rand = random.nextDouble() * (random.nextBool() ? -1 : 1);
+    return rand;
   }
 
   Future<void> _initController() async {
@@ -525,6 +542,9 @@ class _TrialBMPPageState extends State<TrialBMPPage>
             0, (double sum, double item) => sum + item);
         double averagePeriod = sum / count;
         _averagePeriods.add(averagePeriod);
+        double currentDelay = (averagePeriod / 2) * _currentKnobValue;
+        _currentDelays.add(currentDelay);
+        _knobScales.add(_currentKnobValue);
 
         print("Instance  $instantPeriod");
         print("Count $count");
@@ -534,7 +554,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
           _instantErrs.add(instantErr);
           print("Err  $instantErr");
         }
-
+        print("Current Delay $currentDelay");
         print("+++++++++++++++++++++++");
 
         setState(() {
