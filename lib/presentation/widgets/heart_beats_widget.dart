@@ -114,7 +114,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
       isProgress: false,
       pages: [
         PageViewModel(
-          title: "STEP 1",
+          title: "",
           body:
               "How well can you match a sound with your heartbeat?\n\nLet’s find out!",
           // image: _buildImage('hand.png'),
