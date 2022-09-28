@@ -16,6 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:video_player/video_player.dart';
 
+import 'baseline_widget.dart';
+
 class IntroTabWidget extends StatefulWidget {
   const IntroTabWidget({Key? key}) : super(key: key);
 
@@ -121,7 +123,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "STEP 2",
+          title: "",
           body:
               "First, find a quiet place where you can comfortably sit upright with your earphones on for around 10 minutes. We will begin by capturing a couple of minutes of your heart rate, to get a sense for how your heart does its thing.",
           // image: _buildImage('hand.png'),
@@ -139,17 +141,17 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Checking your heartbeat",
+          title: "Baseline",
           // body:
           //     "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
-          image: _buildImage('hand.png'),
-          bodyWidget: Step4Widget(),
+          // image: _buildImage('hand.png'),
+          bodyWidget: BaselineWidget(),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "STEP 5",
+          title: "Ok, thanks!",
           body:
-              "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
+              "In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
           decoration: pageDecoration,
         ),
         PageViewModel(
@@ -206,19 +208,19 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "STEP 7",
+          title: "",
           body:
               "Your objective is to find the point on the dial where the heartbeat and sound is in sync, by turning the dial left or right.",
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "STEP 8",
+          title: "",
           body:
               "Want to know how this might look like?\n\nPress “->” to watch a short tutorial.",
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "STEP 9",
+          title: "",
           bodyWidget: Container(
               width: 250,
               child: Column(children: [
@@ -266,7 +268,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "STEP 10",
+          title: "",
           bodyWidget: Step10Widget(),
           decoration: pageDecoration,
           footer: ElevatedButton(
@@ -286,7 +288,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           ),
         ),
         PageViewModel(
-          title: "STEP 11",
+          title: "",
           bodyWidget: const Text(
             "You can feel your heartbeat in different places in your body, such as your chest or your fingers.You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
             style: TextStyle(fontSize: 16.0),
@@ -296,13 +298,13 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           // reverse: true,
         ),
         PageViewModel(
-          title: "STEP 12",
+          title: "",
           body:
               "For the duration of this task, please do not actively try to feel your pulse with your hand; we are only interested in what you feel! You might feel your heartbeat in various bodily locations. Just make sure you pick one and stick to using that one during the task.\n\nWhen you are ready to start, please sit comfortably upright with your earphones on and press “continue”.",
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "STEP 13",
+          title: "",
           body:
               "You will now get a chance to do two practice trials.\n\nFocus on feeling your heartbeat and try to match the sounds to your own heartbeat.",
           decoration: pageDecoration,
