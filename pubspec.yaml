@@ -43,6 +43,8 @@ dependencies:
   svg_path_parser: ^1.0.0
   shared_preferences: ^2.0.15
   survey_kit: ^0.1.1
+  dio: ^4.0.6
+  path_provider: ^2.0.11
 
   # Heart
   charts_flutter: ^0.12.0
