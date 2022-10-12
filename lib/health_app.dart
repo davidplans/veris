@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Veris/presentation/utils/download_json.dart';
+import 'package:Veris/qr_scanner.dart';
 import 'package:dio/dio.dart';
-import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/data/repositories/auth_repository.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
-import 'package:Veris/presentation/bloc/auth_state.dart';
-import 'package:Veris/presentation/routes/routes.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'auth_view.dart';
+import 'auth_view.dart';
 
 class HealthApp extends StatelessWidget {
   const HealthApp({
@@ -57,10 +58,10 @@ class StudyView extends StatefulWidget {
 
 class _StudyViewState extends State<StudyView> {
   late TextEditingController _controller;
-  bool downloading = false;
-  var progressString = "";
+
   String testURL =
       'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test.json?alt=media&token=8015e8c0-a2e6-4f97-b147-c331af29ba02';
+  bool expanded = false;
 
   @override
   void initState() {
@@ -74,234 +75,251 @@ class _StudyViewState extends State<StudyView> {
     super.dispose();
   }
 
-  Future<void> _downloadFile(String url) async {
-    Dio dio = Dio();
-    final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
-    final String nameFromId;
-    try {
-      var dir = await getApplicationDocumentsDirectory();
-      await dio.download(url, "${dir.path}/$unixTime.json",
-          options: Options(
-            responseType: ResponseType.json,
-          ), onReceiveProgress: (rec, total) async {
-        print("Rec: $rec , Total: $total");
+  // Future<void> _downloadFile(String url) async {
+  //   Dio dio = Dio();
+  //   final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
+  //   final String nameFromId;
+  //   try {
+  //     var dir = await getApplicationDocumentsDirectory();
+  //     await dio.download(url, "${dir.path}/$unixTime.json",
+  //         options: Options(
+  //           responseType: ResponseType.json,
+  //         ), onReceiveProgress: (rec, total) async {
+  //       // setState(() {
+  //       //   downloading = true;
+  //       //   progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
+  //       // });
+  //     });
+  //     final localFile = File("${dir.path}/$unixTime.json");
+  //     try {
+  //       final json = await localFile.readAsString();
+  //       final decodingFile = jsonDecode(json);
+  //       nameFromId = decodingFile["properties"]["study_id"];
+  //       var path = localFile.path;
+  //       var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
+  //       var newPath =
+  //           path.substring(0, lastSeparator + 1) + nameFromId + ".json";
+  //       localFile.rename(newPath).whenComplete(() => {
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(builder: (context) => const AuthView()),
+  //             ),
+  //             ScaffoldMessenger.of(context).showSnackBar(
+  //               SnackBar(
+  //                 backgroundColor: Colors.green[200],
+  //                 content: const Text("JSON file uploaded successfully!"),
+  //               ),
+  //             )
+  //           });
+  //     } catch (error) {
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: const Text('Error file type!'),
+  //             content: const Text("Downloading file is not json!"),
+  //             actions: [
+  //               TextButton(
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop();
+  //                   },
+  //                   child: const Text('Try again'))
+  //             ],
+  //           );
+  //         },
+  //       );
+  //       localFile.delete();
+  //     }
+  //   } catch (e) {
+  //     if (e is DioError) {
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: const Text('Link error!'),
+  //             content: const Text("Study json file not found!"),
+  //             actions: [
+  //               TextButton(
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop();
+  //                   },
+  //                   child: const Text('Try again'))
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     }
+  //   }
 
-        setState(() {
-          downloading = true;
-          progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
-        });
-      });
-      final localFile = File("${dir.path}/$unixTime.json");
-      print(dir.path);
-      try {
-        final json = await localFile.readAsString();
-        final decodingFile = jsonDecode(json);
-        nameFromId = decodingFile["properties"]["study_id"];
-        var path = localFile.path;
-        var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
-        var newPath =
-            path.substring(0, lastSeparator + 1) + nameFromId + ".json";
-        final rename = localFile.rename(newPath);
-      } catch (error) {
-        print(error);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Error file type!'),
-              content: const Text("Downloading file is not json!"),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Try again'))
-              ],
-            );
-          },
-        );
-        localFile.delete();
-      }
-
-      // if (nameFromId == null) {
-      //   showDialog(
-      //     context: context,
-      //     builder: (BuildContext context) {
-      //       return AlertDialog(
-      //         title: const Text('Error file type!'),
-      //         content: const Text("Downloading file is not json!"),
-      //         actions: [
-      //           TextButton(
-      //               onPressed: () {
-      //                 Navigator.of(context).pop();
-      //               },
-      //               child: Text('Try again'))
-      //         ],
-      //       );
-      //     },
-      //   );
-      //   localFile.delete();
-      // } else {
-      //   var path = localFile.path;
-      //   var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
-      //   var newPath =
-      //       path.substring(0, lastSeparator + 1) + nameFromId + ".json";
-      //   final rename = localFile.rename(newPath);
-      // }
-
-    } catch (e) {
-      if (e is DioError) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Link error!'),
-              content: const Text("Study json file not found!"),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Try again'))
-              ],
-            );
-          },
-        );
-      }
-    }
-
-    setState(() {
-      downloading = false;
-      progressString = "Completed";
-    });
-    print("Download completed");
-  }
+  //   // setState(() {
+  //   //   downloading = false;
+  //   //   progressString = "Completed";
+  //   // });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                Stack(children: [
-                  Container(
-                    height: 100.0,
-                    width: MediaQuery.of(context).size.width,
-                    color: Color.fromARGB(255, 15, 32, 66),
-                  ),
-                  Container(
-                      height: 80.0,
-                      child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/icon.png',
-                                width: 20,
-                              ),
-                              const Text(
-                                "  VERIS",
-                                style: TextStyle(color: Colors.white),
-                              )
-                            ],
-                          )))
-                ]),
-                const SizedBox(
-                  height: 30,
-                ),
-                Image.asset(
-                  'assets/images/dark_circle.png',
-                  width: 150,
-                  height: 150,
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Text(
-                  "Lets get started",
-                  style: TextStyle(color: Colors.white, fontSize: 20.0),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                    width: 300,
-                    child: const Text(
-                      "Welcome to schema - a platform to participate in research suveys directly from your smartphone.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                      ),
-                    )),
-                const SizedBox(
-                  height: 30,
-                ),
-                TextField(
-                  controller: _controller,
-                  decoration: const InputDecoration(
-                    labelText: 'Enter json file url',
-                    fillColor: Colors.white,
-                    // use the getter variable defined above
-                    // errorText: _errorText,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => {
-                    _controller.value.text.isNotEmpty
-                        ? _downloadFile(_controller.value.text)
-                        : null,
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AuthView()),
-                    ),
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("JSON file uploaded successfully!"),
-                      ),
-                    )
-                  },
-                  child: const Text("Download"),
-                ),
-
-                SizedBox(height: 30,),
-                    InkWell(
-        onTap: () {
-          Clipboard.setData(
-            ClipboardData(
-              text: testURL,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          children: [
+            Stack(children: [
+              Container(
+                height: 80.0,
+                width: MediaQuery.of(context).size.width,
+                color: const Color.fromARGB(255, 15, 32, 66),
+              ),
+              Container(
+                  height: 70.0,
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/icon.png',
+                            width: 20,
+                          ),
+                          const Text(
+                            "  VERIS",
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      )))
+            ]),
+            const SizedBox(
+              height: 20,
             ),
-          );
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Copied to clipboard'),
-    ));
-        },
-        child: Text("Copy test URL", style: TextStyle(color: Colors.amber, fontSize: 22),),
-      ),
-SizedBox(height: 20,),
-                Text(
-                  testURL,
-                  style: const TextStyle( fontSize: 14.0),
+            Image.asset(
+              'assets/images/dark_circle.png',
+              width: 150,
+              height: 150,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              "Lets get started",
+              style: TextStyle(color: Colors.black, fontSize: 20.0),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+                width: 300,
+                child: const Text(
+                  "Welcome to VERIS - a platform to participate in research suveys directly from your smartphone.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14.0,
+                  ),
+                )),
+            const SizedBox(
+              height: 10,
+            ),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: !expanded ? 120 : 0,
+              child: Container(
+                height: 15,
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      child: const Text('Scan QR'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const QrScanner()),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FloatingActionButton.extended(
+                  label: Text(!expanded ? 'Enter URL' : 'Scan QR',
+                      style: const TextStyle(color: Colors.white)),
+                  backgroundColor: const Color.fromARGB(255, 15, 32, 66),
+                  icon: Icon(
+                      color: Colors.white,
+                      expanded ? Icons.arrow_upward : Icons.arrow_downward),
+                  onPressed: () => setState(() {
+                    expanded = !expanded;
+                  }),
                 ),
               ],
             ),
-          ),
-        ));
-  }
-}
-
-class AuthView extends StatelessWidget {
-  const AuthView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FlowBuilder<AuthStatus>(
-      state: context.select((AuthBloc bloc) => bloc.state.status),
-      onGeneratePages: onGenerateAppViewPages,
+            const SizedBox(
+              height: 30,
+            ),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: expanded ? 250 : 0,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        labelText: 'Enter JSON file url',
+                        fillColor: Colors.white,
+                        filled: true,
+                        // use the getter variable defined above
+                        // errorText: _errorText,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: _controller.value.text.isNotEmpty
+                          ? () {
+                              DownladJSON().downloadFile(
+                                  _controller.value.text, context);
+                            }
+                          : null,
+                      child: const Text("Enrol"),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _controller = TextEditingController(text: testURL);
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.green[200],
+                          content: const Text('Pasted!'),
+                        ));
+                      },
+                      child: const Text(
+                        "Paste test URL",
+                        style: TextStyle(color: Colors.amber, fontSize: 22),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      testURL,
+                      style:
+                          const TextStyle(fontSize: 14.0, color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
