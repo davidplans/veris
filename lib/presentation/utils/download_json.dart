@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../auth_view.dart';
 
@@ -12,7 +13,7 @@ class DownladJSON {
     var progressString = "";
     Dio dio = Dio();
     final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
-    String nameFromId = '';
+    final _prefs = await SharedPreferences.getInstance();
     try {
       var dir = await getApplicationDocumentsDirectory();
       var response = await dio.download(url, "${dir.path}/$unixTime.json",
@@ -21,8 +22,7 @@ class DownladJSON {
           ), onReceiveProgress: (rec, total) async {
         progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
       });
-
-      print(dir.path);
+      // print(dir.path);
 
       if (response.headers.value('content-type') == 'application/json') {
         showDialog(
@@ -35,11 +35,13 @@ class DownladJSON {
           },
         );
         var localFile = File("${dir.path}/$unixTime.json");
-        // print(dir.path);
+        // _prefs.setString('filePath', dir.path);
         try {
           final json = await localFile.readAsString();
           final decodingFile = jsonDecode(json);
-          nameFromId = decodingFile["properties"]["study_id"];
+          final nameFromId = decodingFile["properties"]["study_id"];
+final isSurvey = decodingFile["properties"]["isSurv"];
+
           if (nameFromId.isNotEmpty) {
             var path = localFile.path;
             var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
@@ -47,6 +49,7 @@ class DownladJSON {
                 path.substring(0, lastSeparator + 1) + nameFromId + ".json";
             localFile.rename(newPath).whenComplete(() => {
                   localFile.delete,
+
                   // print(localFile.path),
                   Navigator.push(
                     context,
@@ -141,6 +144,5 @@ class DownladJSON {
       }
       return false;
     }
-    progressString = "Completed";
   }
 }

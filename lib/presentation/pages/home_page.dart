@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:Veris/presentation/widgets/settings_widget.dart';
 import 'package:Veris/presentation/widgets/surveys_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,8 +29,9 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const HomeWidget(),
     const ProgressWidget(),
-    const SurveysWidget(),
-    const IntroTabWidget(),
+    // const SurveysWidget(),
+    // const IntroTabWidget(),
+    const SettingsWidget(),
   ];
 
   @override
@@ -57,10 +59,12 @@ class _HomePageState extends State<HomePage> {
           //     icon: Icon(Icons.favorite), label: 'Heart'),
           BottomNavigationBarItem(
               icon: Icon(Icons.trending_up), label: 'My progress'),
-          BottomNavigationBarItem(
-               icon: Icon(Icons.bar_chart), label: 'Survey'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: 'Heart Beat'),
+          // BottomNavigationBarItem(
+          //      icon: Icon(Icons.bar_chart), label: 'Survey'),
+          // BottomNavigationBarItem(
+          //     icon: Icon(Icons.favorite), label: 'Heart Beat'),
+                        BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Settings'),
         ],
         currentIndex: _currentIndex,
         showSelectedLabels: true,

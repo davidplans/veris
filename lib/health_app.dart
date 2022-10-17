@@ -1,18 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:Veris/presentation/utils/download_json.dart';
 import 'package:Veris/qr_scanner.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/data/repositories/auth_repository.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
 import 'package:Veris/style/theme.dart';
-import 'package:path_provider/path_provider.dart';
-
-import 'auth_view.dart';
-import 'auth_view.dart';
 
 class HealthApp extends StatelessWidget {
   const HealthApp({
@@ -57,17 +49,17 @@ class StudyView extends StatefulWidget {
 }
 
 class _StudyViewState extends State<StudyView> {
-  late TextEditingController _controller;
+  TextEditingController _controller = TextEditingController();
 
   String testURL =
       'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test.json?alt=media&token=8015e8c0-a2e6-4f97-b147-c331af29ba02';
   bool expanded = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _controller = TextEditingController();
+  // }
 
   @override
   void dispose() {
@@ -277,6 +269,11 @@ class _StudyViewState extends State<StudyView> {
                         // use the getter variable defined above
                         // errorText: _errorText,
                       ),
+                      onChanged: ((value) {
+                        setState(() {
+                          _controller.text = value;
+                        });
+                      }),
                     ),
                     ElevatedButton(
                       onPressed: _controller.value.text.isNotEmpty
