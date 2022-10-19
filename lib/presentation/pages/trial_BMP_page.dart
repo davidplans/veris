@@ -53,8 +53,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   int _start = 60;
   Timer? _timerDuration; // timer for duration
 
-  int _configMaxTrials = 0;
-  int _configStepBodySelect = 0;
+  int _configMaxTrials = 20;
+  int _configStepBodySelect = 5;
   int _countTrials = 0;
   int _currentStep = 1;
   int _completeTrials = 0;
@@ -79,7 +79,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
           _iconScale = 1.0 + _animationController!.value * 0.4;
         });
       });
-    _getConfig();
+    // _getConfig();
     _getNumTrial();
     _currentKnobValue = _randomGen(-1, 1);
     listSelectSteps.add(_currentStep);
@@ -91,28 +91,29 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     _prefs.then((SharedPreferences p) {
       _countTrials = p.getInt('numRuns') ?? 0;
       _completeTrials = p.getInt('completeTrials') ?? 0;
-      p.setInt('maxTrials', _configMaxTrials);
+      _configMaxTrials = p.getInt('maxTrials') ?? 20;
+      _configStepBodySelect = p.getInt('stepBodySelect') ?? 5;
       p.setString('startTrial', formattedDate);
       setState(() {});
       print('COUNT $_countTrials');
     });
   }
 
-  _getConfig() {
-    final docRef = config.doc("veris");
+  // _getConfig() {
+  //   final docRef = config.doc("veris");
 
-    docRef.get().then(
-      (DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        print(data.toString());
-        setState(() {
-          _configMaxTrials = data['maxTrialsConfig'] ?? 20;
-          _configStepBodySelect = data['stepToBodySelect'] ?? 5;
-        });
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
-  }
+  //   docRef.get().then(
+  //     (DocumentSnapshot doc) {
+  //       final data = doc.data() as Map<String, dynamic>;
+  //       print(data.toString());
+  //       setState(() {
+  //         _configMaxTrials = data['maxTrialsConfig'] ?? 20;
+  //         _configStepBodySelect = data['stepToBodySelect'] ?? 5;
+  //       });
+  //     },
+  //     onError: (e) => print("Error getting document: $e"),
+  //   );
+  // }
 
   @override
   void dispose() {

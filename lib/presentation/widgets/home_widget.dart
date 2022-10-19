@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:Veris/style/theme.dart';
+import 'package:Veris/health_app.dart';
+import 'package:Veris/presentation/widgets/heart_beats_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/presentation/bloc/auth_bloc.dart';
-import 'package:Veris/presentation/widgets/avatar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../data/repositories/auth_repository.dart';
+import 'questions_widget.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -17,37 +19,49 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
   List<FileSystemEntity> _files = [];
-  List<dynamic> _jsonFiles = [];
+  List<dynamic> _modules = [];
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   @override
   initState() {
-    getFiles();
+    getFile();
 
     super.initState();
   }
 
-  Future<void> getFiles() async {
-    final directory = await getApplicationDocumentsDirectory();
-    final dir = directory.path;
-    String docDirectory = '$dir/';
-    final docDir = Directory(docDirectory);
-    setState(() {
-      _files = docDir.listSync(recursive: true, followLinks: false);
-    });
-    final Iterable<File> files = _files.whereType<File>();
-    for (File file in files) {
-      String fileName = file.path.split('/').last;
-      if (fileName.contains('.json') || fileName.contains('.JSON')) {
-        var json = await file.readAsString();
-        final decodingFile = jsonDecode(json);
-        // nameFromId = decodingFile["properties"]["study_id"];
-        _jsonFiles.add(decodingFile);
+  Future<void> getFile() async {
+    await _prefs.then((SharedPreferences p) {
+      Map parsedJson = jsonDecode(p.getString('json_file') ?? '');
 
-        // print(f);
-      }
-      setState(() {});
-      // print(file.path);
-    }
+      setState(() {
+        _modules = List.from((parsedJson['modules']));
+      });
+
+      print(_modules[0]);
+    });
+
+    // final directory = await getApplicationDocumentsDirectory();
+    // // directory.delete();
+    // final dir = directory.path;
+    // String docDirectory = '$dir/';
+    // final docDir = Directory(docDirectory);
+    // // docDir.deleteSync(recursive: false);
+
+    // setState(() {
+    //   _files = docDir.listSync(recursive: true, followLinks: false);
+    // });
+    // final Iterable<File> files = _files.whereType<File>();
+    // for (File file in files) {
+    //   String fileName = file.path.split('/').last;
+    //   if (fileName.contains('.json') || fileName.contains('.JSON')) {
+    //     var json = await file.readAsString();
+    //     final decodingFile = jsonDecode(json);
+
+    //     _jsonFiles.add(decodingFile);
+
+    //   }
+    //   setState(() {});
+    // }
   }
 
   @override
@@ -61,19 +75,42 @@ class _HomeWidgetState extends State<HomeWidget> {
         children: <Widget>[
           Container(
               width: MediaQuery.of(context).size.width,
-              height: 30,
+              height: 50,
               color: const Color.fromARGB(255, 49, 56, 71),
-              child: const Center(
-                  child: Text(
-                'Recent',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ))),
+              child: Row(children: [
+                const Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Recent',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          final authenticationRepository =
+                              AuthenticationRepository();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HealthApp(
+                                      authenticationRepository:
+                                          authenticationRepository,
+                                    )),
+                          );
+                        },
+                        child: const Text('Use other JSON')))
+              ])),
           Expanded(
               flex: 4,
               child: ListView.builder(
                   padding: const EdgeInsets.all(8),
-                  itemCount: _jsonFiles.length,
+                  itemCount: _modules.length,
                   itemBuilder: (BuildContext context, int index) {
                     // print(_jsonFiles[index]);
                     return Padding(
@@ -86,8 +123,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                             // Icon(Icons.message), // icon-2
                           ],
                         ),
-                        leading: _jsonFiles[index]["modules"][0]["type"] ==
-                                'survey'
+                        leading: _modules[index]["type"] == 'survey'
                             ? const Icon(Icons.bar_chart, color: Colors.amber)
                             : const Icon(
                                 Icons.favorite,
@@ -95,30 +131,61 @@ class _HomeWidgetState extends State<HomeWidget> {
                               ),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16)),
-                        subtitle:
-                            Text(_jsonFiles[index]["properties"]["study_id"]),
-                        title: Text(_jsonFiles[index]["modules"][0]["name"]),
-                        tileColor:
-                            _jsonFiles[index]["modules"][0]["type"] == 'survey'
-                                ? Colors.blue
-                                : Colors.amber[300],
-                                onTap: (() {
-                                  
-                                }),
+                        // subtitle:
+                        //     Text(_modules[index]["study_id"]),
+                        title: Text(_modules[index]["name"]),
+                        tileColor: _modules[index]["type"] == 'survey'
+                            ? Colors.blue
+                            : Colors.amber[300],
+                        onTap: (() async {
+                          if (_modules[index]["type"] == 'survey') {
+                            List<dynamic> sections =
+                                _modules[index]["sections"];
+                            //                         Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => QuestionsWidget(
+                            //       questions: questions,
+                            //     ),
+                            //   ),
+                            // );
+                          } else if (_modules[index]["type"] == 'pat') {
+                            await _prefs.then((SharedPreferences p) {
+                              p.setInt(
+                                  'maxTrials', _modules[index]["total_trials"]);
+                              p.setInt('stepBodySelect',
+                                  _modules[index]["step_body_select"]);
+                            }).whenComplete(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const IntroTabWidget(),
+                                ),
+                              );
+                            });
+                          }
+                        }),
                       ),
                     );
                   })),
 
           Container(
-              width: MediaQuery.of(context).size.width,
-              height: 30,
-              color: const Color.fromARGB(255, 49, 56, 71),
-              child: const Center(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            color: const Color.fromARGB(255, 49, 56, 71),
+            child: Row(
+              children: const [
+                Padding(
+                  padding: EdgeInsets.only(left: 8.0),
                   child: Text(
-                'Start here',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ))),
+                    'Start here',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             flex: 4,
             child: Container(

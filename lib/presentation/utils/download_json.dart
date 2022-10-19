@@ -13,9 +13,11 @@ class DownladJSON {
     var progressString = "";
     Dio dio = Dio();
     final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
+
     final _prefs = await SharedPreferences.getInstance();
     try {
       var dir = await getApplicationDocumentsDirectory();
+
       var response = await dio.download(url, "${dir.path}/$unixTime.json",
           options: Options(
             responseType: ResponseType.json,
@@ -40,28 +42,44 @@ class DownladJSON {
           final json = await localFile.readAsString();
           final decodingFile = jsonDecode(json);
           final nameFromId = decodingFile["properties"]["study_id"];
-final isSurvey = decodingFile["properties"]["isSurv"];
 
           if (nameFromId.isNotEmpty) {
-            var path = localFile.path;
-            var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
-            var newPath =
-                path.substring(0, lastSeparator + 1) + nameFromId + ".json";
-            localFile.rename(newPath).whenComplete(() => {
-                  localFile.delete,
+            await _prefs
+                .setString('json_file', jsonEncode(decodingFile))
+                .whenComplete(() {
+              localFile.delete;
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AuthView()),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.green[200],
+                  content: const Text("JSON file downloaded successfully!"),
+                ),
+              );
+            });
 
-                  // print(localFile.path),
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AuthView()),
-                  ),
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: Colors.green[200],
-                      content: const Text("JSON file downloaded successfully!"),
-                    ),
-                  )
-                });
+            // var path = localFile.path;
+            // var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
+            // var newPath =
+            //     path.substring(0, lastSeparator + 1) + nameFromId + ".json";
+            // localFile.rename(newPath).whenComplete(() => {
+            //       localFile.delete,
+
+            //       // print(localFile.path),
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => const AuthView()),
+            //       ),
+            //       ScaffoldMessenger.of(context).showSnackBar(
+            //         SnackBar(
+            //           backgroundColor: Colors.green[200],
+            //           content: const Text("JSON file downloaded successfully!"),
+            //         ),
+            //       )
+            //     });
+            localFile.delete();
             return true;
           } else {
             showDialog(
@@ -85,6 +103,7 @@ final isSurvey = decodingFile["properties"]["isSurv"];
             return false;
           }
         } catch (error) {
+          print(error);
           showDialog(
             context: context,
             builder: (BuildContext context) {
