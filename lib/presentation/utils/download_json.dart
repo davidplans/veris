@@ -18,36 +18,40 @@ class DownladJSON {
     try {
       var dir = await getApplicationDocumentsDirectory();
 
-      var response = await dio.download(url, "${dir.path}/$unixTime.json",
-          options: Options(
+      // var response = await dio.download(url, "${dir.path}/$unixTime.json",
+      //     options: Options(
+      //       responseType: ResponseType.json,
+      //     ),
+      //     onReceiveProgress: (rec, total) async {
+      //   progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
+      // });
+      var response = await dio.get(url,
+      options: Options(
             responseType: ResponseType.json,
-          ), onReceiveProgress: (rec, total) async {
-        progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
-      });
-      // print(dir.path);
+          ),);
+      // print(response);
 
       if (response.headers.value('content-type') == 'application/json') {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Downloading...'),
-              content: Text(progressString),
-            );
-          },
-        );
-        var localFile = File("${dir.path}/$unixTime.json");
-        // _prefs.setString('filePath', dir.path);
+        // showDialog(
+        //   context: context,
+        //   builder: (context) {
+        //     return AlertDialog(
+        //       title: const Text('Downloading...'),
+        //       content: Text(progressString),
+        //     );
+        //   },
+        // );
+        // var localFile = File("${dir.path}/$unixTime.json");
         try {
-          final json = await localFile.readAsString();
-          final decodingFile = jsonDecode(json);
+          // final json = await localFile.readAsString();
+          final decodingFile = jsonDecode(response.toString());
           final nameFromId = decodingFile["properties"]["study_id"];
-
+          // print(nameFromId);
           if (nameFromId.isNotEmpty) {
             await _prefs
                 .setString('json_file', jsonEncode(decodingFile))
                 .whenComplete(() {
-              localFile.delete;
+              // localFile.delete;
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AuthView()),
@@ -79,7 +83,7 @@ class DownladJSON {
             //         ),
             //       )
             //     });
-            localFile.delete();
+            // localFile.delete();
             return true;
           } else {
             showDialog(
@@ -99,7 +103,7 @@ class DownladJSON {
                 );
               },
             );
-            localFile.delete();
+            // localFile.delete();
             return false;
           }
         } catch (error) {
@@ -120,7 +124,7 @@ class DownladJSON {
               );
             },
           );
-          localFile.delete();
+          // localFile.delete();
           return false;
         }
       } else {
@@ -128,7 +132,7 @@ class DownladJSON {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('URL error!'),
+              title: const Text('URL error!!!'),
               content: const Text("Downloading file is not json!"),
               actions: [
                 TextButton(
@@ -143,6 +147,7 @@ class DownladJSON {
         return false;
       }
     } catch (e) {
+      print(e.toString());
       if (e is DioError) {
         showDialog(
           context: context,

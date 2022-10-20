@@ -20,6 +20,8 @@ class _QrScannerState extends State<QrScanner> {
     super.dispose();
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     Future<bool> isSucccessfully;

@@ -139,16 +139,16 @@ class _HomeWidgetState extends State<HomeWidget> {
                             : Colors.amber[300],
                         onTap: (() async {
                           if (_modules[index]["type"] == 'survey') {
-                            List<dynamic> sections =
-                                _modules[index]["sections"];
-                            //                         Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => QuestionsWidget(
-                            //       questions: questions,
-                            //     ),
-                            //   ),
-                            // );
+                            List<dynamic> questions =
+                                _modules[index]["sections"][0]["questions"];
+                                                    Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => QuestionsWidget(
+                                  questions: questions,
+                                ),
+                              ),
+                            );
                           } else if (_modules[index]["type"] == 'pat') {
                             await _prefs.then((SharedPreferences p) {
                               p.setInt(
