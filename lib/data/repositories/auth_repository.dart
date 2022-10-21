@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:Veris/data/models/user.dart';
 import 'package:Veris/data/repositories/cache_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// {@template sign_up_with_email_and_password_failure}
 /// Thrown if during the sign up process if a failure occurs.
@@ -103,6 +104,7 @@ class AuthenticationRepository {
   final firebase_auth.FirebaseAuth _firebaseAuth;
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   /// User cache key.
   /// Should only be used for testing purposes.
@@ -116,6 +118,9 @@ class AuthenticationRepository {
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+    _prefs.then((SharedPreferences p) {
+      p.setString('userId', user.id);
+    });
       _cache.write(key: userCacheKey, value: user);
       return user;
     });
@@ -146,7 +151,6 @@ class AuthenticationRepository {
             'user_id': userCredential.user!.uid,
             'user_photo': null,
             'last_set_number': 0,
-
           }, SetOptions(merge: true))
           .then((value) => print("User Added"))
           .catchError((error) => print("Failing to add user: $error"));

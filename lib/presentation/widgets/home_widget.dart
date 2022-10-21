@@ -37,7 +37,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         _modules = List.from((parsedJson['modules']));
       });
 
-      print(_modules[0]);
+      // print(_modules[0]);
     });
 
     // final directory = await getApplicationDocumentsDirectory();
@@ -68,6 +68,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   Widget build(BuildContext context) {
     // final textTheme = Theme.of(context).textTheme;
     // final user = context.select((AuthBloc bloc) => bloc.state.user);
+
     return Align(
       alignment: const Alignment(0, -1 / 3),
       child: Column(
@@ -112,7 +113,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                   padding: const EdgeInsets.all(8),
                   itemCount: _modules.length,
                   itemBuilder: (BuildContext context, int index) {
-                    // print(_jsonFiles[index]);
                     return Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: ListTile(
@@ -132,7 +132,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16)),
                         // subtitle:
-                        //     Text(_modules[index]["study_id"]),
+                        //     Text(countId.toString()),
                         title: Text(_modules[index]["name"]),
                         tileColor: _modules[index]["type"] == 'survey'
                             ? Colors.blue
@@ -141,11 +141,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                           if (_modules[index]["type"] == 'survey') {
                             List<dynamic> questions =
                                 _modules[index]["sections"][0]["questions"];
-                                                    Navigator.push(
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => QuestionsWidget(
                                   questions: questions,
+                                  moduleId: index,
                                 ),
                               ),
                             );

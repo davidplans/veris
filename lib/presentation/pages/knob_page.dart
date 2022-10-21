@@ -304,7 +304,7 @@ class _KnobPageState extends State<KnobPage> {
                           "averagePeriods": doubleAveragePeriods,
                           "instantErrs": doubleInstantErrs,
                         };
-                        print(trialData);
+                        // print(trialData);
                         final String unixTime =
                             (DateTime.now().millisecondsSinceEpoch).toString();
 

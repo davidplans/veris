@@ -1,13 +1,18 @@
 import 'package:Veris/presentation/pages/home_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:survey_kit/survey_kit.dart' as kit;
 import 'package:survey_kit/survey_kit.dart';
 
 class QuestionsWidget extends StatefulWidget {
   final List<dynamic> questions;
+  final int moduleId;
 
-  const QuestionsWidget({Key? key, required this.questions}) : super(key: key);
+  const QuestionsWidget(
+      {Key? key, required this.questions, required this.moduleId})
+      : super(key: key);
 
   @override
   State<QuestionsWidget> createState() => _QuestionsWidgetState();
@@ -15,6 +20,22 @@ class QuestionsWidget extends StatefulWidget {
 
 class _QuestionsWidgetState extends State<QuestionsWidget> {
   int count = 0;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  List resultData = [];
+
+  CollectionReference studies =
+      FirebaseFirestore.instance.collection('studies');
+  String userId = "";
+  String studyId = "";
+
+  @override
+  void initState() {
+    _prefs.then((SharedPreferences p) {
+      userId = p.getString('userId') ?? "";
+      studyId = p.getString('studyId') ?? "";
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,20 +52,42 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                   snapshot.hasData &&
                   snapshot.data != null) {
                 final task = snapshot.data!;
+                var i = 0;
                 return kit.SurveyKit(
                   onResult: (kit.SurveyResult result) {
-                    print(widget.questions.toString());
                     for (var stepResult in result.results) {
-                      stepResult.id;
                       for (var questionResult in stepResult.results) {
-                        print(questionResult.id!.id);
-                        print(questionResult.valueIdentifier.toString());
+                        if (questionResult.valueIdentifier.toString() !=
+                            "instruction") {
+                          var questionMap = {
+                            'questionId': i,
+                            'value': questionResult.valueIdentifier.toString(),
+                          };
+                          resultData
+                              .add(questionMap);
+                          i++;
+                        }
                       }
                     }
 
-                    // print(result.finishReason);
-                    // print(result.finishReason);
-                    Navigator.of(context).push<void>(HomePage.route());
+                    if (resultData.isNotEmpty) {
+                      final moduleData = {
+                        "userId": userId,
+                        "moduleId": widget.moduleId,
+                        "values": resultData,
+                      };
+                      if (userId.isNotEmpty && studyId.isNotEmpty) {
+                        studies
+                            .doc(studyId)
+                            .collection('results')
+                            .doc(userId)
+                            .collection('modules')
+                            .doc(widget.moduleId.toString())
+                            .set(moduleData)
+                            .then((value) => Navigator.of(context)
+                                .push<void>(HomePage.route()));
+                      }
+                    }
                   },
                   task: task,
                   showProgress: true,

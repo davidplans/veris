@@ -69,14 +69,14 @@ class _SurveyModuleWidgetState extends State<SurveyModuleWidget> {
                               if (item['questions'] != null) {
                                 List<dynamic> questions = item['questions'];
                                 // print(item['questions']);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => QuestionsWidget(
-                                      questions: questions,
-                                    ),
-                                  ),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => QuestionsWidget(
+                                //       questions: questions,
+                                //     ),
+                                //   ),
+                                // );
                               } else {
                                 const Center(child: Text('No Questions!'));
                               }

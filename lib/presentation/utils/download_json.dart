@@ -25,10 +25,12 @@ class DownladJSON {
       //     onReceiveProgress: (rec, total) async {
       //   progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
       // });
-      var response = await dio.get(url,
-      options: Options(
-            responseType: ResponseType.json,
-          ),);
+      var response = await dio.get(
+        url,
+        options: Options(
+          responseType: ResponseType.json,
+        ),
+      );
       // print(response);
 
       if (response.headers.value('content-type') == 'application/json') {
@@ -45,9 +47,10 @@ class DownladJSON {
         try {
           // final json = await localFile.readAsString();
           final decodingFile = jsonDecode(response.toString());
-          final nameFromId = decodingFile["properties"]["study_id"];
+          final studyId = decodingFile["properties"]["study_id"];
           // print(nameFromId);
-          if (nameFromId.isNotEmpty) {
+          if (studyId.isNotEmpty) {
+            await _prefs.setString('studyId', studyId);
             await _prefs
                 .setString('json_file', jsonEncode(decodingFile))
                 .whenComplete(() {
