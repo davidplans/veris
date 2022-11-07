@@ -52,7 +52,7 @@ class _StudyViewState extends State<StudyView> {
   TextEditingController _controller = TextEditingController();
 
   String testURL =
-      'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test.json?alt=media&token=9dca3bf9-65a7-4057-b9dc-23b966e8c37a';
+      'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test.json?alt=media&token=049736e1-f8ea-4b75-8151-8f7dc489fe9a';
   bool expanded = false;
 
   // @override

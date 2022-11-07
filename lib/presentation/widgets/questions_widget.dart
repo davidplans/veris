@@ -2,17 +2,20 @@ import 'package:Veris/presentation/pages/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:survey_kit/survey_kit.dart' as kit;
-import 'package:survey_kit/survey_kit.dart';
+// import 'package:survey_kit/survey_kit.dart';
 
 class QuestionsWidget extends StatefulWidget {
   final List<dynamic> questions;
   final int moduleId;
+  final int sectonId;
 
   const QuestionsWidget(
-      {Key? key, required this.questions, required this.moduleId})
+      {Key? key,
+      required this.questions,
+      required this.moduleId,
+      required this.sectonId})
       : super(key: key);
 
   @override
@@ -28,8 +31,8 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
       FirebaseFirestore.instance.collection('studies');
   String userId = "";
   String studyId = "";
-        
-                        // DateFormat format = DateFormat('yyyy-MM-dd – kk:mm');
+
+  // DateFormat format = DateFormat('yyyy-MM-dd – kk:mm');
 
   @override
   void initState() {
@@ -43,6 +46,9 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
   @override
   Widget build(BuildContext context) {
     // print(widget.questions.first);
+    // print(widget.moduleId);
+    // print(widget.sectonId);
+
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -56,7 +62,13 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                   snapshot.data != null) {
                 final task = snapshot.data!;
                 var i = 0;
+
                 return kit.SurveyKit(
+                  surveyController: kit.SurveyController(
+                    onCloseSurvey: (context, resultFunction) {
+                      Navigator.of(context).push(HomePage.route());
+                    },
+                  ),
                   onResult: (kit.SurveyResult result) {
                     for (var stepResult in result.results) {
                       for (var questionResult in stepResult.results) {
@@ -66,8 +78,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                             'questionId': i,
                             'value': questionResult.valueIdentifier.toString(),
                           };
-                          resultData
-                              .add(questionMap);
+                          resultData.add(questionMap);
                           i++;
                         }
                       }
@@ -77,7 +88,8 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                       final moduleData = {
                         "userId": userId,
                         "moduleId": widget.moduleId,
-                        "datetime" : DateTime.now(),
+                        "sectionId": widget.sectonId,
+                        "datetime": DateTime.now(),
                         "values": resultData,
                       };
                       if (userId.isNotEmpty && studyId.isNotEmpty) {
@@ -85,6 +97,8 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                             .doc(studyId)
                             .collection('modules')
                             .doc(widget.moduleId.toString())
+                            .collection('sections')
+                            .doc(widget.sectonId.toString())
                             .set(moduleData)
                             .then((value) => Navigator.of(context)
                                 .push<void>(HomePage.route()));
@@ -260,8 +274,8 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
       }
     }
     steps.add(
-      CompletionStep(
-        stepIdentifier: StepIdentifier(id: 'completeId'),
+      kit.CompletionStep(
+        stepIdentifier: kit.StepIdentifier(id: 'completeId'),
         text: 'Thanks for taking the survey!',
         title: 'Done!',
         buttonText: 'Submit survey',
