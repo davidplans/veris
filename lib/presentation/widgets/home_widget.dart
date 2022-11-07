@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/repositories/auth_repository.dart';
 import 'heart_beats_widget.dart';
 import 'questions_widget.dart';
+import 'widget_v20.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -203,7 +204,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const IntroTabWidget(),
+                                                  const V20Widget(),
                                             ),
                                           );
                                         });

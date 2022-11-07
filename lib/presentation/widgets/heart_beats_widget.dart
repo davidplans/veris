@@ -4,10 +4,6 @@ import 'package:Veris/presentation/pages/trial_BMP_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/presentation/widgets/step10_widget.dart';
-import 'package:Veris/presentation/widgets/step4_widget.dart';
-import 'package:Veris/presentation/widgets/trial1_widget.dart';
-import 'package:Veris/presentation/widgets/trial2_widget.dart';
-import 'package:Veris/presentation/widgets/trial4_widget.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:video_player/video_player.dart';
 
-import 'baseline_widget.dart';
 
 class IntroTabWidget extends StatefulWidget {
   const IntroTabWidget({Key? key}) : super(key: key);
@@ -116,17 +111,21 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
       isProgress: false,
       pages: [
         PageViewModel(
-          title: "",
-          body:
-              "How well can you match a sound with your heartbeat?\n\nLet’s find out!",
-          // image: _buildImage('hand.png'),
+          title: '',
+          bodyWidget:
+          Column (children: const [
+            SizedBox(height: 200.0,),
+            Text ( textAlign: TextAlign.center ,"How well can you match a sound with your heartbeat?\n\nLet’s find out!", style: TextStyle(fontSize:18.0),)
+          ],),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "",
-          body:
-              "First, find a quiet place where you can comfortably sit upright with your earphones on for around 10 minutes. We will begin by capturing a couple of minutes of your heart rate, to get a sense for how your heart does its thing.",
-          // image: _buildImage('hand.png'),
+                    bodyWidget:
+          Column (children: const [
+            SizedBox(height: 200.0,),
+            Text ( textAlign: TextAlign.center ,"Find a quiet place where you can sit comfortably upright for around 10 minutes. We'll be recording your heart beats, so you therefore need to keep your hand still and in the correct position. Also, make sure you turn your phone's volume up and don't use earphones (plugged or bluetooth)", style: TextStyle(fontSize:18.0),)
+          ],),
           decoration: pageDecoration,
         ),
         PageViewModel(
@@ -145,7 +144,7 @@ class _IntroTabWidgetWidgetState extends State<IntroTabWidget> {
           // body:
           //     "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
           // image: _buildImage('hand.png'),
-          bodyWidget: BaselineWidget(),
+          bodyWidget: null,
           decoration: pageDecoration,
         ),
         PageViewModel(
