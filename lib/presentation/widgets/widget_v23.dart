@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/user.dart';
 import '../bloc/auth_bloc.dart';
+import 'widget_v25.dart';
 
 class V23Widget extends StatefulWidget {
   const V23Widget({super.key});
@@ -271,7 +272,6 @@ class _V23WidgetState extends State<V23Widget>
                           color: Colors.white,
                         ),
                         backgroundColor: const Color(0XFF0F2042),
-                        // child: const Text("Back", style: TextStyle(color: Colors.white),),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -287,10 +287,15 @@ class _V23WidgetState extends State<V23Widget>
                       child: FloatingActionButton.extended(
 
                         backgroundColor: const Color(0XFF0F2042),
-                        // child: const Text("Back", style: TextStyle(color: Colors.white),),
-                        onPressed: () {},
+                        onPressed: () {
+                         Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const V25Widget(),
+                      ),
+                    );
+                        },
                         label: const Text(
-                          "Next",
+                          "Continue",
                           style: TextStyle(color: Colors.white),
                         ),
                                                 icon: const Icon(
