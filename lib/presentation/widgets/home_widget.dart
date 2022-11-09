@@ -166,6 +166,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                               questions: questions,
                                               moduleId: indexModule,
                                               sectonId: indexSection,
+                                              sectionName: sectionName,
                                             ),
                                           ),
                                         );

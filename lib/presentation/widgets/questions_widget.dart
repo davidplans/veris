@@ -10,12 +10,14 @@ class QuestionsWidget extends StatefulWidget {
   final List<dynamic> questions;
   final int moduleId;
   final int sectonId;
+  final String sectionName;
 
   const QuestionsWidget(
       {Key? key,
       required this.questions,
       required this.moduleId,
-      required this.sectonId})
+      required this.sectonId,
+      required this.sectionName})
       : super(key: key);
 
   @override
@@ -84,11 +86,18 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                       }
                     }
 
+                    String lowerSectionName =
+                        widget.sectionName.trim().toLowerCase();
+                    String formatedSectionName =
+                        lowerSectionName.replaceAll(" ", "_");
+                    String sectionId =
+                        "${formatedSectionName}_${widget.sectonId}";
+
                     if (resultData.isNotEmpty) {
                       final moduleData = {
                         "userId": userId,
                         "moduleId": widget.moduleId,
-                        "sectionId": widget.sectonId,
+                        "sectionId": sectionId,
                         "datetime": DateTime.now(),
                         "values": resultData,
                       };
@@ -98,7 +107,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                             .collection('modules')
                             .doc(widget.moduleId.toString())
                             .collection('sections')
-                            .doc(widget.sectonId.toString())
+                            .doc(sectionId)
                             .set(moduleData)
                             .then((value) => Navigator.of(context)
                                 .push<void>(HomePage.route()));
