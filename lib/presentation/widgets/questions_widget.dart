@@ -29,8 +29,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   List resultData = [];
 
-  CollectionReference studies =
-      FirebaseFirestore.instance.collection('studies');
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
   String userId = "";
   String studyId = "";
 
@@ -96,22 +95,36 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                     if (resultData.isNotEmpty) {
                       final moduleData = {
                         "userId": userId,
+                        "studyId": studyId,
                         "moduleId": widget.moduleId,
                         "sectionId": sectionId,
                         "datetime": DateTime.now(),
                         "values": resultData,
                       };
                       if (userId.isNotEmpty && studyId.isNotEmpty) {
-                        studies
+                        users
+                            .doc(userId)
+                            .collection('studies')
                             .doc(studyId)
                             .collection('modules')
                             .doc(widget.moduleId.toString())
-                            .collection('sections')
-                            .doc(sectionId)
                             .set(moduleData)
                             .then((value) => Navigator.of(context)
                                 .push<void>(HomePage.route()));
                       }
+                      // if (userId.isNotEmpty && studyId.isNotEmpty) {
+                      //   users
+                      //       .doc(userId)
+                      //       .collection('studies')
+                      //       .doc(studyId)
+                      //       .collection('modules')
+                      //       .doc(widget.moduleId.toString())
+                      //       .collection('sections')
+                      //       .doc(sectionId)
+                      //       .set(moduleData)
+                      //       .then((value) => Navigator.of(context)
+                      //           .push<void>(HomePage.route()));
+                      // }
                     }
                   },
                   task: task,
