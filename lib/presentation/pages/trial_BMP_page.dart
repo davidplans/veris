@@ -63,8 +63,8 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   late double _currentKnobValue;
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  final CollectionReference config =
-      FirebaseFirestore.instance.collection('config');
+  // final CollectionReference config =
+  //     FirebaseFirestore.instance.collection('config');
 
   // Map<String, List<double>> _trialBPMArray = {};
 
@@ -96,6 +96,9 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       p.setString('startTrial', formattedDate);
       setState(() {});
       print('COUNT $_countTrials');
+      print('COUNT $_completeTrials');
+      print('COUNT $_configMaxTrials');
+      print('COUNT $_configStepBodySelect');
     });
   }
 

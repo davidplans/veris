@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../style/theme.dart';
+import 'widget_v314_trial2.dart';
 
-class V310Trial1Widget extends StatefulWidget {
-  const V310Trial1Widget({super.key});
+class V313Trial1Widget extends StatefulWidget {
+  const V313Trial1Widget({super.key});
 
   @override
-  State<V310Trial1Widget> createState() => _V310Trial1WidgetState();
+  State<V313Trial1Widget> createState() => _V313Trial1WidgetState();
 }
 
-class _V310Trial1WidgetState extends State<V310Trial1Widget> {
+class _V313Trial1WidgetState extends State<V313Trial1Widget> {
   double finalAngle = 0.0;
   final player = AudioPlayer();
   // final player2 = AudioPlayer();
@@ -207,7 +208,7 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
                     ? () async {
                                              Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const V311Trial1Widget(),
+                              builder: (context) => const V314Trial1Widget(),
                             ),
                           );
                         player.stop();

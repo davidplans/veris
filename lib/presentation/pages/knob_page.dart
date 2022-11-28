@@ -13,6 +13,8 @@ import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../widgets/widget_v318.dart';
+
 class KnobPage extends StatefulWidget {
   const KnobPage({Key? key}) : super(key: key);
 
@@ -337,9 +339,11 @@ class _KnobPageState extends State<KnobPage> {
                                     content: Text("Data stored! \n Thank you."),
                                   ),
                                 );
-                                Navigator.of(context).push<void>(
-                                  HomePage.route(),
-                                );
+                       Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const V318Widget(),
+                              ),
+                            );
                               } else {
                                 Navigator.of(context).push<void>(
                                   TrialBMPPage.route(),

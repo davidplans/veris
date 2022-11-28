@@ -11,6 +11,8 @@ import '../../data/repositories/auth_repository.dart';
 import 'heart_beats_widget.dart';
 import 'questions_widget.dart';
 import 'widget_v20.dart';
+import 'widget_v310_trial1.dart';
+import 'widget_v318.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -200,13 +202,15 @@ class _HomeWidgetState extends State<HomeWidget> {
                                               'stepBodySelect',
                                               _modules[indexModule]
                                                   ["step_body_select"]);
+                                          p.setInt('numRuns', 0);
+                                          p.setInt('completeTrials', 0);
                                         }).whenComplete(() {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const V20Widget(),
-                                            ),
+                                                builder: (context) =>
+                                                    // const V20Widget(),
+                                                    const V310Trial1Widget()),
                                           );
                                         });
                                       }),
