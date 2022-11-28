@@ -173,7 +173,7 @@ class _V311Trial1WidgetState extends State<V311Trial1Widget>
     Uint8List bytes = image.planes.first.bytes;
     double redAVG =
         ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
-    if (redAVG > 127.45 && redAVG < 127.55 ) {
+    if (redAVG > 127.4 && redAVG < 127.6 ) {
       _isFingerOverlay = false;
     } else {
       _isFingerOverlay = true;

@@ -10,12 +10,15 @@ import 'package:Veris/presentation/pages/knob_page.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/presentation/utils/chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
+
+import '../utils/image_processing.dart';
 
 class TrialBMPPage extends StatefulWidget {
   const TrialBMPPage({Key? key}) : super(key: key);
@@ -61,6 +64,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   List<int> listSelectSteps = [];
   bool _isFinished = false;
   late double _currentKnobValue;
+  bool _isFingerOverlay = false;
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   // final CollectionReference config =
@@ -148,193 +152,233 @@ class _TrialBMPPageState extends State<TrialBMPPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).push<void>(
-                  HomePage.route(),
-                );
-                _untoggle();
-              },
-              icon: const Icon(Icons.home))
-        ],
-        automaticallyImplyLeading: false,
-      ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              children: <Widget>[
-                Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(18),
-                              ),
-                              child: Stack(
-                                fit: StackFit.expand,
-                                alignment: Alignment.center,
-                                children: <Widget>[
-                                  _controller != null && _toggled
-                                      ? AspectRatio(
-                                          aspectRatio:
-                                              _controller!.value.aspectRatio,
-                                          child: CameraPreview(_controller!),
-                                        )
-                                      : Container(
-                                          padding: const EdgeInsets.all(12),
-                                          alignment: Alignment.center,
-                                          color: Colors.grey,
-                                        ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: const EdgeInsets.all(4),
-                                    child: Text(
-                                      _toggled
-                                          ? "Cover both the camera and the flash with your finger"
-                                          : "Camera feed will display here",
-                                      style: TextStyle(
-                                          backgroundColor: _toggled
-                                              ? Colors.white
-                                              : Colors.transparent),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )
-                                ],
+    return Stack(children: [
+      Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push<void>(
+                    HomePage.route(),
+                  );
+                  _untoggle();
+                },
+                icon: const Icon(Icons.home))
+          ],
+          automaticallyImplyLeading: false,
+        ),
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Column(
+                children: <Widget>[
+                  Expanded(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(18),
+                                ),
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  alignment: Alignment.center,
+                                  children: <Widget>[
+                                    _controller != null && _toggled
+                                        ? AspectRatio(
+                                            aspectRatio:
+                                                _controller!.value.aspectRatio,
+                                            child: CameraPreview(_controller!),
+                                          )
+                                        : Container(
+                                            padding: const EdgeInsets.all(12),
+                                            alignment: Alignment.center,
+                                            color: Colors.grey,
+                                          ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.all(4),
+                                      child: Text(
+                                        _toggled
+                                            ? "Cover both the camera and the flash with your finger"
+                                            : "Camera feed will display here",
+                                        style: TextStyle(
+                                            backgroundColor: _toggled
+                                                ? Colors.white
+                                                : Colors.transparent),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Center(
-                              child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              const Text(
-                                "Config:",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text('Total trials $_configMaxTrials'),
-                              Text(
-                                  'BodySelect after $_configStepBodySelect steps'),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                "Complete trial $_completeTrials of $_configMaxTrials",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const Text(
-                                "Estimated BPM",
-                                style:
-                                    TextStyle(fontSize: 18, color: Colors.grey),
-                              ),
-                              Text(
-                                (_bpm > 30 && _bpm < 150
-                                    ? _bpm.toString()
-                                    : "--"),
-                                style: const TextStyle(
-                                    fontSize: 32, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          )),
-                        ),
-                      ],
-                    )),
-                Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Transform.scale(
-                          scale: _iconScale,
-                          child: _isFinished
-                              ? ElevatedButton(
-                                  onPressed: () => (listSelectSteps
-                                          .contains(_countTrials))
-                                      ? Navigator.of(context)
-                                          .push<void>(BodySelectPage.route())
-                                      : Navigator.of(context)
-                                          .push<void>(KnobPage.route()),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: theme.primaryColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
-                                  child: const Text('Continue'),
-                                )
-                              : _toggled
-                                  ? Text('$_start')
-                                  : ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        primary: theme.primaryColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
+                          Expanded(
+                            flex: 1,
+                            child: Center(
+                                child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                const Text(
+                                  "Config:",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('Total trials $_configMaxTrials'),
+                                Text(
+                                    'BodySelect after $_configStepBodySelect steps'),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Complete trial $_completeTrials of $_configMaxTrials",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const Text(
+                                  "Estimated BPM",
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.grey),
+                                ),
+                                Text(
+                                  (_bpm > 30 && _bpm < 150
+                                      ? _bpm.toString()
+                                      : "--"),
+                                  style: const TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )),
+                          ),
+                        ],
+                      )),
+                  Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Transform.scale(
+                            scale: _iconScale,
+                            child: _isFinished
+                                ? ElevatedButton(
+                                    onPressed: () => (listSelectSteps
+                                            .contains(_countTrials))
+                                        ? Navigator.of(context)
+                                            .push<void>(BodySelectPage.route())
+                                        : Navigator.of(context)
+                                            .push<void>(KnobPage.route()),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: theme.primaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                       ),
-                                      onPressed: _configMaxTrials != 0 &&
-                                              _configStepBodySelect != 0
-                                          ? () async {
-                                              if (_toggled) {
-                                                _untoggle();
-                                              } else {
-                                                _toggle();
-                                                await _calculateStep(
-                                                    _configMaxTrials,
-                                                    _configStepBodySelect);
-                                              }
-                                            }
-                                          : null,
-                                      child: const Text('START'),
                                     ),
-                        ),
-                        _configMaxTrials != 0 && _configStepBodySelect != 0
-                            ? Container()
-                            : const Text(
-                                "No Internet Connection!",
-                                style: TextStyle(color: Colors.red),
-                              ),
-                      ],
+                                    child: const Text('Continue'),
+                                  )
+                                : _toggled
+                                    ? Text('$_start')
+                                    : ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: theme.primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                        ),
+                                        onPressed: _configMaxTrials != 0 &&
+                                                _configStepBodySelect != 0
+                                            ? () async {
+                                                if (_toggled) {
+                                                  _untoggle();
+                                                } else {
+                                                  _toggle();
+                                                  await _calculateStep(
+                                                      _configMaxTrials,
+                                                      _configStepBodySelect);
+                                                }
+                                              }
+                                            : null,
+                                        child: const Text('START'),
+                                      ),
+                          ),
+                          _configMaxTrials != 0 && _configStepBodySelect != 0
+                              ? Container()
+                              : const Text(
+                                  "No Internet Connection!",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    margin: const EdgeInsets.all(12),
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(18),
-                        ),
-                        color: Colors.white),
-                    child: Chart(_data),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      margin: const EdgeInsets.all(12),
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(18),
+                          ),
+                          color: Colors.white),
+                      child: Chart(_data),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            // _bpm > 30 && _bpm < 150 ? Container() : _toggled ? Center(child: Image.asset('assets/images/readjust.png' )): Container(),
-          ],
+                ],
+              ),
+              // _bpm > 30 && _bpm < 150 ? Container() : _toggled ? Center(child: Image.asset('assets/images/readjust.png' )): Container(),
+            ],
+          ),
         ),
       ),
-    );
+      _isFingerOverlay
+          ? Scaffold(
+              body: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Image.asset(
+                        'assets/images/hand.png',
+                        width: 200.0,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        'Readjust your grip',
+                        style: TextStyle(fontSize: 20.0),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "Please make sure your finger is gently covering your phone's camera and flash to continue.",
+                        style: TextStyle(fontSize: 14.0),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : Container()
+    ]);
   }
 
   _calculateStep(int total, int range) {
@@ -364,6 +408,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       _animationController!.repeat(reverse: true);
       setState(() {
         _toggled = true;
+        _isFingerOverlay = false;
       });
 
       // after is toggled
@@ -404,6 +449,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
       // _countTrials++;
       _toggled = false;
       _isFinished = true;
+      _isFingerOverlay = false;
     });
 
     // _start = 30;
@@ -429,6 +475,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
         if (_start == 0) {
           setState(() {
             _toggled = false;
+            _isFingerOverlay = false;
             _untoggle();
             t.cancel();
           });
@@ -474,6 +521,19 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   }
 
   void _scanImage(CameraImage image) {
+    int h = image.height;
+    int w = image.width;
+    // var rgb1 = [w * h];
+    Uint8List bytes = image.planes.first.bytes;
+    double redAVG =
+        ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
+    if (redAVG > 127.4 && redAVG < 127.6) {
+      _isFingerOverlay = false;
+    } else {
+      _isFingerOverlay = true;
+    }
+
+    print(redAVG);
     _now = DateTime.now();
     _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
