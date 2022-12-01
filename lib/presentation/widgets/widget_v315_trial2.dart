@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 
 
-class V315Trial1Widget extends StatefulWidget {
-  const V315Trial1Widget({Key? key}) : super(key: key);
+class V315Trial2Widget extends StatefulWidget {
+  const V315Trial2Widget({Key? key}) : super(key: key);
 
   @override
-  State<V315Trial1Widget> createState() => _V315Trial1WidgetState();
+  State<V315Trial2Widget> createState() => _V315Trial2WidgetState();
 }
 
-class _V315Trial1WidgetState extends State<V315Trial1Widget> {
+class _V315Trial2WidgetState extends State<V315Trial2Widget> {
   double _currentSliderValue = 50;
 
   _changeSlider(double value) {

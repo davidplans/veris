@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/repositories/auth_repository.dart';
+import '../pages/trial_BMP_page.dart';
 import 'heart_beats_widget.dart';
 import 'questions_widget.dart';
 import 'widget_v20.dart';

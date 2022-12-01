@@ -39,11 +39,19 @@ class _KnobPageState extends State<KnobPage> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   late User user;
   late int lastSetNumber;
+  int _completeTrials = 0;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   @override
   void initState() {
     super.initState();
-
+    _prefs.then((SharedPreferences p) {
+      _completeTrials = p.getInt('completeTrials') ?? 0;
+      _completeTrials++;
+      setState(() {
+        
+      });
+    });
     // _playBeep(_currentValue);
   }
 
@@ -57,6 +65,7 @@ class _KnobPageState extends State<KnobPage> {
     player.setAudioSource(source).then((value) {
       if (speed >= 60) {
         player.setLoopMode(LoopMode.all);
+        player.setVolume(0.3);
         player.setSpeed(
             // beep.mp3 duration 0.862 / 1.1602 = 1.000 sec
             double.parse(
@@ -71,6 +80,7 @@ class _KnobPageState extends State<KnobPage> {
             Duration(milliseconds: ((60 / (speed)) * 1000).round()), (t) {
           player.stop();
           player.setAudioSource(source);
+          player.setVolume(0.3);
           player.play();
           // t.cancel();
         });
@@ -123,102 +133,113 @@ class _KnobPageState extends State<KnobPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(_calculateBeatsToString(),
+              Text('Trial: $_completeTrials',style: const TextStyle(
+                      fontSize: 26.0,
+                    )),
+              const Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                    "Move the dial until the tone matches your haert-beat, to the best of your perception. Please press confirm when you are done.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    )),
+              ),
+              Text(_isStarting ? _calculateBeatsToString() : "",
                   style: const TextStyle(
                     fontSize: 50,
                   )),
-              const SizedBox(height: 100),
+              const SizedBox(height: 40),
               Container(
-                width: 250,
-                height: 250,
-                color: Colors.white,
-                child: _isStarting
-                    ? LayoutBuilder(builder: (context, constraints) {
-                        return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onPanUpdate: (details) {
-                            Offset centerOfGestureDetector = Offset(
-                                constraints.maxWidth / 2,
-                                constraints.maxHeight / 2);
-                            final touchPositionFromCenter =
-                                details.localPosition - centerOfGestureDetector;
+                  width: 250,
+                  height: 250,
+                  color: Colors.white,
+                  child:
+                      // _isStarting
+                      //     ?
+                      LayoutBuilder(builder: (context, constraints) {
+                    return GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onPanUpdate: (details) {
+                        Offset centerOfGestureDetector = Offset(
+                            constraints.maxWidth / 2,
+                            constraints.maxHeight / 2);
+                        final touchPositionFromCenter =
+                            details.localPosition - centerOfGestureDetector;
 
-                            setState(
-                              () {
-                                if (((touchPositionFromCenter.direction *
+                        setState(
+                          () {
+                            _isStarting = true;
+                            if (((touchPositionFromCenter.direction *
+                                        180 /
+                                        pi) +
+                                    _currentValue) >=
+                                60) {
+                              _timer.cancel();
+                              finalAngle = touchPositionFromCenter.direction;
+                              // _changeKnob(double.parse(
+                              //     ((touchPositionFromCenter.direction * 180 / pi) + _currentValue)
+                              //         .toStringAsFixed(0)));
+                            } else if (((touchPositionFromCenter.direction *
+                                            180 /
+                                            pi) +
+                                        _currentValue) <=
+                                    59 &&
+                                ((touchPositionFromCenter.direction *
                                             180 /
                                             pi) +
                                         _currentValue) >=
-                                    60) {
-                                  _timer.cancel();
-                                  finalAngle =
-                                      touchPositionFromCenter.direction;
-                                  // _changeKnob(double.parse(
-                                  //     ((touchPositionFromCenter.direction * 180 / pi) + _currentValue)
-                                  //         .toStringAsFixed(0)));
-                                } else if (((touchPositionFromCenter.direction *
-                                                180 /
-                                                pi) +
-                                            _currentValue) <=
-                                        59 &&
-                                    ((touchPositionFromCenter.direction *
-                                                180 /
-                                                pi) +
-                                            _currentValue) >=
-                                        0) {
-                                  _timer.cancel();
-                                  finalAngle =
-                                      touchPositionFromCenter.direction;
-                                  // _changeKnob(double.parse(
-                                  //     ((touchPositionFromCenter.direction * 180 / pi) + _currentValue)
-                                  //         .toStringAsFixed(0)));
-                                }
-                              },
-                            );
-                          },
-                          onPanEnd: (details) {
-                            if (_calculateBeatsToDouble() >= 60) {
+                                    0) {
                               _timer.cancel();
-                              _changeKnob(
-                                  double.parse(_calculateBeatsToString()));
-                            } else if (_calculateBeatsToDouble() <= 59 &&
-                                _calculateBeatsToDouble() >= 0) {
-                              _timer.cancel();
-                              _changeKnob(
-                                  double.parse(_calculateBeatsToString()));
+                              finalAngle = touchPositionFromCenter.direction;
+                              // _changeKnob(double.parse(
+                              //     ((touchPositionFromCenter.direction * 180 / pi) + _currentValue)
+                              //         .toStringAsFixed(0)));
                             }
                           },
-                          child: Transform.rotate(
-                            angle: finalAngle,
-                            child: const Image(
-                              image: AssetImage("assets/images/knob.png"),
-                            ),
-                          ),
                         );
-                      })
-                    : null,
-              ),
-              const SizedBox(height: 50),
-              ElevatedButton(
-                onPressed: !_isStarting
-                    ? () {
-                        _playBeep(_currentValue);
-                        setState(() {
-                          _isStarting = true;
-                        });
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  primary: theme.primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                      },
+                      onPanEnd: (details) {
+                        if (_calculateBeatsToDouble() >= 60) {
+                          _timer.cancel();
+                          _changeKnob(double.parse(_calculateBeatsToString()));
+                        } else if (_calculateBeatsToDouble() <= 59 &&
+                            _calculateBeatsToDouble() >= 0) {
+                          _timer.cancel();
+                          _changeKnob(double.parse(_calculateBeatsToString()));
+                        }
+                      },
+                      child: Transform.rotate(
+                        angle: finalAngle,
+                        child: const Image(
+                          image: AssetImage("assets/images/knob.png"),
+                        ),
+                      ),
+                    );
+                  })
+                  // : null,
                   ),
-                ),
-                child: const Text(
-                  'Move',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              const SizedBox(height: 40),
+              // ElevatedButton(
+              //   onPressed: !_isStarting
+              //       ? () {
+              //           _playBeep(_currentValue);
+              //           setState(() {
+              //             _isStarting = true;
+              //           });
+              //         }
+              //       : null,
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: theme.primaryColor,
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(8.0),
+              //     ),
+              //   ),
+              //   child: const Text(
+              //     'Move',
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              // ),
               ElevatedButton(
                 onPressed: _isStarting
                     ? () async {
@@ -339,11 +360,11 @@ class _KnobPageState extends State<KnobPage> {
                                     content: Text("Data stored! \n Thank you."),
                                   ),
                                 );
-                       Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const V318Widget(),
-                              ),
-                            );
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const V318Widget(),
+                                  ),
+                                );
                               } else {
                                 Navigator.of(context).push<void>(
                                   TrialBMPPage.route(),
@@ -359,7 +380,7 @@ class _KnobPageState extends State<KnobPage> {
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  primary: theme.primaryColor,
+                  backgroundColor: theme.primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),

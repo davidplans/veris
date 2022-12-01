@@ -96,7 +96,6 @@ class _V311Trial1WidgetState extends State<V311Trial1Widget>
   }
 
   void _untoggle() async {
-    print("Ok");
     _disposeController();
     Wakelock.disable();
     _animationController!.stop();
@@ -419,7 +418,7 @@ class _V311Trial1WidgetState extends State<V311Trial1Widget>
                                     : !_isFinished
                                         ? ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                              primary: theme.primaryColor,
+                                              backgroundColor: theme.primaryColor,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),

@@ -11,14 +11,14 @@ import '../../style/theme.dart';
 import '../utils/chart.dart';
 import 'widget_v315_trial2.dart';
 
-class V314Trial1Widget extends StatefulWidget {
-  const V314Trial1Widget({super.key});
+class V314Trial2Widget extends StatefulWidget {
+  const V314Trial2Widget({super.key});
 
   @override
-  State<V314Trial1Widget> createState() => _V314Trial1WidgetState();
+  State<V314Trial2Widget> createState() => _V314Trial2WidgetState();
 }
 
-class _V314Trial1WidgetState extends State<V314Trial1Widget>
+class _V314Trial2WidgetState extends State<V314Trial2Widget>
     with SingleTickerProviderStateMixin {
   bool _toggled = false; // toggle button value
   List<SensorValue> _data = <SensorValue>[]; // array to store the values
@@ -289,7 +289,7 @@ class _V314Trial1WidgetState extends State<V314Trial1Widget>
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const V315Trial1Widget(),
+                                builder: (context) => const V315Trial2Widget(),
                               ),
                             );
                           },
