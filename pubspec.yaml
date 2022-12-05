@@ -38,13 +38,14 @@ dependencies:
   flow_builder: ^0.0.9
   video_player: ^2.4.5
   just_audio: ^0.9.27
-  introduction_screen: ^3.0.2
+  # introduction_screen: ^3.0.2
   intl: ^0.17.0
   svg_path_parser: ^1.0.0
   shared_preferences: ^2.0.15
   survey_kit: ^0.1.1
   dio: ^4.0.6
   path_provider: ^2.0.11
+  flutter_widget_from_html: ^0.9.0+1
 
   #DEV
   mobile_scanner: ^2.0.0

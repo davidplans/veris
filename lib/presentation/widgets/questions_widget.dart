@@ -1,7 +1,9 @@
 import 'package:Veris/presentation/pages/home_page.dart';
+import 'package:Veris/presentation/utils/custom_step.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:survey_kit/survey_kit.dart' as kit;
 // import 'package:survey_kit/survey_kit.dart';
@@ -260,23 +262,39 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
       switch (item['type']) {
         case "instruction":
           steps.add(
-            kit.InstructionStep(
-              title: item['type'],
-              text: item['text'],
-              buttonText: 'Let\'s go!',
-            ),
+            CustomInstructionStep(
+              title: item['type'], 
+              text: item['text']),
+            // kit.InstructionStep(
+            //   title: item['type'],
+            //   text: item['text'],
+            //   buttonText: 'Let\'s go!',
+            // ),
           );
           break;
         case "text":
-          steps.add(
-            kit.QuestionStep(
-              title: item['text'],
-              answerFormat: const kit.TextAnswerFormat(
-                hint: 'Enter',
+          if (item['subtype'] == 'numeric') {
+            steps.add(
+              kit.QuestionStep(
+                title: item['text'],
+                answerFormat: const kit.IntegerAnswerFormat(
+                  hint: 'Enter',
+                ),
+                isOptional: false,
               ),
-              isOptional: true,
-            ),
-          );
+            );
+          } else {
+            steps.add(
+              kit.QuestionStep(
+                title: item['text'],
+                answerFormat: const kit.TextAnswerFormat(
+                  hint: 'Enter',
+                ),
+                isOptional: true,
+              ),
+            );
+          }
+
           break;
         case "multi":
           List<kit.TextChoice> options = [];
@@ -295,14 +313,14 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
           break;
       }
     }
-    steps.add(
-      kit.CompletionStep(
-        stepIdentifier: kit.StepIdentifier(id: 'completeId'),
-        text: 'Thanks for taking the survey!',
-        title: 'Done!',
-        buttonText: 'Submit survey',
-      ),
-    );
+    // steps.add(
+    //   kit.CompletionStep(
+    //     stepIdentifier: kit.StepIdentifier(id: 'completeId'),
+    //     text: 'Thanks for taking the survey!',
+    //     title: 'Done!',
+    //     // buttonText: 'Submit survey',
+    //   ),
+    // );
     var task = kit.NavigableTask(id: kit.TaskIdentifier(), steps: steps);
     return Future.value(task);
     // Widget w = Container();
@@ -321,3 +339,5 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
     // return w;
   }
 }
+
+
