@@ -73,7 +73,8 @@ class _V35WidgetState extends State<V35Widget> {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
-                                      Navigator.of(context).push(
+                  controller2.pause();
+                  Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const V36Widget(),
                     ),
@@ -93,49 +94,49 @@ class _V35WidgetState extends State<V35Widget> {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Container(
-              // width: 250,
+              width: 350,
               child: Column(children: [
-            AspectRatio(
-              aspectRatio: controller2.value.aspectRatio,
-              child: VideoPlayer(controller2),
-            ),
-            Container(
-                child: VideoProgressIndicator(controller2,
-                    allowScrubbing: true,
-                    colors: const VideoProgressColors(
-                      backgroundColor: Colors.redAccent,
-                      playedColor: Colors.green,
-                      bufferedColor: Colors.purple,
-                    ))),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        if (controller2.value.isPlaying) {
-                          controller2.pause();
-                        } else {
-                          controller2.play();
-                        }
-                        setState(() {});
-                      },
-                      icon: Icon(
-                        controller2.value.isPlaying
-                            ? Icons.pause
-                            : Icons.play_arrow,
-                        size: 40,
-                      )),
-                  // IconButton(
-                  //     onPressed: () {
-                  //       controller2.seekTo(const Duration(seconds: 0));
-                  //       setState(() {});
-                  //     },
-                  //     icon: const Icon(Icons.stop))
-                ],
-              ),
-            ),
-          ])),
+                AspectRatio(
+                  aspectRatio: controller2.value.aspectRatio,
+                  child: VideoPlayer(controller2),
+                ),
+                Container(
+                    child: VideoProgressIndicator(controller2,
+                        allowScrubbing: true,
+                        colors: const VideoProgressColors(
+                          backgroundColor: Colors.redAccent,
+                          playedColor: Colors.green,
+                          bufferedColor: Colors.purple,
+                        ))),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            if (controller2.value.isPlaying) {
+                              controller2.pause();
+                            } else {
+                              controller2.play();
+                            }
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            controller2.value.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow,
+                            size: 40,
+                          )),
+                      // IconButton(
+                      //     onPressed: () {
+                      //       controller2.seekTo(const Duration(seconds: 0));
+                      //       setState(() {});
+                      //     },
+                      //     icon: const Icon(Icons.stop))
+                    ],
+                  ),
+                ),
+              ])),
         ),
       ),
     );

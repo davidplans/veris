@@ -73,6 +73,7 @@ class _V32WidgetState extends State<V32Widget> {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
+                  controller1.pause();
                                       Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const V33Widget(),
@@ -104,7 +105,7 @@ class _V32WidgetState extends State<V32Widget> {
                 ),
               ),
             ),
-            const SizedBox(height: 60,),
+            const SizedBox(height: 10,),
             AspectRatio(
               aspectRatio: controller1.value.aspectRatio,
               child: VideoPlayer(controller1),

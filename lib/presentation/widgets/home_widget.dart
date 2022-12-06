@@ -12,6 +12,7 @@ import '../pages/trial_BMP_page.dart';
 import 'heart_beats_widget.dart';
 import 'questions_widget.dart';
 import 'widget_v20.dart';
+import 'widget_v31.dart';
 import 'widget_v310_trial1.dart';
 import 'widget_v318.dart';
 
@@ -37,6 +38,16 @@ class _HomeWidgetState extends State<HomeWidget> {
   Future<void> getFile() async {
     await _prefs.then((SharedPreferences p) {
       Map parsedJson = jsonDecode(p.getString('json_file') ?? '');
+      Map<String, dynamic> prop = parsedJson['properties'];
+      p.setString('study_name', prop['study_name']);
+      p.setString('study_id', prop['study_id']);
+      p.setString('created_by', prop['created_by']);
+      p.setString('instructions', prop['instructions']);
+      p.setString('empty_msg', prop['empty_msg']);
+      p.setString('support_url', prop['support_url']);
+      p.setString('support_email', prop['support_email']);
+      p.setString('ethics', prop['ethics']);
+      p.setString('pls', prop['pls']);
 
       setState(() {
         _modules = List.from((parsedJson['modules']));
@@ -89,7 +100,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 8.0),
                     child: Text(
-                      'Recent',
+                      '',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
@@ -287,7 +298,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 Padding(
                   padding: EdgeInsets.only(left: 8.0),
                   child: Text(
-                    'Start here',
+                    '',
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),

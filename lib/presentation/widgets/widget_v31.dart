@@ -55,6 +55,7 @@ class _V31WidgetState extends State<V31Widget> {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
+                  controller1.dispose();
                   Navigator.of(context).pop();
                 },
                 label: const Text(
@@ -73,6 +74,7 @@ class _V31WidgetState extends State<V31Widget> {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
+                  controller1.pause();
                                       Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const V32Widget(),
@@ -95,7 +97,7 @@ class _V31WidgetState extends State<V31Widget> {
             Container(
               child: const Center(
                 child: Padding(
-                  padding: EdgeInsets.all(22.0),
+                  padding: EdgeInsets.only(left: 22.0, top: 10.0, right:22.0, bottom:0),
                   child: Text(
                     "It might seem like there is a delay between the sounds and the heartbeats you feel.\n\nPlay the video below to hear an example!",
                     style: TextStyle(fontSize: 18.0),
@@ -104,7 +106,7 @@ class _V31WidgetState extends State<V31Widget> {
                 ),
               ),
             ),
-            const SizedBox(height: 60,),
+            const SizedBox(height: 10,),
             AspectRatio(
               aspectRatio: controller1.value.aspectRatio,
               child: VideoPlayer(controller1),
