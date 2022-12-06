@@ -27,7 +27,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   // List<FileSystemEntity> _files = [];
   List<dynamic> _modules = [];
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
+String _bannerUrl = '';
   @override
   initState() {
     getFile();
@@ -36,9 +36,10 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   Future<void> getFile() async {
-    await _prefs.then((SharedPreferences p) {
+    _prefs.then((SharedPreferences p) {
       Map parsedJson = jsonDecode(p.getString('json_file') ?? '');
       Map<String, dynamic> prop = parsedJson['properties'];
+
       p.setString('study_name', prop['study_name']);
       p.setString('study_id', prop['study_id']);
       p.setString('created_by', prop['created_by']);
@@ -51,9 +52,8 @@ class _HomeWidgetState extends State<HomeWidget> {
 
       setState(() {
         _modules = List.from((parsedJson['modules']));
+         _bannerUrl = p.getString('banner_url') ?? '';
       });
-
-      // print(_modules[0]);
     });
 
     // final directory = await getApplicationDocumentsDirectory();
@@ -85,11 +85,17 @@ class _HomeWidgetState extends State<HomeWidget> {
     // final textTheme = Theme.of(context).textTheme;
     // final user = context.select((AuthBloc bloc) => bloc.state.user);
 
+    
+
     return Align(
       alignment: const Alignment(0, -1 / 3),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+
+         _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
+
+
           Container(
               width: MediaQuery.of(context).size.width,
               height: 50,
@@ -231,97 +237,37 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 : Container()
                       ],
                     ),
-                    // child: ListTile(
-                    //   trailing: Wrap(
-                    //     spacing: 12, // space between two icons
-                    //     children: const <Widget>[
-                    //       Icon(Icons.arrow_forward), // icon-1
-                    //       // Icon(Icons.message), // icon-2
-                    //     ],
-                    //   ),
-                    //   leading: _modules[index]["type"] == 'survey'
-                    //       ? const Icon(Icons.bar_chart, color: Colors.amber)
-                    //       : const Icon(
-                    //           Icons.favorite,
-                    //           color: Colors.red,
-                    //         ),
-                    //   shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(16)),
-                    //   // subtitle:
-                    //   //     Text(countId.toString()),
-                    //   title: Text(_modules[index]["name"]),
-                    //   tileColor: _modules[index]["type"] == 'survey'
-                    //       ? Colors.blue
-                    //       : Colors.amber[300],
-                    //   onTap: (() async {
-                    //     if (_modules[index]["type"] == 'survey') {
-                    //       // List<dynamic> questions =
-                    //       //     _modules[index]["sections"][0]["questions"];
-                    //        List<dynamic> sections =
-                    //           _modules[index]["sections"];
-                    //       Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //           builder: (context) => SectionsWidget(
-                    //             sections: sections,
-                    //             moduleId: index,
-                    //           ),
-                    //         ),
-                    //       );
-                    //     } else if (_modules[index]["type"] == 'pat') {
-                    //       await _prefs.then((SharedPreferences p) {
-                    //         p.setInt(
-                    //             'maxTrials', _modules[index]["total_trials"]);
-                    //         p.setInt('stepBodySelect',
-                    //             _modules[index]["step_body_select"]);
-                    //       }).whenComplete(() {
-                    //         Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //             builder: (context) => const IntroTabWidget(),
-                    //           ),
-                    //         );
-                    //       });
-                    //     }
-                    //   }),
-                    // ),
                   );
                 }),
           ),
 
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            color: const Color.fromARGB(255, 49, 56, 71),
-            child: Row(
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    '',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.white,
-              child: Column(
-                children: const [Text('TEXT')],
-              ),
-            ),
-          ),
-
-          // Avatar(photo: user.photo),
-          // const SizedBox(height: 4),
-          // Text(user.email ?? '', style: textTheme.headline6),
-          // const SizedBox(height: 4),
-          // Text(user.name ?? '', style: textTheme.headline5),
+          // Container(
+          //   width: MediaQuery.of(context).size.width,
+          //   height: 50,
+          //   color: const Color.fromARGB(255, 49, 56, 71),
+          //   child: Row(
+          //     children: const [
+          //       Padding(
+          //         padding: EdgeInsets.only(left: 8.0),
+          //         child: Text(
+          //           '',
+          //           style: TextStyle(
+          //               color: Colors.white, fontWeight: FontWeight.bold),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Expanded(
+          //   flex: 4,
+          //   child: Container(
+          //     width: MediaQuery.of(context).size.width,
+          //     color: Colors.white,
+          //     child: Column(
+          //       children: const [Text('TEXT')],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
