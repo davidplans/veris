@@ -38,13 +38,45 @@ required this.title,
     );
   }
 
-  
-  @override
-  Map<String, dynamic> toJson() {
-    // TODO: implement toJson
-    throw UnimplementedError();
-  }
+factory CustomInstructionStep.fromJson(Map<String, dynamic> json) =>
+      _$InstructionStepFromJson(json);
+  Map<String, dynamic> toJson() => _$InstructionStepToJson(this);
+
+  bool operator ==(o) =>
+      super == (o) &&
+      o is CustomInstructionStep &&
+      o.title == title &&
+      o.text == text;
+  int get hashCode => super.hashCode ^ title.hashCode ^ text.hashCode;
 }
+
+CustomInstructionStep _$InstructionStepFromJson(Map<String, dynamic> json) =>
+    CustomInstructionStep(
+      title: json['title'] as String,
+      text: json['text'] as String,
+      isOptional: json['isOptional'] as bool? ?? false,
+      buttonText: json['buttonText'] as String? ?? 'Next',
+      stepIdentifier: json['stepIdentifier'] == null
+          ? null
+          : StepIdentifier.fromJson(
+              json['stepIdentifier'] as Map<String, dynamic>),
+      canGoBack: json['canGoBack'] as bool?,
+      showProgress: json['showProgress'] as bool?,
+      showAppBar: json['showAppBar'] as bool? ?? true,
+    );
+
+Map<String, dynamic> _$InstructionStepToJson(CustomInstructionStep instance) =>
+    <String, dynamic>{
+      'stepIdentifier': instance.stepIdentifier,
+      'isOptional': instance.isOptional,
+      'buttonText': instance.buttonText,
+      'canGoBack': instance.canGoBack,
+      'showProgress': instance.showProgress,
+      'showAppBar': instance.showAppBar,
+      'title': instance.title,
+      'text': instance.text,
+    };
+
 
 class CustomInstructionView extends StatelessWidget {
   final CustomInstructionStep customInstructionStep;
@@ -75,3 +107,4 @@ class CustomInstructionView extends StatelessWidget {
     );
   }
 }
+

@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:Veris/presentation/pages/home_page.dart';
-import 'package:Veris/presentation/utils/custom_step.dart';
+import 'package:Veris/presentation/utils/surveys/custom_instruction_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:survey_kit/survey_kit.dart' as kit;
+
+import '../utils/surveys/custom_question_step.dart';
 // import 'package:survey_kit/survey_kit.dart';
 
 class QuestionsWidget extends StatefulWidget {
@@ -257,25 +261,20 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
   }
 
   Future<kit.Task> _getTask(List<dynamic> items) {
+    // print(items);
     List<kit.Step> steps = [];
     for (var item in items) {
+      // print(item['type']);
       switch (item['type']) {
         case "instruction":
           steps.add(
-            CustomInstructionStep(
-              title: item['type'], 
-              text: item['text']),
-            // kit.InstructionStep(
-            //   title: item['type'],
-            //   text: item['text'],
-            //   buttonText: 'Let\'s go!',
-            // ),
+            CustomInstructionStep(title: item['type'], text: item['text']),
           );
           break;
         case "text":
           if (item['subtype'] == 'numeric') {
             steps.add(
-              kit.QuestionStep(
+              CustomQuestionStep(
                 title: item['text'],
                 answerFormat: const kit.IntegerAnswerFormat(
                   hint: 'Enter',
@@ -285,8 +284,11 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
             );
           } else {
             steps.add(
-              kit.QuestionStep(
+              CustomQuestionStep(
                 title: item['text'],
+                text: item['hide_id'] != null
+                    ? item['hide_id'] + "#" + item['hide_value']
+                    : '',
                 answerFormat: const kit.TextAnswerFormat(
                   hint: 'Enter',
                 ),
@@ -302,8 +304,9 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
             options.add(kit.TextChoice(text: option, value: option));
           }
           steps.add(
-            kit.QuestionStep(
+            CustomQuestionStep(
               title: item['text'],
+              text: item['id'] ?? '',
               answerFormat: kit.SingleChoiceAnswerFormat(
                 textChoices: options,
               ),
@@ -313,6 +316,8 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
           break;
       }
     }
+
+    // print(steps.first.title);
     // steps.add(
     //   kit.CompletionStep(
     //     stepIdentifier: kit.StepIdentifier(id: 'completeId'),
@@ -322,6 +327,11 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
     //   ),
     // );
     var task = kit.NavigableTask(id: kit.TaskIdentifier(), steps: steps);
+    // print(task.steps.first.);
+    // print(task.initalStep?.stepIdentifier);
+    // print(task.steps.);
+    _buildNavigationRule(task);
+
     return Future.value(task);
     // Widget w = Container();
     // // print(item['type']);
@@ -338,6 +348,50 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
     // }
     // return w;
   }
+
+  kit.NavigableTask _buildNavigationRule(kit.NavigableTask task) {
+    Map<String, dynamic> hideIds = {};
+
+    for (var step in task.steps) {
+      var obj = step.toJson();
+      // print(obj['text']);
+
+      if (obj['text'] != '' &&
+          obj['answerFormat'].runtimeType == kit.TextAnswerFormat) {
+        var arr = obj['text'].split('#');
+        hideIds[arr[0]] = arr[1];
+      }
+    }
+
+    int count = 0;
+    for (var step in task.steps) {
+      var obj = step.toJson();
+      if (obj['text'] != '' &&
+          obj['answerFormat'].runtimeType == kit.SingleChoiceAnswerFormat) {
+        if (hideIds.containsKey(obj['text'])) {
+          String value = hideIds[obj['text']];
+          int curentIndex = count;
+
+          task.addNavigationRule(
+            forTriggerStepIdentifier: step.stepIdentifier,
+            navigationRule: kit.ConditionalNavigationRule(
+              resultToStepIdentifierMapper: (input) {
+                if (input == value) {
+                  int nextStep = curentIndex + 1;
+                  return task.steps[nextStep].stepIdentifier;
+                } else {
+                  int plusTwoStep = curentIndex + 2;
+
+                  return task.steps[plusTwoStep].stepIdentifier;
+                }
+              },
+            ),
+          );
+        }
+      }
+      count++;
+    }
+
+    return task;
+  }
 }
-
-
