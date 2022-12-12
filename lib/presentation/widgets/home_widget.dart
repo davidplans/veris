@@ -131,11 +131,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                 padding: const EdgeInsets.all(8),
                 itemCount: _modules.length,
                 itemBuilder: (BuildContext context, int indexModule) {
+                  final moduleName = _modules[indexModule]["name"];
                   // print(_modules[indexModule]);
                   return Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: ExpansionTile(
-                      title: Text(_modules[indexModule]["name"]),
+                      title: Text(moduleName),
                       backgroundColor: Color.fromARGB(255, 100, 155, 200),
                       collapsedBackgroundColor:
                           _modules[indexModule]["type"] == 'survey'
@@ -183,6 +184,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                               moduleId: indexModule,
                                               sectonId: indexSection,
                                               sectionName: sectionName,
+                                              moduleName: moduleName,
                                             ),
                                           ),
                                         );

@@ -17,13 +17,16 @@ class QuestionsWidget extends StatefulWidget {
   final int moduleId;
   final int sectonId;
   final String sectionName;
+  final String moduleName;
 
   const QuestionsWidget(
       {Key? key,
       required this.questions,
       required this.moduleId,
       required this.sectonId,
-      required this.sectionName})
+      required this.sectionName,
+      required this.moduleName
+      })
       : super(key: key);
 
   @override
@@ -38,6 +41,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   String userId = "";
   String studyId = "";
+
 
   // DateFormat format = DateFormat('yyyy-MM-dd – kk:mm');
 
@@ -76,7 +80,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                       Navigator.of(context).push(HomePage.route());
                     },
                   ),
-                  onResult: (kit.SurveyResult result) {
+                  onResult: (kit.SurveyResult result) async {
                     for (var stepResult in result.results) {
                       for (var questionResult in stepResult.results) {
                         if (questionResult.valueIdentifier.toString() !=
@@ -98,26 +102,30 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                     String sectionId =
                         "${formatedSectionName}_${widget.sectonId}";
 
+
+
                     if (resultData.isNotEmpty) {
                       final moduleData = {
                         "userId": userId,
                         "studyId": studyId,
                         "moduleId": widget.moduleId,
                         "sectionId": sectionId,
+                        "sectionName": widget.sectionName,
+                        "moduleName": widget.moduleName,
                         "datetime": DateTime.now(),
                         "values": resultData,
                       };
-                      if (userId.isNotEmpty && studyId.isNotEmpty) {
+
+                    if (userId.isNotEmpty && studyId.isNotEmpty) {
                         users
                             .doc(userId)
                             .collection('studies')
-                            .doc(studyId)
-                            .collection('modules')
-                            .doc(widget.moduleId.toString())
+                            .doc(sectionId)
                             .set(moduleData)
                             .then((value) => Navigator.of(context)
                                 .push<void>(HomePage.route()));
                       }
+
                       // if (userId.isNotEmpty && studyId.isNotEmpty) {
                       //   users
                       //       .doc(userId)
@@ -131,6 +139,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                       //       .then((value) => Navigator.of(context)
                       //           .push<void>(HomePage.route()));
                       // }
+
                     }
                   },
                   task: task,

@@ -106,7 +106,6 @@ class _V23WidgetState extends State<V23Widget>
   }
 
   void _untoggle() async {
-    print("Ok");
     _disposeController();
     Wakelock.disable();
     _animationController!.stop();
@@ -120,14 +119,12 @@ class _V23WidgetState extends State<V23Widget>
       _isFinished = true;
       _isFingerOverlay = false;
     });
-    print("Ok2");
 
     final baselineData = {
       "baselines": _instantBPMs,
       "startDate": _startDate,
       "endDate": DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now())
     };
-    print("Ok3");
 
     users.doc(user.id).collection('baselines').add(baselineData);
     _instantBPMs.clear();
