@@ -33,8 +33,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-/ios/
-/andriod/
+# /ios/
+# /andriod/
 /linux/
 /macos/
 /web/
@@ -50,14 +50,5 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
-ios/Runner/GoogleService-Info.plist
-ios/Runner.xcodeproj/project.pbxproj
-ios/Podfile.lock
-ios/Podfile
-ios/Runner/Info.plist
-ios/Runner.xcodeproj/project.pbxproj
-ios/Runner/Info.plist
+
 macos/Flutter/GeneratedPluginRegistrant.swift
