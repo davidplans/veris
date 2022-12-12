@@ -45,15 +45,16 @@ class _ProgressWidgetState extends State<ProgressWidget> {
               child: CircularProgressIndicator(),
             );
           } else {
+            print(snapshot.data);
             return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: ((context, index) {
                   DocumentSnapshot setDocument = snapshot.data!.docs[index];
-                  print(setDocument.data());
+                  
                   // final String dateSet =
                   //     _formatDate(setDocument.get('startSet').toDate());
                   final id = setDocument.id;
-                  return ExpansionTile(title: Text('Test # $id'), children: [
+                  return ExpansionTile(title: Text('Studies ID: $id'), children: [
                     StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                         stream: users
                             .doc(user.id)
@@ -72,7 +73,7 @@ class _ProgressWidgetState extends State<ProgressWidget> {
                             for (var doc in snapshot.data!.docs) {
                               // final String dateTrial =
                               //     _formatDate(doc['startTrial'].toDate());
-                              print(doc['startTrial']);
+                              // print(doc['startTrial']);
                               columnTrails.add(
                                 Container(
                                   margin: const EdgeInsets.only(

@@ -27,7 +27,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   // List<FileSystemEntity> _files = [];
   List<dynamic> _modules = [];
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-String _bannerUrl = '';
+  String _bannerUrl = '';
   @override
   initState() {
     getFile();
@@ -52,7 +52,7 @@ String _bannerUrl = '';
 
       setState(() {
         _modules = List.from((parsedJson['modules']));
-         _bannerUrl = p.getString('banner_url') ?? '';
+        _bannerUrl = prop['banner_url'] ?? '';
       });
     });
 
@@ -85,16 +85,12 @@ String _bannerUrl = '';
     // final textTheme = Theme.of(context).textTheme;
     // final user = context.select((AuthBloc bloc) => bloc.state.user);
 
-    
-
     return Align(
       alignment: const Alignment(0, -1 / 3),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-
-         _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
-
+          _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
 
           Container(
               width: MediaQuery.of(context).size.width,
