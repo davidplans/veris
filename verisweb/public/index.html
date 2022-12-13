@@ -89,7 +89,7 @@
     const app = initializeApp(firebaseConfig);
 
     const db = getFirestore(app);
-    const modulesRef = await query(collectionGroup(db, "modules"));
+    const modulesRef = await query(collectionGroup(db, "studies"));
     const docsModulesSnap = await getDocs(modulesRef);
 
     var studyIdArray = [];
@@ -131,12 +131,13 @@
 
       try {
         // console.log(idStudy);
-        const queryModules = await query(collectionGroup(db, "modules"), where("studyId", "==", idStudy));
+        const queryModules = await query(collectionGroup(db, "studies"), where("studyId", "==", idStudy));
 
         const moduleSnapshot = await getDocs(queryModules);
         let csvData = [];
         moduleSnapshot.forEach((study) => {
           // console.log(study.data().values);
+          console.log(study.data());
 
           let sortArr = [];
           var unsort = study.data().values;
@@ -154,15 +155,17 @@
 
 
           });
-          console.log(sortArr);
+          // console.log(sortArr);
           // var sortValue = Object.keys(unsort).sort(function(a,b){return unsort[a]-unsort[b]});
 
           var myJsonString = JSON.stringify(sortArr);
+
           let rowData = [];
           rowData.push(study.data().userId);
           rowData.push(study.data().studyId);
           rowData.push(study.data().moduleId);
           rowData.push(study.data().sectionId);
+          rowData.push(study.data().datetime.seconds);
           rowData.push(myJsonString);
           csvData.push(rowData);
           // console.log("+++++++");
@@ -180,7 +183,7 @@
     function downloadCsvFile(csvData) {
 
       //define the heading for each row of the data  
-      var csv = 'User ID;Study ID;Module ID;Section ID;Data\n';
+      var csv = 'User ID;Study ID;Module ID;Section ID;Unix Date;Data\n';
 
       //merge the data with CSV  
       csvData.forEach(function (row) {

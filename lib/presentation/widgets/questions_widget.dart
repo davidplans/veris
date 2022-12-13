@@ -120,7 +120,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                         users
                             .doc(userId)
                             .collection('studies')
-                            .doc(sectionId)
+                            .doc()
                             .set(moduleData)
                             .then((value) => Navigator.of(context)
                                 .push<void>(HomePage.route()));
