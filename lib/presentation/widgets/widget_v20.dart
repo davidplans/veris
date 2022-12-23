@@ -1,8 +1,6 @@
 import 'package:Veris/presentation/widgets/widget_v21.dart';
-import 'package:Veris/style/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 
 class V20Widget extends StatefulWidget {
   const V20Widget({super.key});

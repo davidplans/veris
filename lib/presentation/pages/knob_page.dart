@@ -139,16 +139,16 @@ class _KnobPageState extends State<KnobPage> {
               const Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Text(
-                    "Move the dial until the tone matches your haert-beat, to the best of your perception. Please press confirm when you are done.",
+                    "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16.0,
                     )),
               ),
-              Text(_isStarting ? _calculateBeatsToString() : "",
-                  style: const TextStyle(
-                    fontSize: 50,
-                  )),
+              // Text(_isStarting ? _calculateBeatsToString() : "",
+              //     style: const TextStyle(
+              //       fontSize: 50,
+              //     )),
               const SizedBox(height: 40),
               Container(
                   width: 250,
