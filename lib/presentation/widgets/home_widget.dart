@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:Veris/health_app.dart';
+import 'package:Veris/presentation/pages/smile_page.dart';
 
 import 'package:flutter/material.dart';
 
@@ -138,16 +139,27 @@ class _HomeWidgetState extends State<HomeWidget> {
                     child: ExpansionTile(
                       title: Text(moduleName),
                       backgroundColor: Color.fromARGB(255, 100, 155, 200),
-                      collapsedBackgroundColor:
-                          _modules[indexModule]["type"] == 'survey'
-                              ? Colors.blue
-                              : Colors.amber[300],
-                      leading: _modules[indexModule]["type"] == 'survey'
-                          ? const Icon(Icons.bar_chart, color: Colors.amber)
-                          : const Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            ),
+                      collapsedBackgroundColor: (() {
+                        switch (_modules[indexModule]["type"]) {
+                          case "survey":
+                            return Colors.blue;
+                          case "pat":
+                            return Colors.amber[300];
+                          case "smile":
+                            return Colors.purple[700];
+                        }
+                      }()),
+
+                      leading: (() {
+                        switch(_modules[indexModule]["type"]){
+                         case "survey":
+                            return const Icon(Icons.bar_chart, color: Colors.amber);
+                        case "pat":
+                            return const Icon(Icons.favorite, color: Colors.red);   
+                        case "smile":
+                            return const Icon(Icons.sentiment_satisfied , color: Colors.white);                      
+                        }
+                      }()),
                       children: [
                         _modules[indexModule]["type"] == 'survey'
                             ? Padding(
@@ -232,7 +244,34 @@ class _HomeWidgetState extends State<HomeWidget> {
                                       }),
                                     ),
                                   )
-                                : Container()
+                                : _modules[indexModule]["type"] == 'smile'
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 16.0),
+                                        child: ListTile(
+                                          title: const Text("Smile"),
+                                          textColor: Colors.white,
+                                          iconColor: Colors.white,
+                                          trailing: Wrap(
+                                            spacing:
+                                                12, // space between two icons
+                                            children: const <Widget>[
+                                              Icon(Icons
+                                                  .arrow_forward), // icon-1
+                                              // Icon(Icons.message), // icon-2
+                                            ],
+                                          ),
+                                          onTap: (() async {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SmilePage()),
+                                            );
+                                          }),
+                                        ),
+                                      )
+                                    : Container()
                       ],
                     ),
                   );
