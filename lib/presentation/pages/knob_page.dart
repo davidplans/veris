@@ -39,6 +39,7 @@ class _KnobPageState extends State<KnobPage> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   late User user;
   late int lastSetNumber;
+  late String studyId;
   int _completeTrials = 0;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -48,9 +49,8 @@ class _KnobPageState extends State<KnobPage> {
     _prefs.then((SharedPreferences p) {
       _completeTrials = p.getInt('completeTrials') ?? 0;
       _completeTrials++;
-      setState(() {
-        
-      });
+      studyId = p.getString('studyId') ?? "";
+      setState(() {});
     });
     // _playBeep(_currentValue);
   }
@@ -133,9 +133,10 @@ class _KnobPageState extends State<KnobPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Trial: $_completeTrials',style: const TextStyle(
-                      fontSize: 26.0,
-                    )),
+              Text('Trial: $_completeTrials',
+                  style: const TextStyle(
+                    fontSize: 26.0,
+                  )),
               const Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Text(
@@ -309,11 +310,10 @@ class _KnobPageState extends State<KnobPage> {
                               knobScales.map(double.parse).toList();
                         }
 
-                        final setData = {
-                          "startSet": formatDateSet,
-                        };
+                        final setData = {"startSet": formatDateSet};
 
                         final trialData = {
+                          "studyId": studyId,
                           "numRuns": numRuns,
                           "startTrial": formatDateTrial,
                           "selectedBody": selectedBody,
