@@ -313,6 +313,7 @@ class _KnobPageState extends State<KnobPage> {
                         final setData = {"startSet": formatDateSet};
 
                         final trialData = {
+                          "userId": user.id,
                           "studyId": studyId,
                           "numRuns": numRuns,
                           "startTrial": formatDateTrial,
