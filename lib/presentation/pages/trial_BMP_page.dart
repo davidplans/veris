@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
-
+import 'dart:io' show Platform;
 import 'package:Veris/data/models/user.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
 import 'package:Veris/presentation/pages/body_map_page.dart';
@@ -521,9 +521,11 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   }
 
   void _scanImage(CameraImage image) {
-    int h = image.height;
+if (Platform.isAndroid) {
+  _isFingerOverlay = false;
+} else if (Platform.isIOS) {
+      int h = image.height;
     int w = image.width;
-    // var rgb1 = [w * h];
     Uint8List bytes = image.planes.first.bytes;
     double redAVG =
         ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
@@ -532,8 +534,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
     } else {
       _isFingerOverlay = true;
     }
-
-    print(redAVG);
+}
     _now = DateTime.now();
     _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /

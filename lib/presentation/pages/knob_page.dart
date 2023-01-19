@@ -341,18 +341,10 @@ class _KnobPageState extends State<KnobPage> {
                             .whenComplete(() {
                           users
                               .doc(user.id)
-                              .collection('sets')
-                              .doc(numSet.toString())
-                              .set(setData, SetOptions(merge: true))
-                              .then((value) {
-                            users
-                                .doc(user.id)
-                                .collection('sets')
-                                .doc(numSet.toString())
-                                .collection('trials')
-                                .doc(unixTime)
-                                .set(trialData, SetOptions(merge: true))
-                                .then((value) {
+                              .collection('studies')
+                              .doc()
+                              .set(trialData, SetOptions(merge: true))
+                              .then((_)  {
                               if (maxTrials == numRuns) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -371,7 +363,7 @@ class _KnobPageState extends State<KnobPage> {
                                 );
                               }
                             });
-                          });
+                       
                         });
 
                         player.stop();

@@ -164,8 +164,8 @@ class HomeController extends GetxController {
     }
   }
 
-  InputImageFormat formatIntToImageFormat(int rotation) {
-    switch (rotation) {
+  InputImageFormat formatIntToImageFormat(int format) {
+    switch (format) {
       case 842094169:
         return InputImageFormat.yv12;
       case 35:

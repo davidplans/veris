@@ -1,16 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:Veris/health_app.dart';
 import 'package:Veris/presentation/pages/smile_page.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../data/repositories/auth_repository.dart';
-import '../pages/trial_BMP_page.dart';
-import 'heart_beats_widget.dart';
 import 'questions_widget.dart';
 import 'widget_v20.dart';
 import 'widget_v31.dart';

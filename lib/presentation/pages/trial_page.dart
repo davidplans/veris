@@ -1,24 +1,25 @@
 import 'dart:async';
 import 'dart:math' as math;
-import 'dart:io' show Platform;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/image_processing.dart';
-import 'widget_v312_trial1.dart';
 
-class V310Trial1Widget extends StatefulWidget {
-  const V310Trial1Widget({super.key});
+
+class TrialPage extends StatefulWidget {
+  const TrialPage({super.key});
 
   @override
-  State<V310Trial1Widget> createState() => _V310Trial1WidgetState();
+  State<TrialPage> createState() => _TrialPageState();
 }
 
-class _V310Trial1WidgetState extends State<V310Trial1Widget> {
- // ########## BPM VARs #############
+class _TrialPageState extends State<TrialPage> {
+// ########## BPM VARs #############
 
   /// Camera controller
   CameraController? _controller;
@@ -30,11 +31,16 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
   int currentValue = 0;
 
   /// to ensure camara was initialized
-  bool isCameraInitialized = false;
+  bool _isCameraInitialized = false;
 
   double _max = 0;
 
   List<double> _instantBPMs = <double>[];
+  List<double> _instantPeriods = <double>[];
+  List<double> _averagePeriods = <double>[];
+  List<double> _instantErrs = <double>[];
+  List<double> _currentDelays = <double>[];
+  List<double> _knobScales = <double>[];
 
   Timer? _timer;
 
@@ -42,7 +48,7 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
 
   final _player = AudioPlayer();
 
-  int sampleDelay = 2000 ~/ 30;
+  int _sampleDelay = 2000 ~/ 30;
 
   double alpha = 0.8;
 
@@ -51,6 +57,13 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
   bool _isFingerOverlay = false;
 
   double finalAngle = 0.0;
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  int _configMaxTrials = 20;
+  int _configStepBodySelect = 5;
+  int _countTrials = 0;
+  int _completeTrials = 0;
 
   // PROCESSING VARS
 
@@ -83,14 +96,45 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
   void _deinitController() async {
     _player.dispose();
     _isFinished = true;
-    isCameraInitialized = false;
+    _isCameraInitialized = false;
+    _isFingerOverlay = false;
+
     if (_controller == null) return;
     // await _controller.stopImageStream();
     await _controller!.dispose();
     // while (_processing) {}
     // _controller = null;
     if (_timer != null) _timer?.cancel();
-    _isFingerOverlay = false;
+  }
+
+  void _confirm() async {
+    final instantBPMs = _instantBPMs.map((e) => e.toString()).toList();
+    final instantPeriods = _instantPeriods.map((e) => e.toString()).toList();
+    final averagePeriods = _averagePeriods.map((e) => e.toString()).toList();
+    final instantErrs = _instantErrs.map((e) => e.toString()).toList();
+    final currentDelays = _currentDelays.map((e) => e.toString()).toList();
+    final knobScales = _knobScales.map((e) => e.toString()).toList();
+
+    setState(() {
+      _prefs.then((SharedPreferences p) {
+        _countTrials++;
+        p.setInt('numRuns', _countTrials);
+        p.setStringList('instantBPMs', instantBPMs);
+        p.setStringList('instantPeriods', instantPeriods);
+        p.setStringList('averagePeriods', averagePeriods);
+        p.setStringList('instantErrs', instantErrs);
+        p.setStringList('knobScales', knobScales);
+        p.setStringList('currentDelays', currentDelays);
+        // print(p.getInt("numRuns").toString());
+      });
+    });
+
+    _instantBPMs.clear();
+    _instantPeriods.clear();
+    _averagePeriods.clear();
+    _instantErrs.clear();
+    _currentDelays.clear();
+    _knobScales.clear();
   }
 
   /// Initialize the camera controller
@@ -98,13 +142,14 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
   /// Function to initialize the camera controller and start data collection.
   Future<void> _initController() async {
     _player.setLoopMode(LoopMode.off);
+    _getNumTrial();
 
     if (_controller != null) return;
     try {
       // 1. get list of all available cameras
-      List<CameraDescription> _cameras = await availableCameras();
+      List<CameraDescription> cameras = await availableCameras();
       // 2. assign the preferred camera with low resolution and disable audio
-      _controller = CameraController(_cameras.first, ResolutionPreset.low,
+      _controller = CameraController(cameras.first, ResolutionPreset.low,
           enableAudio: false);
 
       // 3. initialize the camera
@@ -124,19 +169,36 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
       });
 
       setState(() {
-        isCameraInitialized = true;
+        _isCameraInitialized = true;
       });
     } catch (e) {
       print(e);
       throw e;
     }
 
-    _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       if (_instantBPMs != null && _instantBPMs.isNotEmpty) {
         // print(_instantBPMs.toString());
         // print(_instantBPMs.reduce((a,b) => a + b) / _instantBPMs.length);
         _instantBPMs.clear();
       }
+    });
+  }
+
+  _getNumTrial() {
+    String formattedDate =
+        DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
+    _prefs.then((SharedPreferences p) {
+      _countTrials = p.getInt('numRuns') ?? 0;
+      _completeTrials = p.getInt('completeTrials') ?? 0;
+      _configMaxTrials = p.getInt('maxTrials') ?? 20;
+      _configStepBodySelect = p.getInt('stepBodySelect') ?? 5;
+      p.setString('startTrial', formattedDate);
+      setState(() {});
+      print('COUNT $_countTrials');
+      print('COUNT $_completeTrials');
+      print('COUNT $_configMaxTrials');
+      print('COUNT $_configStepBodySelect');
     });
   }
 
@@ -148,16 +210,11 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
 
   static const int windowLength = 50;
   final List<SensorValue> measureWindow = List<SensorValue>.filled(
-      windowLength, SensorValue(time: DateTime.now(), value: 0),
+      windowLength, SensorValue(DateTime.now(), 0),
       growable: true);
 
   void _scanImage(CameraImage image) async {
-
-
-if (Platform.isAndroid) {
-  _isFingerOverlay = false;
-} else if (Platform.isIOS) {
-      int h = image.height;
+    int h = image.height;
     int w = image.width;
     Uint8List bytes = image.planes.first.bytes;
     double redAVG =
@@ -167,14 +224,13 @@ if (Platform.isAndroid) {
     } else {
       _isFingerOverlay = true;
     }
-}
 
     // get the average value of the image
-    double _avg =
+    double avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
             image.planes.first.bytes.length;
-    if (_avg > _max) {
-      _max = _avg;
+    if (avg > _max) {
+      _max = avg;
       _counter++;
       if (_counter >= 6) {
         _mainCalculate();
@@ -194,10 +250,10 @@ if (Platform.isAndroid) {
       // _player.stop();
     }
     measureWindow.removeAt(0);
-    measureWindow.add(SensorValue(time: DateTime.now(), value: _avg));
+    measureWindow.add(SensorValue(DateTime.now(), avg));
 
-    _smoothBPM(_avg).then((value) {
-      Future<void>.delayed(Duration(milliseconds: sampleDelay)).then((onValue) {
+    _udateBPM(avg).then((value) {
+      Future<void>.delayed(Duration(milliseconds: _sampleDelay)).then((onValue) {
         if (mounted) {
           setState(() {
             _processing = false;
@@ -222,6 +278,8 @@ if (Platform.isAndroid) {
       _currentKnobValue = _randomGen(-1, 1);
       print('RANDOM $_currentKnobValue');
     }
+
+    
   }
 
   /// Smooth the raw measurements using Exponential averaging
@@ -230,24 +288,24 @@ if (Platform.isAndroid) {
   /// ```
   /// $y_n = alpha * x_n + (1 - alpha) * y_{n-1}$
   /// ```
-  Future<int> _smoothBPM(double newValue) async {
-    double maxVal = 0, _avg = 0;
+  Future<int> _udateBPM(double newValue) async {
+    double maxVal = 0, avg = 0;
 
     measureWindow.forEach((element) {
-      _avg += element.value / measureWindow.length;
+      avg += element.value / measureWindow.length;
       if (element.value > maxVal) maxVal = element.value as double;
     });
 
-    double _threshold = (maxVal + _avg) / 2;
-    int _counter = 0, previousTimestamp = 0;
-    double _tempBPM = 0;
+    double threshold = (maxVal + avg) / 2;
+    int _count = 0, previousTimestamp = 0;
+    double tempBPM = 0;
     for (int i = 1; i < measureWindow.length; i++) {
       // find rising edge
-      if (measureWindow[i - 1].value < _threshold &&
-          measureWindow[i].value > _threshold) {
+      if (measureWindow[i - 1].value < threshold &&
+          measureWindow[i].value > threshold) {
         if (previousTimestamp != 0) {
-          _counter++;
-          _tempBPM += 60000 /
+          _count++;
+          tempBPM += 60000 /
               (measureWindow[i].time.millisecondsSinceEpoch -
                   previousTimestamp); // convert to per minute
         }
@@ -255,14 +313,43 @@ if (Platform.isAndroid) {
       }
     }
 
-    if (_counter > 0) {
-      _tempBPM /= _counter;
+    if (_count > 0) {
+      tempBPM = tempBPM / _count;
 
-      _tempBPM = (1 - alpha) * currentValue + alpha * _tempBPM;
-      _instantBPMs.add(_tempBPM);
+double previousInstantPeriod = 0;
+        if (_instantPeriods.isNotEmpty) {
+          previousInstantPeriod = _instantPeriods[_instantPeriods.length - 1];
+          print("PREVIOUS  $previousInstantPeriod");
+        }
+
+                _instantBPMs.add(tempBPM);
+        final double instantPeriod = 60 / tempBPM;
+        _instantPeriods.add(instantPeriod);
+        int count = _instantPeriods.length;
+        double sum = _instantPeriods.fold<double>(
+            0, (double sum, double item) => sum + item);
+        double averagePeriod = sum / count;
+        _averagePeriods.add(averagePeriod);
+        double currentDelay = (averagePeriod / 2) * _currentKnobValue;
+        _currentDelays.add(currentDelay);
+        _knobScales.add(_currentKnobValue);
+
+        print("Instance  $instantPeriod");
+        // print("Count $count");
+        print("Average $averagePeriod");
+        if (previousInstantPeriod != 0) {
+          final instantErr = previousInstantPeriod - instantPeriod;
+          _instantErrs.add(instantErr);
+          print("Err  $instantErr");
+        }
+        print("Current Delay $currentDelay");
+        print("+++++++++++++++++++++++");
+
+      tempBPM = (1 - alpha) * currentValue + alpha * tempBPM;
+      _instantBPMs.add(tempBPM);
 
       setState(() {
-        currentValue = _tempBPM.toInt();
+        currentValue = tempBPM.toInt();
         // _bpm = _tempBPM;
       });
     }
@@ -277,15 +364,15 @@ if (Platform.isAndroid) {
     return Stack(children: [
       Scaffold(
         appBar: AppBar(
-            title: const Text('Veris - PRACTICE TRIAL 1'),
+            title: const Text('Veris TRIALs'),
             automaticallyImplyLeading: false),
         body: Container(
-            child: isCameraInitialized
+            child: _isCameraInitialized
                 ? Column(
                     children: [
                       Container(
-                        constraints:
-                            BoxConstraints.tightFor(width: 100, height: 130),
+                        constraints: const BoxConstraints.tightFor(
+                            width: 100, height: 130),
                         child: _controller!.buildPreview(),
                       ),
                       const Padding(
@@ -343,10 +430,11 @@ if (Platform.isAndroid) {
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromARGB(255, 15, 32, 66),
-                            textStyle: TextStyle(color: Colors.white),
+                            textStyle: const TextStyle(color: Colors.white),
                           ),
                           child: const Text("Confirm"),
                           onPressed: () => setState(() {
+                            _confirm();
                             _deinitController();
                           }),
                         ),
@@ -411,7 +499,7 @@ if (Platform.isAndroid) {
       _isFinished
           ? Scaffold(
               appBar: AppBar(
-                  title: const Text('Veris - PRACTICE TRIAL 1'),
+                  title: const Text('Veris TRIALs'),
                   automaticallyImplyLeading: false),
               body: Container(
                 child: Column(
@@ -455,15 +543,15 @@ if (Platform.isAndroid) {
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromARGB(255, 15, 32, 66),
-                            textStyle: TextStyle(color: Colors.white),
+                            textStyle: const TextStyle(color: Colors.white),
                           ),
                           child: const Text("Continue"),
                           onPressed: () {
-                                              Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const V312Trial1Widget(),
-                      ),
-                    );
+                    //                           Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const V312Trial1Widget(),
+                    //   ),
+                    // );
                           }),
                     ),
                   ],
@@ -473,27 +561,11 @@ if (Platform.isAndroid) {
           : Container()
     ]);
   }
-
 }
 
-/// Class to store one sample data point
 class SensorValue {
-  /// timestamp of datapoint
   final DateTime time;
+  final double value;
 
-  /// value of datapoint
-  final num value;
-
-  SensorValue({required this.time, required this.value});
-
-  /// Returns JSON mapped data point
-  Map<String, dynamic> toJSON() => {'time': time, 'value': value};
-
-  /// Map a list of data samples to a JSON formatted array.
-  ///
-  /// Map a list of [data] samples to a JSON formatted array. This is
-  /// particularly useful to store [data] to database.
-  static List<Map<String, dynamic>> toJSONArray(List<SensorValue> data) =>
-      List.generate(data.length, (index) => data[index].toJSON());
+  SensorValue(this.time, this.value);
 }
-

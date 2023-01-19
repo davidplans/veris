@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
-
+import 'dart:io' show Platform;
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -151,7 +151,10 @@ class _V313Trial2WidgetState extends State<V313Trial2Widget> {
       growable: true);
 
   void _scanImage(CameraImage image) async {
-    int h = image.height;
+if (Platform.isAndroid) {
+  _isFingerOverlay = false;
+} else if (Platform.isIOS) {
+      int h = image.height;
     int w = image.width;
     Uint8List bytes = image.planes.first.bytes;
     double redAVG =
@@ -161,7 +164,7 @@ class _V313Trial2WidgetState extends State<V313Trial2Widget> {
     } else {
       _isFingerOverlay = true;
     }
-
+}
     // get the average value of the image
     double _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /

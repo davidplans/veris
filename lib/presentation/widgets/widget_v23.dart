@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -184,19 +185,21 @@ class _V23WidgetState extends State<V23Widget>
 
   void _scanImage(CameraImage image) {
 
-        int h = image.height;
+if (Platform.isAndroid) {
+  _isFingerOverlay = false;
+} else if (Platform.isIOS) {
+      int h = image.height;
     int w = image.width;
-    // var rgb1 = [w * h];
     Uint8List bytes = image.planes.first.bytes;
     double redAVG =
         ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
-    if (redAVG > 127.4 && redAVG < 127.6 ) {
+    if (redAVG > 127.4 && redAVG < 127.6) {
       _isFingerOverlay = false;
     } else {
       _isFingerOverlay = true;
     }
+}
 
-    print(redAVG);
     _now = DateTime.now();
     _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
