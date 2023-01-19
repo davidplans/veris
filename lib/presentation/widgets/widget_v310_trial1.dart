@@ -18,7 +18,7 @@ class V310Trial1Widget extends StatefulWidget {
 }
 
 class _V310Trial1WidgetState extends State<V310Trial1Widget> {
- // ########## BPM VARs #############
+  // ########## BPM VARs #############
 
   /// Camera controller
   CameraController? _controller;
@@ -104,7 +104,7 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
       // 1. get list of all available cameras
       List<CameraDescription> _cameras = await availableCameras();
       // 2. assign the preferred camera with low resolution and disable audio
-      _controller = CameraController(_cameras.first, ResolutionPreset.low,
+      _controller = CameraController(_cameras.last, ResolutionPreset.low,
           enableAudio: false);
 
       // 3. initialize the camera
@@ -459,11 +459,11 @@ if (Platform.isAndroid) {
                           ),
                           child: const Text("Continue"),
                           onPressed: () {
-                                              Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const V312Trial1Widget(),
-                      ),
-                    );
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const V312Trial1Widget(),
+                              ),
+                            );
                           }),
                     ),
                   ],
@@ -473,7 +473,6 @@ if (Platform.isAndroid) {
           : Container()
     ]);
   }
-
 }
 
 /// Class to store one sample data point
@@ -496,4 +495,3 @@ class SensorValue {
   static List<Map<String, dynamic>> toJSONArray(List<SensorValue> data) =>
       List.generate(data.length, (index) => data[index].toJSON());
 }
-

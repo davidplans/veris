@@ -103,7 +103,7 @@ class _V313Trial2WidgetState extends State<V313Trial2Widget> {
       // 1. get list of all available cameras
       List<CameraDescription> _cameras = await availableCameras();
       // 2. assign the preferred camera with low resolution and disable audio
-      _controller = CameraController(_cameras.first, ResolutionPreset.low,
+      _controller = CameraController(_cameras.last, ResolutionPreset.low,
           enableAudio: false);
 
       // 3. initialize the camera
@@ -455,11 +455,11 @@ if (Platform.isAndroid) {
                           ),
                           child: const Text("Continue"),
                           onPressed: () {
-                                              Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const V315Trial2Widget(),
-                      ),
-                    );
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const V315Trial2Widget(),
+                              ),
+                            );
                           }),
                     ),
                   ],
