@@ -1,5 +1,5 @@
 import { initializeApp } from "@firebase/app";
-import { getFirestore, getDocs, query, collectionGroup, where } from "@firebase/firestore";
+import { doc, getFirestore, getDocs, query, collectionGroup, where, collection, getDoc } from "@firebase/firestore";
 import * as ld from 'lodash';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -76,12 +76,16 @@ async function getStudies(idStudy) {
         const queryModules = await query(collectionGroup(db, "studies"), where("studyId", "==", idStudy));
         const moduleSnapshot = await getDocs(queryModules);
         console.log("🚀 ~ file: index.ts:78 ~ getStudies ~ moduleSnapshot", moduleSnapshot)
+        
 
         // return;
         const basedData: any[] = [];
-        moduleSnapshot.forEach((study) => { 
+        moduleSnapshot.forEach(async (study) => { 
+            console.log("🚀 ~ file: index.ts:83 ~ moduleSnapshot.forEach ~ study", study.id);
+
+
             const studyItem = study.data();
-            const moduleType = studyItem.moduleName ? 'survey' : 'pat'; // TODO change it
+            const moduleType = studyItem.type;
             let values = null;
 
             if (moduleType === 'survey') {
@@ -94,6 +98,9 @@ async function getStudies(idStudy) {
             }
 
             if (moduleType === 'pat') {
+                // const trials = doc(db, "trials");
+                // console.log("🚀 ~ file: index.ts:98 ~ moduleSnapshot.forEach ~ trials", trials)
+                console.log("🚀 ~ file: index.ts:98 ~ moduleSnapshot.forEach ~ studyItem", studyItem);
                 const item = ld.cloneDeep(studyItem);
                 delete item.userId;
                 delete item.studyId;
@@ -114,7 +121,8 @@ async function getStudies(idStudy) {
             )
         });
         
-        downloadCsvFile(basedData);
+        console.log("🚀 ~ file: index.ts:122 ~ getStudies ~ basedData", basedData)
+        // downloadCsvFile(basedData);
 
     } catch (error) {
         console.log(error);
