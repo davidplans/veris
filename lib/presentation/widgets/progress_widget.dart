@@ -46,104 +46,94 @@ class _ProgressWidgetState extends State<ProgressWidget> {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else {
-            // print(snapshot.data!.docs);
-            return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: ((context, index) {
-                  DocumentSnapshot setDocument = snapshot.data!.docs[index];
-                  // print(Text(setDocument.get('sectionName')));
-                  final String date =
-                      _formatDate(setDocument.get('datetime').toDate());
-                 
-                  final name = setDocument.get('sectionName');
-                  return ExpansionTile(
-                      title: Text('Section: $name'),
-                      subtitle: Text(setDocument.get('moduleName')),
-                      trailing: Text(date),
-                      children: [
-                        Text(setDocument.get('values').toString()),
-                        // StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                        //     stream: users
-                        //         .doc(user.id)
-                        //         .collection('studies')
-                        //         // .doc(id)
-                        //         // .collection('modules')
-                        //         // .orderBy('startTrial', descending: true)
-                        //         .snapshots(),
-                        //     builder: (context, snapshot) {
-                        //       if (!snapshot.hasData) {
-                        //         return const Center(
-                        //           child: CircularProgressIndicator(),
-                        //         );
-                        //       } else {
-                        //         List<Widget> columnTrails = [];
-                        //         for (var doc in snapshot.data!.docs) {
-                        //           // final String dateTrial =
-                        //           //     _formatDate(doc['startTrial'].toDate());
-                        //           columnTrails.add(
-                        //             Container(
-                        //               margin: const EdgeInsets.only(
-                        //                   left: 20,
-                        //                   top: 20,
-                        //                   bottom: 20,
-                        //                   right: 20),
-                        //               width: double.infinity,
-                        //               height: 100,
-                        //               decoration: BoxDecoration(
-                        //                 color: const Color.fromARGB(
-                        //                     255, 222, 223, 156),
-                        //                 borderRadius: const BorderRadius.only(
-                        //                     topLeft: Radius.circular(10),
-                        //                     topRight: Radius.circular(10),
-                        //                     bottomLeft: Radius.circular(10),
-                        //                     bottomRight: Radius.circular(10)),
-                        //                 boxShadow: [
-                        //                   BoxShadow(
-                        //                     color: Colors.grey.withOpacity(0.5),
-                        //                     spreadRadius: 5,
-                        //                     blurRadius: 7,
-                        //                     offset: const Offset(0,
-                        //                         3), // changes position of shadow
-                        //                   ),
-                        //                 ],
-                        //               ),
-                        //               child: ListTile(
-                        //                 onTap: () {
-                        //                   // Navigator.push(
-                        //                   //   context,
-                        //                   //   MaterialPageRoute(
-                        //                   //     builder: (context) => TrialWidget(
-                        //                   //       setId: id,
-                        //                   //       trialId: doc.id,
-                        //                   //       userId: user.id,
-                        //                   //       trialTitle: dateTrial,
-                        //                   //     ),
-                        //                   //   ),
-                        //                   // );
-                        //                 },
-                        //                 title: Text(doc.get('values').toString()),
-                        //               ),
-                        //             ),
-                        //           );
-                        //         }
-
-                        //         return Column(children: columnTrails);
-                        //       }
-                        //     }),
-                      ]);
-                  // var result = snapshot.data.documents[index][];
-                }));
-
-            // return ListView(
-            //   children: snapshot.data!.docs.map((doc) {
-            //     return Card(
-            //         child: ListTile(
-            //       title: Text(doc.data().toString()),
-            //     ));
-            //   }).toList(),
-            // );
           }
+
+          return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: ((context, index) {
+                DocumentSnapshot setDocument = snapshot.data!.docs[index];
+                // print(Text(setDocument.get('sectionName')));
+                final String date = 'best';
+
+                const name = 'test1';
+                return ExpansionTile(
+                    title: Text('Section: name'),
+                    subtitle:
+                        Text('test2'), //Text(setDocument.get('moduleName'))
+                    trailing: Text(date),
+                    children: [
+                      Text('values'),
+                      // StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      //     stream: users
+                      //         .doc(user.id)
+                      //         .collection('studies')
+                      //         // .doc(id)
+                      //         // .collection('modules')
+                      //         // .orderBy('startTrial', descending: true)
+                      //         .snapshots(),
+                      //     builder: (context, snapshot) {
+                      //       if (!snapshot.hasData) {
+                      //         return const Center(
+                      //           child: CircularProgressIndicator(),
+                      //         );
+                      //       } else {
+                      //         List<Widget> columnTrails = [];
+                      //         for (var doc in snapshot.data!.docs) {
+                      //           // final String dateTrial =
+                      //           //     _formatDate(doc['startTrial'].toDate());
+                      //           columnTrails.add(
+                      //             Container(
+                      //               margin: const EdgeInsets.only(
+                      //                   left: 20,
+                      //                   top: 20,
+                      //                   bottom: 20,
+                      //                   right: 20),
+                      //               width: double.infinity,
+                      //               height: 100,
+                      //               decoration: BoxDecoration(
+                      //                 color: const Color.fromARGB(
+                      //                     255, 222, 223, 156),
+                      //                 borderRadius: const BorderRadius.only(
+                      //                     topLeft: Radius.circular(10),
+                      //                     topRight: Radius.circular(10),
+                      //                     bottomLeft: Radius.circular(10),
+                      //                     bottomRight: Radius.circular(10)),
+                      //                 boxShadow: [
+                      //                   BoxShadow(
+                      //                     color: Colors.grey.withOpacity(0.5),
+                      //                     spreadRadius: 5,
+                      //                     blurRadius: 7,
+                      //                     offset: const Offset(0,
+                      //                         3), // changes position of shadow
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //               child: ListTile(
+                      //                 onTap: () {
+                      //                   // Navigator.push(
+                      //                   //   context,
+                      //                   //   MaterialPageRoute(
+                      //                   //     builder: (context) => TrialWidget(
+                      //                   //       setId: id,
+                      //                   //       trialId: doc.id,
+                      //                   //       userId: user.id,
+                      //                   //       trialTitle: dateTrial,
+                      //                   //     ),
+                      //                   //   ),
+                      //                   // );
+                      //                 },
+                      //                 title: Text(doc.get('values').toString()),
+                      //               ),
+                      //             ),
+                      //           );
+                      //         }
+
+                      //         return Column(children: columnTrails);
+                      //       }
+                      //     }),
+                    ]);
+                // var result = snapshot.data.documents[index][];
+              }));
         });
   }
 }

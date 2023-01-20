@@ -143,15 +143,17 @@ class _HomeWidgetState extends State<HomeWidget> {
                             return Colors.purple[700];
                         }
                       }()),
-
                       leading: (() {
-                        switch(_modules[indexModule]["type"]){
-                         case "survey":
-                            return const Icon(Icons.bar_chart, color: Colors.amber);
-                        case "pat":
-                            return const Icon(Icons.favorite, color: Colors.red);   
-                        case "smile":
-                            return const Icon(Icons.sentiment_satisfied , color: Colors.white);                      
+                        switch (_modules[indexModule]["type"]) {
+                          case "survey":
+                            return const Icon(Icons.bar_chart,
+                                color: Colors.amber);
+                          case "pat":
+                            return const Icon(Icons.favorite,
+                                color: Colors.red);
+                          case "smile":
+                            return const Icon(Icons.sentiment_satisfied,
+                                color: Colors.white);
                         }
                       }()),
                       children: [

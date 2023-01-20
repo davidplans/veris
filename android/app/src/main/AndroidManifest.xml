@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.davidplans.veris">
+    package="veris.sashklym">
    <application
         android:label="Veris"
         android:name="${applicationName}"
