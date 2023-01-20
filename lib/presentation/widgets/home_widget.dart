@@ -218,6 +218,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                                       onTap: (() async {
                                         await _prefs
                                             .then((SharedPreferences p) {
+                                          final studyId =
+                                              p.getString('study_id');
+                                          final now = DateTime.now()
+                                              .microsecondsSinceEpoch;
+                                          final String moduleResultID =
+                                              '$studyId-$indexModule-$now';
+
                                           p.setInt(
                                               'maxTrials',
                                               _modules[indexModule]
@@ -228,6 +235,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                   ["step_body_select"]);
                                           p.setInt('numRuns', 0);
                                           p.setInt('completeTrials', 0);
+                                          p.setString('currentModuleResultId',
+                                              moduleResultID);
+                                          p.setInt('moduleId', indexModule);
                                         }).whenComplete(() {
                                           Navigator.push(
                                             context,

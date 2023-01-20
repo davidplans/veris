@@ -40,6 +40,7 @@ class _KnobPageState extends State<KnobPage> {
   late User user;
   late int lastSetNumber;
   late String studyId;
+  late String currentModuleResultId;
   int _completeTrials = 0;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -48,6 +49,7 @@ class _KnobPageState extends State<KnobPage> {
     super.initState();
     _prefs.then((SharedPreferences p) {
       _completeTrials = p.getInt('completeTrials') ?? 0;
+      currentModuleResultId = p.getString('currentModuleResultId') ?? '';
       _completeTrials++;
       studyId = p.getString('studyId') ?? "";
       setState(() {});
@@ -313,8 +315,6 @@ class _KnobPageState extends State<KnobPage> {
                         final setData = {"startSet": formatDateSet};
 
                         final trialData = {
-                          "userId": user.id,
-                          "studyId": studyId,
                           "numRuns": numRuns,
                           "startTrial": formatDateTrial,
                           "selectedBody": selectedBody,
@@ -343,8 +343,9 @@ class _KnobPageState extends State<KnobPage> {
                           users
                               .doc(user.id)
                               .collection('studies')
-                              .doc()
-                              .set(trialData, SetOptions(merge: true))
+                              .doc(currentModuleResultId)
+                              .collection('trials')
+                              .add(trialData)
                               .then((_) {
                             if (maxTrials == numRuns) {
                               ScaffoldMessenger.of(context).showSnackBar(

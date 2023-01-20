@@ -53,13 +53,14 @@ class _ProgressWidgetState extends State<ProgressWidget> {
               itemBuilder: ((context, index) {
                 DocumentSnapshot setDocument = snapshot.data!.docs[index];
                 // print(Text(setDocument.get('sectionName')));
-                final String date = 'best';
+                final String date =
+                    _formatDate(setDocument.get('datetime').toDate());
 
                 const name = 'test1';
+                final moduleName = setDocument.get("moduleName");
                 return ExpansionTile(
-                    title: Text('Section: name'),
-                    subtitle:
-                        Text('test2'), //Text(setDocument.get('moduleName'))
+                    title: Text('Section: $moduleName'),
+                    subtitle: Text(setDocument.get("type")),
                     trailing: Text(date),
                     children: [
                       Text('values'),
