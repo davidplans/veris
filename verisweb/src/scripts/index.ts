@@ -93,6 +93,7 @@ async function getStudies(idStudy) {
                 trialsSnapshot.forEach((trial) => {
                     formatedTrials.push(trial.data());
                 });
+                
                 values = {
                     baselines : studyItem.baselines,
                     trials: formatedTrials
