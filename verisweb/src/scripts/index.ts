@@ -5,7 +5,6 @@ import * as ld from 'lodash';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-console.log('test');
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -28,7 +27,6 @@ const db = getFirestore(app);
 
     const modulesRef = await query(collectionGroup(db, "studies"));
     const docsModulesSnap = await getDocs(modulesRef);
-    console.log("🚀 ~ file: index.ts:28 ~ docsModulesSnap", docsModulesSnap)
 
 
     var studyIdArray = [];
@@ -36,8 +34,6 @@ const db = getFirestore(app);
     docsModulesSnap.forEach(doc => {
 
         var id = doc.data().studyId;
-        console.log("🚀 ~ file: index.ts:36 ~ id", id)
-        // console.log(doc.data());
         if (!studyIdArray.includes(id)) {
             studyIdArray.push(id);
             let tr = document.createElement('tr');
@@ -60,33 +56,22 @@ const db = getFirestore(app);
     try {
 
     } catch (error) {
-        console.log(error);
     }
 })();
-
-
-
-
-
 
 async function getStudies(idStudy) {
 
     try {
-        // console.log(idStudy);
         const queryModules = await query(collectionGroup(db, "studies"), where("studyId", "==", idStudy));
         const moduleSnapshot = await getDocs(queryModules);
-        console.log("🚀 ~ file: index.ts:78 ~ getStudies ~ moduleSnapshot", moduleSnapshot)
-        
 
-        // return;
         const basedData: any[] = [];
-        moduleSnapshot.forEach(async (study) => { 
-            console.log("🚀 ~ file: index.ts:83 ~ moduleSnapshot.forEach ~ study", study.id);
 
-
+        for (const study of moduleSnapshot.docs) {
+            console.log("🚀 ~ file: index.ts:76 ~ getStudies ~ study", study)
             const studyItem = study.data();
             const moduleType = studyItem.type;
-            let values = null;
+            let values: any = [];
 
             if (moduleType === 'survey') {
                 values = ld.map(studyItem.values, (item) => {
@@ -98,58 +83,84 @@ async function getStudies(idStudy) {
             }
 
             if (moduleType === 'pat') {
-                // const trials = doc(db, "trials");
-                // console.log("🚀 ~ file: index.ts:98 ~ moduleSnapshot.forEach ~ trials", trials)
-                console.log("🚀 ~ file: index.ts:98 ~ moduleSnapshot.forEach ~ studyItem", studyItem);
-                const item = ld.cloneDeep(studyItem);
-                delete item.userId;
-                delete item.studyId;
-                delete item.moduleType;
-                values = item;
+                const formatedTrials: any = [];
+                const userRef = collection(db, "users");
+                const docRef = doc(userRef, `${studyItem.userId}/studies`, study.id);
+
+                const trials = collection(docRef, 'trials');
+                const trialsSnapshot = await getDocs(trials);
+
+                trialsSnapshot.forEach((trial) => {
+                    formatedTrials.push(trial.data());
+                });
+                values = {
+                    baselines : studyItem.baselines,
+                    trials: formatedTrials
+                };
             }
 
             basedData.push(
                 {
                     userId: studyItem.userId,
                     studyId: studyItem.studyId,
-                    moduleId: studyItem.moduleId ? studyItem.moduleId : 'none',
-                    sectionId: studyItem.sectionId ? studyItem.sectionId : 'none',
+                    moduleId: studyItem.moduleId,
+                    sectionId: studyItem.sectionId,
                     type: moduleType,
                     datetime: studyItem.datetime?.seconds || studyItem.startTrial?.seconds,
                     values: JSON.stringify(values)
                 }
-            )
-        });
+            );
+        }
         
-        console.log("🚀 ~ file: index.ts:122 ~ getStudies ~ basedData", basedData)
-        // downloadCsvFile(basedData);
+        saveArrAsCsv(basedData);
 
     } catch (error) {
-        console.log(error);
+        console.log("🚀 ~ file: index.ts:123 ~ getStudies ~ error", error)
     }
 }
 
+function createExportRows(dataSource: any, columns: any, separator: any) {
+    const data    = dataSource;
+    const newLine = '\r\n';
+    let dataField;
+    let content   = '';
+    for (let j = 0; j < data.length; j++) {
+        for (let i = 0; i < columns.length; i++) {
+            dataField = columns[i];
+            content  += `${i > 0 ? separator : ''}"${data[j][dataField] ? data[j][dataField] : 0}"`;
+        }
+        content += newLine;
+    }
+    return content;
+}
 
-function downloadCsvFile(csvData) {
+function saveArrAsCsv(dataSource: any = [], name = 'veris-test-data') {
+    const link      = document.createElement('a');
+    const separator = ';';
+    const columns: any   = [];
 
-    //define the heading for each row of the data  
-    var csv = 'User ID;Study ID;Module ID;Section ID;Unix Date;Type;Data\n';
-
-    //merge the data with CSV  
-    csvData.forEach(function (row) {
-        console.log("🚀 ~ file: index.ts:132 ~ row", row)
-        csv += row.join(';');
-        csv += "\n";
+    ld.forEach(dataSource[0], (value: any, key: any) => {
+        columns.push(key);
     });
 
-    //display the created CSV data on the web browser   
-    // document.write(csv);
+    let content = createExportHeader(columns, separator);
+    content    += createExportRows(dataSource, columns, separator);
 
-    var hiddenElement = document.createElement('a');
-    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-    hiddenElement.target = '_blank';
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${name}-${new Date()}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 
-    //provide the name for the CSV file to be downloaded  
-    hiddenElement.download = 'Veris Test Result.csv';
-    hiddenElement.click();
+function createExportHeader(columns: any, separator: any) {
+    let headerRow = '';
+    const newLine = '\r\n';
+    for (let i = 0; i < columns.length; i++) {
+        headerRow += `${i > 0 ? separator : ''}"${columns[i]}"`;
+    }
+    return headerRow + newLine;
 }
