@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
@@ -9,6 +10,7 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Veris/presentation/utils/chart.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,6 +32,8 @@ class _V23WidgetState extends State<V23Widget>
   List<SensorValue> _data = <SensorValue>[]; // array to store the values
   List<double> _instantBPMs = <double>[];
 
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   CameraController? _controller;
   double _alpha = 0.3; // factor for the mean value
   AnimationController? _animationController;
@@ -49,17 +53,26 @@ class _V23WidgetState extends State<V23Widget>
   late User user;
   bool _isFingerOverlay = false;
 
+  String studyId = "";
+  String currentModuleResultId = "";
+  int moduleId = 0;
+
   @override
   initState() {
+    _prefs.then((SharedPreferences p) {
+      currentModuleResultId = p.getString('currentModuleResultId') ?? "";
+      moduleId = p.getInt('moduleId') ?? 0;
+      studyId = p.getString('studyId') ?? "";
+    });
+
     super.initState();
     _animationController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
-    _animationController!
-      ..addListener(() {
-        setState(() {
-          _iconScale = 1.0 + _animationController!.value * 0.4;
-        });
+    _animationController!.addListener(() {
+      setState(() {
+        _iconScale = 1.0 + _animationController!.value * 0.4;
       });
+    });
   }
 
   @override
@@ -82,11 +95,12 @@ class _V23WidgetState extends State<V23Widget>
     // create array of 128 ~= 255/2
     _data.clear();
     int now = DateTime.now().millisecondsSinceEpoch;
-    for (int i = 0; i < _windowLen; i++)
+    for (int i = 0; i < _windowLen; i++) {
       _data.insert(
           0,
           SensorValue(
               DateTime.fromMillisecondsSinceEpoch(now - i * 1000 ~/ _fs), 128));
+    }
   }
 
   void _toggle() {
@@ -121,13 +135,23 @@ class _V23WidgetState extends State<V23Widget>
       _isFingerOverlay = false;
     });
 
-    final baselineData = {
-      "baselines": _instantBPMs,
-      "startDate": _startDate,
-      "endDate": DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now())
+    final baseStudyModuleData = {
+      "userId": user.id,
+      "studyId": studyId,
+      "moduleId": moduleId,
+      "sectionId": 'none',
+      "sectionName": 'none',
+      "moduleName": 'none',
+      "datetime": DateTime.now(),
+      "type": "pat",
+      "baselines": _instantBPMs
     };
 
-    users.doc(user.id).collection('baselines').add(baselineData);
+    users
+        .doc(user.id)
+        .collection('studies')
+        .doc(currentModuleResultId)
+        .set(baseStudyModuleData);
     _instantBPMs.clear();
   }
 
@@ -160,7 +184,7 @@ class _V23WidgetState extends State<V23Widget>
   Future<void> _initController() async {
     try {
       List _cameras = await availableCameras();
-      _controller = CameraController(_cameras.first, ResolutionPreset.low);
+      _controller = CameraController(_cameras.last, ResolutionPreset.low);
       await _controller!.initialize();
       Future.delayed(const Duration(milliseconds: 100)).then((onValue) {
         _controller!.setFlashMode(FlashMode.torch);
@@ -168,7 +192,7 @@ class _V23WidgetState extends State<V23Widget>
       _controller!.startImageStream((CameraImage image) {
         _image = image;
       });
-    } catch (Exception) {
+    } on Exception {
       debugPrint("Camera Error");
     }
   }

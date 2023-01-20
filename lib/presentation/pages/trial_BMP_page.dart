@@ -497,7 +497,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   Future<void> _initController() async {
     try {
       List _cameras = await availableCameras();
-      _controller = CameraController(_cameras.first, ResolutionPreset.low);
+      _controller = CameraController(_cameras.last, ResolutionPreset.low);
       await _controller!.initialize();
       Future.delayed(const Duration(milliseconds: 100)).then((onValue) {
         _controller!.setFlashMode(FlashMode.torch);

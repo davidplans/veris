@@ -39,6 +39,8 @@ class _KnobPageState extends State<KnobPage> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   late User user;
   late int lastSetNumber;
+  late String studyId;
+  late String currentModuleResultId;
   int _completeTrials = 0;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -47,10 +49,10 @@ class _KnobPageState extends State<KnobPage> {
     super.initState();
     _prefs.then((SharedPreferences p) {
       _completeTrials = p.getInt('completeTrials') ?? 0;
+      currentModuleResultId = p.getString('currentModuleResultId') ?? '';
       _completeTrials++;
-      setState(() {
-        
-      });
+      studyId = p.getString('studyId') ?? "";
+      setState(() {});
     });
     // _playBeep(_currentValue);
   }
@@ -133,9 +135,10 @@ class _KnobPageState extends State<KnobPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Trial: $_completeTrials',style: const TextStyle(
-                      fontSize: 26.0,
-                    )),
+              Text('Trial: $_completeTrials',
+                  style: const TextStyle(
+                    fontSize: 26.0,
+                  )),
               const Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Text(
@@ -309,9 +312,7 @@ class _KnobPageState extends State<KnobPage> {
                               knobScales.map(double.parse).toList();
                         }
 
-                        final setData = {
-                          "startSet": formatDateSet,
-                        };
+                        final setData = {"startSet": formatDateSet};
 
                         final trialData = {
                           "numRuns": numRuns,
@@ -342,28 +343,28 @@ class _KnobPageState extends State<KnobPage> {
                           users
                               .doc(user.id)
                               .collection('studies')
-                              .doc()
-                              .set(trialData, SetOptions(merge: true))
-                              .then((_)  {
-                              if (maxTrials == numRuns) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    duration: Duration(seconds: 5),
-                                    content: Text("Data stored! \n Thank you."),
-                                  ),
-                                );
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const V318Widget(),
-                                  ),
-                                );
-                              } else {
-                                Navigator.of(context).push<void>(
-                                  TrialBMPPage.route(),
-                                );
-                              }
-                            });
-                       
+                              .doc(currentModuleResultId)
+                              .collection('trials')
+                              .add(trialData)
+                              .then((_) {
+                            if (maxTrials == numRuns) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  duration: Duration(seconds: 5),
+                                  content: Text("Data stored! \n Thank you."),
+                                ),
+                              );
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const V318Widget(),
+                                ),
+                              );
+                            } else {
+                              Navigator.of(context).push<void>(
+                                TrialBMPPage.route(),
+                              );
+                            }
+                          });
                         });
 
                         player.stop();

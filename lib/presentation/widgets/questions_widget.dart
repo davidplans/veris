@@ -27,8 +27,7 @@ class QuestionsWidget extends StatefulWidget {
       required this.moduleId,
       required this.sectonId,
       required this.sectionName,
-      required this.moduleName
-      })
+      required this.moduleName})
       : super(key: key);
 
   @override
@@ -43,7 +42,6 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   String userId = "";
   String studyId = "";
-
 
   // DateFormat format = DateFormat('yyyy-MM-dd – kk:mm');
 
@@ -112,8 +110,6 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                     String sectionId =
                         "${formatedSectionName}_${widget.sectonId}";
 
-
-
                     if (resultData.isNotEmpty) {
                       final moduleData = {
                         "userId": userId,
@@ -123,10 +119,11 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                         "sectionName": widget.sectionName,
                         "moduleName": widget.moduleName,
                         "datetime": DateTime.now(),
+                        "type": "survey",
                         "values": resultData,
                       };
 
-                    if (userId.isNotEmpty && studyId.isNotEmpty) {
+                      if (userId.isNotEmpty && studyId.isNotEmpty) {
                         users
                             .doc(userId)
                             .collection('studies')
@@ -135,21 +132,6 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                             .then((value) => Navigator.of(context)
                                 .push<void>(HomePage.route()));
                       }
-
-                      // if (userId.isNotEmpty && studyId.isNotEmpty) {
-                      //   users
-                      //       .doc(userId)
-                      //       .collection('studies')
-                      //       .doc(studyId)
-                      //       .collection('modules')
-                      //       .doc(widget.moduleId.toString())
-                      //       .collection('sections')
-                      //       .doc(sectionId)
-                      //       .set(moduleData)
-                      //       .then((value) => Navigator.of(context)
-                      //           .push<void>(HomePage.route()));
-                      // }
-
                     }
                   },
                   task: task,

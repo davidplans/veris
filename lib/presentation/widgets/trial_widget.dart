@@ -1,8 +1,5 @@
-import 'package:Veris/data/models/user.dart';
-import 'package:Veris/presentation/bloc/auth_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TrialWidget extends StatefulWidget {
   final String trialId;
@@ -40,7 +37,7 @@ class _TrialWidgetState extends State<TrialWidget> {
           builder:
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text("Something went wrong");
+              return const Text("Something went wrong");
             }
 
             if (snapshot.hasData && !snapshot.data!.exists) {
@@ -90,7 +87,7 @@ class _TrialWidgetState extends State<TrialWidget> {
               );
             }
 
-            return Text("loading");
+            return const Text("loading");
           },
         )
 
