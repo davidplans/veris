@@ -322,7 +322,7 @@ double previousInstantPeriod = 0;
           print("PREVIOUS  $previousInstantPeriod");
         }
 
-                _instantBPMs.add(tempBPM);
+                // _instantBPMs.add(tempBPM);
         final double instantPeriod = 60 / tempBPM;
         _instantPeriods.add(instantPeriod);
         int count = _instantPeriods.length;

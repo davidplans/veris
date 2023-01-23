@@ -28,9 +28,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.4.1
-  firebase_auth: ^4.2.5
-  cloud_firestore: ^4.3.1
+  firebase_core: ^1.21.1
+  firebase_auth: ^3.7.0
+  cloud_firestore: ^3.4.6
   equatable: ^2.0.3
   flutter_bloc: ^8.0.1
   formz: ^0.4.1
@@ -51,7 +51,7 @@ dependencies:
   # Heart
   charts_flutter: ^0.12.0
   wakelock: ^0.6.1+2
-  camera: ^0.10.2
+  camera: ^0.9.7+1
 
 #  # Smile module
 #  get: ^4.6.5
