@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'dart:math' as math;
 
 import 'package:camera/camera.dart';
@@ -214,15 +215,19 @@ class _TrialPageState extends State<TrialPage> {
       growable: true);
 
   void _scanImage(CameraImage image) async {
-    int h = image.height;
-    int w = image.width;
-    Uint8List bytes = image.planes.first.bytes;
-    double redAVG =
-        ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
-    if (redAVG > 127.4 && redAVG < 127.6) {
+    if (Platform.isAndroid) {
       _isFingerOverlay = false;
-    } else {
-      _isFingerOverlay = true;
+    } else if (Platform.isIOS) {
+      int h = image.height;
+      int w = image.width;
+      Uint8List bytes = image.planes.first.bytes;
+      double redAVG =
+          ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
+      if (redAVG > 127.4 && redAVG < 127.6) {
+        _isFingerOverlay = false;
+      } else {
+        _isFingerOverlay = true;
+      }
     }
 
     // get the average value of the image
