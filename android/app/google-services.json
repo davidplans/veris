@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:347571404214:android:1057852394141df2cb1517",
+        "mobilesdk_app_id": "1:347571404214:android:7bb7c6a6d4ea31f5cb1517",
         "android_client_info": {
-          "package_name": "ua.veris.health"
+          "package_name": "com.davidplans.veris"
         }
       },
       "oauth_client": [
@@ -32,10 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "347571404214-e2aleg7oipotn7tvh335ugnm9khhhp39.apps.googleusercontent.com",
+              "client_id": "347571404214-0lvnn0gdem1l24i7c04kg4b1aggkdh5s.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.davidplans.patscreener"
+                "bundle_id": "com.davidplans.veris"
               }
             }
           ]

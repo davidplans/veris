@@ -1,10 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/data/repositories/auth_repository.dart';
-import 'package:flutter_schema_health/presentation/cubit/login_state.dart';
-import 'package:flutter_schema_health/presentation/utils/form_inputs.dart';
+import 'package:Veris/data/repositories/auth_repository.dart';
+import 'package:Veris/presentation/cubit/login_state.dart';
+import 'package:Veris/presentation/utils/form_inputs.dart';
 import 'package:formz/formz.dart';
-
-
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this._authenticationRepository) : super(const LoginState());
@@ -51,6 +49,4 @@ class LoginCubit extends Cubit<LoginState> {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
   }
-
-  
 }

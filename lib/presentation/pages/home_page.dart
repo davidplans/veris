@@ -1,16 +1,19 @@
+import 'package:Veris/presentation/widgets/settings_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_schema_health/presentation/bloc/auth_bloc.dart';
-import 'package:flutter_schema_health/presentation/bloc/auth_event.dart';
-import 'package:flutter_schema_health/presentation/widgets/home_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/progress_widget.dart';
-import 'package:flutter_schema_health/presentation/widgets/settings_widget.dart';
-import 'package:flutter_schema_health/style/theme.dart';
+import 'package:Veris/presentation/bloc/auth_bloc.dart';
+import 'package:Veris/presentation/bloc/auth_event.dart';
+import 'package:Veris/presentation/widgets/home_widget.dart';
+import 'package:Veris/presentation/widgets/progress_widget.dart';
+import 'package:Veris/style/theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static Page page() => const MaterialPage<void>(child: HomePage());
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const HomePage());
+  }
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -22,14 +25,18 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const HomeWidget(),
     const ProgressWidget(),
+    // const SurveysWidget(),
+    // const IntroTabWidget(),
     const SettingsWidget(),
   ];
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Veris'),
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
             key: const Key('homePage_logout_iconButton'),
@@ -40,7 +47,8 @@ class _HomePageState extends State<HomePage> {
       ),
       body: pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: Colors.blue,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           // BottomNavigationBarItem(
@@ -48,17 +56,23 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.trending_up), label: 'My progress'),
           // BottomNavigationBarItem(
-          //     icon: Icon(Icons.perm_identity), label: 'Profile'),
-          BottomNavigationBarItem(
+          //      icon: Icon(Icons.bar_chart), label: 'Survey'),
+          // BottomNavigationBarItem(
+          //     icon: Icon(Icons.favorite), label: 'Heart Beat'),
+                        BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: 'Settings'),
         ],
         currentIndex: _currentIndex,
-        selectedItemColor: theme.primaryColor,
-        backgroundColor: theme.primaryColorDark,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        selectedItemColor: Colors.amber,
+        backgroundColor: const Color(0XFF0F2042),
         onTap: (value) {
           setState(() => _currentIndex = value);
         },
       ),
     );
   }
+
+
 }

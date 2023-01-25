@@ -4,7 +4,9 @@
 *.pyc
 *.swp
 .DS_Store
+.dart_tool
 .atom/
+.vscode/
 .buildlog/
 .history
 .svn/
@@ -31,6 +33,12 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+# /ios/
+# /andriod/
+/linux/
+/macos/
+/web/
+/windows/
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -42,6 +50,5 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+
+macos/Flutter/GeneratedPluginRegistrant.swift

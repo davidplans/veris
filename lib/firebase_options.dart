@@ -4,8 +4,6 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-import 'package:firebase_core/firebase_core.dart';
-
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
 /// Example:
@@ -16,8 +14,6 @@ import 'package:firebase_core/firebase_core.dart';
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
-///
-
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -61,7 +57,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAUiJCbmUZAyIx2Vgtc-PK6O9ria8CdgGA',
-    appId: '1:347571404214:android:1057852394141df2cb1517',
+    appId: '1:347571404214:android:7bb7c6a6d4ea31f5cb1517',
     messagingSenderId: '347571404214',
     projectId: 'patdeployments',
     databaseURL:
@@ -71,20 +67,20 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB2JZgdt5iAOsRL1n-WCJxglrvsV92hMK8',
-    appId: '1:347571404214:ios:f38a4446b58dcd47cb1517',
+    appId: '1:347571404214:ios:f33a8b581ed7612ccb1517',
     messagingSenderId: '347571404214',
     projectId: 'patdeployments',
     databaseURL:
         'https://patdeployments-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'patdeployments.appspot.com',
     iosClientId:
-        '347571404214-0lvnn0gdem1l24i7c04kg4b1aggkdh5s.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterSchemaHealth',
+        '347571404214-f7171k0pp7nglq7g2d2s698dfge29p79.apps.googleusercontent.com',
+    iosBundleId: 'com.davidplans.veris',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyB2JZgdt5iAOsRL1n-WCJxglrvsV92hMK8',
-    appId: '1:347571404214:ios:f38a4446b58dcd47cb1517',
+    appId: '1:347571404214:ios:3738ba3741294367cb1517',
     messagingSenderId: '347571404214',
     projectId: 'patdeployments',
     databaseURL:

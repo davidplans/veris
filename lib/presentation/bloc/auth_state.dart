@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_schema_health/data/models/user.dart';
+import 'package:Veris/data/models/user.dart';
 
-
-
-enum AuthStatus{
+enum AuthStatus {
   authenticated,
   unauthenticated,
 }
@@ -17,7 +15,8 @@ class AuthState extends Equatable {
   const AuthState.authenticated(User user)
       : this._(status: AuthStatus.authenticated, user: user);
 
-  const AuthState.unauthenticated() : this._(status: AuthStatus.unauthenticated);
+  const AuthState.unauthenticated()
+      : this._(status: AuthStatus.unauthenticated);
 
   final AuthStatus status;
   final User user;

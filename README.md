@@ -1,4 +1,4 @@
-# flutter_schema_health
+# Veris
 
 A new Flutter project.
 
@@ -12,13 +12,19 @@ For help getting started with Flutter development, view the
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Run project from the command line:
+`$ flutter pub get`
+`$ flutter run`
+
 ## Assets
 
 The `assets` directory houses images, fonts, and any other files you want to
 include with your application.
 
-The `assets/images` directory contains [resolution-aware
-images](https://flutter.dev/docs/development/ui/assets-and-images#resolution-aware).
+The `assets/images` directory contains [resolution-aware images]
+The `assets/sounds` directory contains [sounds]
+The `assets/videos` directory contains [videos]
+(https://flutter.dev/docs/development/ui/assets-and-images#resolution-aware).
 
 ## Localization
 
