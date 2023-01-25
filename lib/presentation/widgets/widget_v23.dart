@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ffi';
-import 'dart:io' show Platform;
+import 'dart:io' show File, Platform;
+import 'package:image/image.dart' as img;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -183,8 +184,8 @@ class _V23WidgetState extends State<V23Widget>
 
   Future<void> _initController() async {
     try {
-      List _cameras = await availableCameras();
-      _controller = CameraController(_cameras.first, ResolutionPreset.low);
+      _controller = await getTheMostRelevantCamera();
+
       await _controller!.initialize();
       Future.delayed(const Duration(milliseconds: 100)).then((onValue) {
         _controller!.setFlashMode(FlashMode.torch);
@@ -197,6 +198,58 @@ class _V23WidgetState extends State<V23Widget>
     }
   }
 
+  Future<CameraController> getTheMostRelevantCamera() async {
+    List cameras = await availableCameras();
+
+    // in case we can not find the best one try to use default one
+    CameraController result =
+        CameraController(cameras.first, ResolutionPreset.low);
+
+    final completer = Completer();
+
+    var counter = 0;
+    const maxSecondsForWaiting = 10;
+
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
+      // ignore: avoid_function_literals_in_foreach_calls
+      cameras.forEach((camera) async {
+        try {
+          CameraController? cameraController =
+              CameraController(camera, ResolutionPreset.low);
+
+          await cameraController!.initialize();
+          await cameraController!.setFlashMode(FlashMode.torch);
+          final xFile = await cameraController.takePicture();
+          final path = xFile.path;
+          final Uint8List bytes = await File(path).readAsBytes();
+          final img.Image? image = img.decodeImage(bytes);
+          print('image h: ${image?.height}');
+
+          // await cameraController!.dispose();
+
+          if (isPotentialCorrectCamera(image, bytes)) {
+            result = CameraController(camera, ResolutionPreset.low);
+            completer.complete();
+            timer.cancel();
+          }
+        } catch (e) {
+          print('takePicture error: $e');
+        }
+      });
+
+      if (counter == maxSecondsForWaiting) {
+        completer.complete();
+        timer.cancel();
+      } else {
+        counter++;
+      }
+    });
+
+    await completer.future;
+
+    return result;
+  }
+
   void _initTimer() {
     _timer = Timer.periodic(Duration(milliseconds: 1000 ~/ _fs), (timer) {
       if (_toggled) {
@@ -205,6 +258,21 @@ class _V23WidgetState extends State<V23Widget>
         timer.cancel();
       }
     });
+  }
+
+  bool isPotentialCorrectCamera(image, bytes) {
+    try {
+      int h = image.height;
+      int w = image.width;
+      double redAVG =
+          ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
+      if (redAVG > 127.4 && redAVG < 127.6) {
+        return true;
+      }
+    } catch (e) {
+      print('isPotentialCorrectCamera error: $e');
+    }
+    return false;
   }
 
   void _scanImage(CameraImage image) {
