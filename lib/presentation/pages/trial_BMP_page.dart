@@ -497,7 +497,7 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   Future<void> _initController() async {
     try {
       List _cameras = await availableCameras();
-      _controller = CameraController(_cameras.last, ResolutionPreset.low);
+      _controller = CameraController(_cameras.first, ResolutionPreset.low);
       await _controller!.initialize();
       Future.delayed(const Duration(milliseconds: 100)).then((onValue) {
         _controller!.setFlashMode(FlashMode.torch);
@@ -521,20 +521,20 @@ class _TrialBMPPageState extends State<TrialBMPPage>
   }
 
   void _scanImage(CameraImage image) {
-if (Platform.isAndroid) {
-  _isFingerOverlay = false;
-} else if (Platform.isIOS) {
-      int h = image.height;
-    int w = image.width;
-    Uint8List bytes = image.planes.first.bytes;
-    double redAVG =
-        ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
-    if (redAVG > 127.4 && redAVG < 127.6) {
+    if (Platform.isAndroid) {
       _isFingerOverlay = false;
-    } else {
-      _isFingerOverlay = true;
+    } else if (Platform.isIOS) {
+      int h = image.height;
+      int w = image.width;
+      Uint8List bytes = image.planes.first.bytes;
+      double redAVG =
+          ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
+      if (redAVG > 127.4 && redAVG < 127.6) {
+        _isFingerOverlay = false;
+      } else {
+        _isFingerOverlay = true;
+      }
     }
-}
     _now = DateTime.now();
     _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /

@@ -103,7 +103,7 @@ class _V313Trial2WidgetState extends State<V313Trial2Widget> {
       // 1. get list of all available cameras
       List<CameraDescription> _cameras = await availableCameras();
       // 2. assign the preferred camera with low resolution and disable audio
-      _controller = CameraController(_cameras.last, ResolutionPreset.low,
+      _controller = CameraController(_cameras.first, ResolutionPreset.low,
           enableAudio: false);
 
       // 3. initialize the camera
@@ -151,20 +151,20 @@ class _V313Trial2WidgetState extends State<V313Trial2Widget> {
       growable: true);
 
   void _scanImage(CameraImage image) async {
-if (Platform.isAndroid) {
-  _isFingerOverlay = false;
-} else if (Platform.isIOS) {
-      int h = image.height;
-    int w = image.width;
-    Uint8List bytes = image.planes.first.bytes;
-    double redAVG =
-        ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
-    if (redAVG > 127.4 && redAVG < 127.6) {
+    if (Platform.isAndroid) {
       _isFingerOverlay = false;
-    } else {
-      _isFingerOverlay = true;
+    } else if (Platform.isIOS) {
+      int h = image.height;
+      int w = image.width;
+      Uint8List bytes = image.planes.first.bytes;
+      double redAVG =
+          ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
+      if (redAVG > 127.4 && redAVG < 127.6) {
+        _isFingerOverlay = false;
+      } else {
+        _isFingerOverlay = true;
+      }
     }
-}
     // get the average value of the image
     double _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
