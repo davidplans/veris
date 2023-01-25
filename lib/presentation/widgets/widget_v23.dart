@@ -205,6 +205,11 @@ class _V23WidgetState extends State<V23Widget>
     CameraController result =
         CameraController(cameras.first, ResolutionPreset.low);
 
+    // for Android always return first camera, todo: find better way
+    if (Platform.isAndroid) {
+      return result;
+    }
+
     final completer = Completer();
 
     var counter = 0;
