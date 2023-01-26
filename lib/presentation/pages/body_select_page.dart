@@ -1,6 +1,6 @@
 import 'package:Veris/data/models/body.dart';
+import 'package:Veris/presentation/pages/confidence_slider_page.dart';
 import 'package:Veris/presentation/pages/home_page.dart';
-import 'package:Veris/presentation/pages/knob_page.dart';
 import 'package:Veris/presentation/utils/parser.dart';
 import 'package:Veris/presentation/utils/size_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -75,27 +75,8 @@ class _BodySelectPageState extends State<BodySelectPage> {
                 onPressed: selectedBody?.title != null
                     ? () {
                         _setSelect();
-                        // final trialId = prefs.getString('trialId');
-                        // final userId = prefs.getString('userId');
-                        // final countTrials = prefs.getInt('countTrials');
-
-                        // final docData = {
-                        //   "numRuns": countTrials,
-                        //   "selectedBody": selectedBody?.title,
-                        // };
-
-                        // users
-                        //     .doc(userId)
-                        //     .collection('trials')
-                        //     .doc(trialId)
-                        //     .set(docData, SetOptions(merge: true));
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   const SnackBar(
-                        //     content: Text("Stored!"),
-                        //   ),
-                        // );
                         Navigator.of(context).push<void>(
-                          KnobPage.route(),
+                          ConfidenceSliderPage.route(),
                         );
                       }
                     : null,
