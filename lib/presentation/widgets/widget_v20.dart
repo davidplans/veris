@@ -40,7 +40,7 @@ class _V20WidgetState extends State<V20Widget> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const TrialPage(),
+                        builder: (context) => const V21Widget(),
                       ),
                     );
                   },
