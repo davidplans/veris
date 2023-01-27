@@ -1,3 +1,4 @@
+import 'package:Veris/presentation/pages/trial_page.dart';
 import 'package:Veris/presentation/widgets/widget_v21.dart';
 import 'package:flutter/material.dart';
 

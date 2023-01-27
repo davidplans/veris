@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'dart:math' as math;
 
+import 'package:Veris/presentation/pages/confidence_slider_page.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +11,13 @@ import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/image_processing.dart';
-
+import 'body_select_page.dart';
 
 class TrialPage extends StatefulWidget {
   const TrialPage({super.key});
+    static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const TrialPage());
+  }
 
   @override
   State<TrialPage> createState() => _TrialPageState();
@@ -64,6 +69,8 @@ class _TrialPageState extends State<TrialPage> {
   int _configStepBodySelect = 5;
   int _countTrials = 0;
   int _completeTrials = 0;
+  int _currentStep = 1;
+  List<int> listSelectSteps = [];
 
   // PROCESSING VARS
 
@@ -83,27 +90,26 @@ class _TrialPageState extends State<TrialPage> {
   void initState() {
     super.initState();
     _initController();
+    listSelectSteps.add(_currentStep);
+    _getNumTrial();
   }
 
   @override
   void dispose() {
     _deinitController();
-
     super.dispose();
   }
 
   /// Deinitialize the camera controller
   void _deinitController() async {
+    _player.stop();
     _player.dispose();
     _isFinished = true;
     _isCameraInitialized = false;
     _isFingerOverlay = false;
 
     if (_controller == null) return;
-    // await _controller.stopImageStream();
     await _controller!.dispose();
-    // while (_processing) {}
-    // _controller = null;
     if (_timer != null) _timer?.cancel();
   }
 
@@ -125,7 +131,7 @@ class _TrialPageState extends State<TrialPage> {
         p.setStringList('instantErrs', instantErrs);
         p.setStringList('knobScales', knobScales);
         p.setStringList('currentDelays', currentDelays);
-        // print(p.getInt("numRuns").toString());
+        p.setString('selectedBody', '');
       });
     });
 
@@ -142,7 +148,6 @@ class _TrialPageState extends State<TrialPage> {
   /// Function to initialize the camera controller and start data collection.
   Future<void> _initController() async {
     _player.setLoopMode(LoopMode.off);
-    _getNumTrial();
 
     if (_controller != null) return;
     try {
@@ -178,8 +183,6 @@ class _TrialPageState extends State<TrialPage> {
 
     _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       if (_instantBPMs != null && _instantBPMs.isNotEmpty) {
-        // print(_instantBPMs.toString());
-        // print(_instantBPMs.reduce((a,b) => a + b) / _instantBPMs.length);
         _instantBPMs.clear();
       }
     });
@@ -194,11 +197,8 @@ class _TrialPageState extends State<TrialPage> {
       _configMaxTrials = p.getInt('maxTrials') ?? 20;
       _configStepBodySelect = p.getInt('stepBodySelect') ?? 5;
       p.setString('startTrial', formattedDate);
+      _calculateStep(_configMaxTrials, _configStepBodySelect);
       setState(() {});
-      print('COUNT $_countTrials');
-      print('COUNT $_completeTrials');
-      print('COUNT $_configMaxTrials');
-      print('COUNT $_configStepBodySelect');
     });
   }
 
@@ -214,15 +214,19 @@ class _TrialPageState extends State<TrialPage> {
       growable: true);
 
   void _scanImage(CameraImage image) async {
-    int h = image.height;
-    int w = image.width;
-    Uint8List bytes = image.planes.first.bytes;
-    double redAVG =
-        ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
-    if (redAVG > 127.4 && redAVG < 127.6) {
+    if (Platform.isAndroid) {
       _isFingerOverlay = false;
-    } else {
-      _isFingerOverlay = true;
+    } else if (Platform.isIOS) {
+      int h = image.height;
+      int w = image.width;
+      Uint8List bytes = image.planes.first.bytes;
+      double redAVG =
+          ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
+      if (redAVG > 127.4 && redAVG < 127.6) {
+        _isFingerOverlay = false;
+      } else {
+        _isFingerOverlay = true;
+      }
     }
 
     // get the average value of the image
@@ -243,17 +247,15 @@ class _TrialPageState extends State<TrialPage> {
         _counter = 0;
       }
     } else {
-      // _player.play();
-      // print('top');
       _max = 0;
       _counter = 0;
-      // _player.stop();
     }
     measureWindow.removeAt(0);
     measureWindow.add(SensorValue(DateTime.now(), avg));
 
     _udateBPM(avg).then((value) {
-      Future<void>.delayed(Duration(milliseconds: _sampleDelay)).then((onValue) {
+      Future<void>.delayed(Duration(milliseconds: _sampleDelay))
+          .then((onValue) {
         if (mounted) {
           setState(() {
             _processing = false;
@@ -264,22 +266,21 @@ class _TrialPageState extends State<TrialPage> {
   }
 
   _mainCalculate() {
-    print('NORM1 $_currentKnobValue');
-    print('NORM2 $_range');
-
     _normalisedValue = (_currentKnobValue + _range) / (2 * _range);
-    print('NORM3 $_normalisedValue');
     _shiftedRad = _normalisedValue * (2 * math.pi);
-    print('shiftedRad $_shiftedRad');
     _rad = (_shiftedRad - math.pi);
-    print('rad $_rad');
-
     if (_currentKnobValue == 0) {
       _currentKnobValue = _randomGen(-1, 1);
-      print('RANDOM $_currentKnobValue');
     }
+  }
 
-    
+  _calculateStep(int total, int range) {
+    while (total >= _currentStep) {
+      _currentStep += range;
+      if (_currentStep <= total) {
+        listSelectSteps.add(_currentStep);
+      }
+    }
   }
 
   /// Smooth the raw measurements using Exponential averaging
@@ -291,10 +292,10 @@ class _TrialPageState extends State<TrialPage> {
   Future<int> _udateBPM(double newValue) async {
     double maxVal = 0, avg = 0;
 
-    measureWindow.forEach((element) {
+    for (var element in measureWindow) {
       avg += element.value / measureWindow.length;
       if (element.value > maxVal) maxVal = element.value as double;
-    });
+    }
 
     double threshold = (maxVal + avg) / 2;
     int _count = 0, previousTimestamp = 0;
@@ -316,46 +317,33 @@ class _TrialPageState extends State<TrialPage> {
     if (_count > 0) {
       tempBPM = tempBPM / _count;
 
-double previousInstantPeriod = 0;
-        if (_instantPeriods.isNotEmpty) {
-          previousInstantPeriod = _instantPeriods[_instantPeriods.length - 1];
-          print("PREVIOUS  $previousInstantPeriod");
-        }
+      double previousInstantPeriod = 0;
+      if (_instantPeriods.isNotEmpty) {
+        previousInstantPeriod = _instantPeriods[_instantPeriods.length - 1];
+      }
 
-                // _instantBPMs.add(tempBPM);
-        final double instantPeriod = 60 / tempBPM;
-        _instantPeriods.add(instantPeriod);
-        int count = _instantPeriods.length;
-        double sum = _instantPeriods.fold<double>(
-            0, (double sum, double item) => sum + item);
-        double averagePeriod = sum / count;
-        _averagePeriods.add(averagePeriod);
-        double currentDelay = (averagePeriod / 2) * _currentKnobValue;
-        _currentDelays.add(currentDelay);
-        _knobScales.add(_currentKnobValue);
-
-        print("Instance  $instantPeriod");
-        // print("Count $count");
-        print("Average $averagePeriod");
-        if (previousInstantPeriod != 0) {
-          final instantErr = previousInstantPeriod - instantPeriod;
-          _instantErrs.add(instantErr);
-          print("Err  $instantErr");
-        }
-        print("Current Delay $currentDelay");
-        print("+++++++++++++++++++++++");
-
+      // _instantBPMs.add(tempBPM);
+      final double instantPeriod = 60 / tempBPM;
+      _instantPeriods.add(instantPeriod);
+      int count = _instantPeriods.length;
+      double sum = _instantPeriods.fold<double>(
+          0, (double sum, double item) => sum + item);
+      double averagePeriod = sum / count;
+      _averagePeriods.add(averagePeriod);
+      double currentDelay = (averagePeriod / 2) * _currentKnobValue;
+      _currentDelays.add(currentDelay);
+      _knobScales.add(_currentKnobValue);
+      if (previousInstantPeriod != 0) {
+        final instantErr = previousInstantPeriod - instantPeriod;
+        _instantErrs.add(instantErr);
+      }
       tempBPM = (1 - alpha) * currentValue + alpha * tempBPM;
       _instantBPMs.add(tempBPM);
 
       setState(() {
         currentValue = tempBPM.toInt();
-        // _bpm = _tempBPM;
       });
     }
-
-    // double newOut = widget.alpha * newValue + (1 - widget.alpha) * _pastBPM;
-    // _pastBPM = newOut;
     return currentValue;
   }
 
@@ -370,10 +358,48 @@ double previousInstantPeriod = 0;
             child: _isCameraInitialized
                 ? Column(
                     children: [
-                      Container(
-                        constraints: const BoxConstraints.tightFor(
-                            width: 100, height: 130),
-                        child: _controller!.buildPreview(),
+                      Row(
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'Config',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text('Total trials - $_configMaxTrials',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  Text('BodySelect - $_configStepBodySelect',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              )),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              constraints: const BoxConstraints.tightFor(
+                                  width: 100, height: 130),
+                              child: _controller!.buildPreview(),
+                            ),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'Complete trial:',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    "$_completeTrials of $_configMaxTrials",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              )),
+                        ],
                       ),
                       const Padding(
                         padding: EdgeInsets.all(20.0),
@@ -433,29 +459,14 @@ double previousInstantPeriod = 0;
                             textStyle: const TextStyle(color: Colors.white),
                           ),
                           child: const Text("Confirm"),
-                          onPressed: () => setState(() {
-                            _confirm();
-                            _deinitController();
-                          }),
+                          onPressed: () {
+                            setState(() {
+                              _deinitController();
+                              _confirm();
+                            });
+                          },
                         ),
                       )
-                      // _isFinished
-                      //     ? Center(
-                      //         child: ElevatedButton.icon(
-                      //             icon: const Icon(Icons.favorite_rounded),
-                      //             label: const Text("Continue"),
-                      //             onPressed: () {}),
-                      //       )
-                      //     : Center(
-                      //         child: ElevatedButton.icon(
-                      //           icon: const Icon(Icons.favorite_rounded),
-                      //           label: const Text("Confirm"),
-                      //           onPressed: () => setState(() {
-                      //             _deinitController();
-
-                      //           }),
-                      //         ),
-                      //       )
                     ],
                   )
                 : const Center(child: CircularProgressIndicator())),
@@ -547,11 +558,11 @@ double previousInstantPeriod = 0;
                           ),
                           child: const Text("Continue"),
                           onPressed: () {
-                    //                           Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const V312Trial1Widget(),
-                    //   ),
-                    // );
+                            (listSelectSteps.contains(_countTrials))
+                                ? Navigator.of(context)
+                                    .push<void>(BodySelectPage.route())
+                                : Navigator.of(context)
+                                    .push<void>(ConfidenceSliderPage.route());
                           }),
                     ),
                   ],

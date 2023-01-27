@@ -1,6 +1,8 @@
 import 'package:Veris/presentation/pages/trial_BMP_page.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/trial_page.dart';
+
 
 
 class V315Trial2Widget extends StatefulWidget {
@@ -56,7 +58,7 @@ class _V315Trial2WidgetState extends State<V315Trial2Widget> {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const TrialBMPPage(),
+                                builder: (context) => const TrialPage(),
                               ),
                             );
                           },

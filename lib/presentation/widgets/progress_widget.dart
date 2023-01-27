@@ -1,11 +1,9 @@
 import 'package:Veris/data/models/user.dart';
 import 'package:Veris/presentation/bloc/auth_bloc.dart';
-import 'package:Veris/presentation/widgets/trial_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProgressWidget extends StatefulWidget {
   const ProgressWidget({Key? key}) : super(key: key);
