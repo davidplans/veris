@@ -418,7 +418,7 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
                     const Padding(
                       padding: EdgeInsets.all(20.0),
                       child: Text(
-                          "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.",
+                          "",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 16.0,
@@ -429,24 +429,7 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
                         width: 250,
                         height: 250,
                         color: Colors.white,
-                        child: LayoutBuilder(builder: (context, constraints) {
-                          return Column(children: [
-                            GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onPanUpdate: (details) {
-                                Offset centerOfGestureDetector = Offset(
-                                    constraints.maxWidth / 2,
-                                    constraints.maxHeight / 2);
-                                final touchPositionFromCenter =
-                                    details.localPosition -
-                                        centerOfGestureDetector;
-                              },
-                              child: const Image(
-                                image: AssetImage("assets/images/knob.png"),
-                              ),
-                            ),
-                          ]);
-                        })),
+                        child: const Text('')),
                     const SizedBox(height: 40),
                     Center(
                       child: ElevatedButton(
