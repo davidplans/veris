@@ -56,6 +56,7 @@ class _V23WidgetState extends State<V23Widget>
   String studyId = "";
   String currentModuleResultId = "";
   int moduleId = 0;
+  List<int> averageRed = [];
 
   @override
   initState() {
@@ -209,13 +210,28 @@ class _V23WidgetState extends State<V23Widget>
 
   void _scanImage(CameraImage image) {
     if (Platform.isAndroid) {
-      _isFingerOverlay = false;
+      int red = ImageProcessing.decodeYUV420ToRGB(image);
+      if (averageRed.length <= 10) {
+        averageRed.add(red);
+        if (averageRed.length == 10) {
+          int redAVG = (averageRed.reduce((value, element) => value + element) /
+                  averageRed.length)
+              .round();
+          if (redAVG > 230 && redAVG < 255) {
+            _isFingerOverlay = false;
+          } else {
+            _isFingerOverlay = true;
+          }
+          print("RED $red");
+        }
+      } else if (averageRed.length > 10) {
+        averageRed.clear();
+      }
     } else if (Platform.isIOS) {
       int h = image.height;
       int w = image.width;
       Uint8List bytes = image.planes.first.bytes;
-      double redAVG =
-          ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
+      double redAVG = ImageProcessing.decodeBGRA8888toRGB(bytes, w, h, 1);
       if (redAVG > 127.4 && redAVG < 127.6) {
         _isFingerOverlay = false;
       } else {

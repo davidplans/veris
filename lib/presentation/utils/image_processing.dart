@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+import 'dart:ui';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class ImageProcessing {
@@ -70,7 +73,7 @@ abstract class ImageProcessing {
      * @param height   Height of the image.
      * @return int representing the average amount of red in the image.
      */
-  static double decodeYUV420SPtoRedBlueGreenAvg(
+  static double decodeBGRA8888toRGB(
       Uint8List yuv420sp, int width, int height, int type) {
     if (yuv420sp == null) return 0;
     final int frameSize = width * height;
@@ -80,111 +83,46 @@ abstract class ImageProcessing {
     return (sum / frameSize);
   }
 
-  static convertYUV420toImageColor(int width, int height, int uvRowStride,
-      int uvPixelStride, Uint8List yp, Uint8List up, Uint8List vp) async {
-    try {
-      // final int width = image.width;
-      // final int height = image.height;
-      // final int uvRowStride = image.planes[1].bytesPerRow;
-      // final int? uvPixelStride = image.planes[1].bytesPerPixel;
+ 
 
-      print("uvRowStride: " + uvRowStride.toString());
-      print("uvPixelStride: " + uvPixelStride.toString());
+  static int decodeYUV420ToRGB(CameraImage cameraImage) {
+    int red = 0;
+    final width = cameraImage.width;
+    final height = cameraImage.height;
 
-      // imgLib -> Image package from https://pub.dartlang.org/packages/image
-      // var img =
-      //     imgLib.Image(width: width, height: height); // Create Image buffer
+    final yRowStride = cameraImage.planes[0].bytesPerRow;
+    final uvRowStride = cameraImage.planes[1].bytesPerRow;
+    final uvPixelStride = cameraImage.planes[1].bytesPerPixel!;
 
-      // Fill image buffer with plane[0] from YUV420_888
-      for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-          final int uvIndex =
-              uvPixelStride * (x / 2).floor() + uvRowStride * (y / 2).floor();
-          final int index = y * width + x;
+    // final image = image_lib.Image(width, height);
 
-          // final yp = image.planes[0].bytes[index];
-          // final up = image.planes[1].bytes[uvIndex];
-          // final vp = image.planes[2].bytes[uvIndex];
-          // Calculate pixel color
-          int r = (yp[index] + vp[uvIndex] * 1436 / 1024 - 179).round();
-          int g = (yp[index] -
-                  up[uvIndex] * 46549 / 131072 +
-                  44 -
-                  vp[uvIndex] * 93604 / 131072 +
-                  91)
-              .round();
-          int b = (yp[index] + up[uvIndex] * 1814 / 1024 - 227).round();
-          // color: 0x FF  FF  FF  FF
-          //           A   B   G   R
-          print('AVG $r');
-          print('AVG2 $g');
-          print('AVG3 $b');
-          // img.data[index] = shift | (b << 16) | (g << 8) | r;
-        }
+    for (var w = 0; w < width; w++) {
+      for (var h = 0; h < height; h++) {
+        final uvIndex =
+            uvPixelStride * (w / 2).floor() + uvRowStride * (h / 2).floor();
+        // final index = h * width + w;
+        final yIndex = h * yRowStride + w;
+
+        final y = cameraImage.planes[0].bytes[yIndex];
+        final u = cameraImage.planes[1].bytes[uvIndex];
+        final v = cameraImage.planes[2].bytes[uvIndex];
+
+        red = yuv2rgb(y, u, v);
       }
-
-      // imglib.PngEncoder pngEncoder = new imglib.PngEncoder(level: 0, filter: 0);
-      // List<int> png = pngEncoder.encodeImage(img);
-      // muteYUVProcessing = false;
-      // return Image.memory(png);
-    } catch (e) {
-      print(">>>>>>>>>>>> ERROR:" + e.toString());
     }
-    return null;
+    return red;
   }
 
-  static List<int> convertYUV420_NV21toRGB8888(
-      Uint8List data, int width, int height) {
-    int size = width * height;
-    int offset = size;
-    List<int> pixels = [size];
-    int u, v, y1, y2, y3, y4;
+  static int yuv2rgb(int y, int u, int v) {
+    var r = (y + v * 1436 / 1024 - 179).round();
+    var g = (y - u * 46549 / 131072 + 44 - v * 93604 / 131072 + 91).round();
+    var b = (y + u * 1814 / 1024 - 227).round();
 
-    // i percorre os Y and the final pixels
-    // k percorre os pixles U e V
-    for (int i = 0, k = 0; i < size; i += 2, k += 2) {
-      y1 = data[i] & 0xff;
-      y2 = data[i + 1] & 0xff;
-      y3 = data[width + i] & 0xff;
-      y4 = data[width + i + 1] & 0xff;
+    // Clipping RGB values to be inside boundaries [ 0 , 255 ]
+    r = r.clamp(0, 255);
+    g = g.clamp(0, 255);
+    b = b.clamp(0, 255);
 
-      u = data[offset + k] & 0xff;
-      v = data[offset + k + 1] & 0xff;
-      u = u - 128;
-      v = v - 128;
-
-      pixels[i] = convertYUVtoRGB(y1, u, v);
-      pixels[i + 1] = convertYUVtoRGB(y2, u, v);
-      pixels[width + i] = convertYUVtoRGB(y3, u, v);
-      pixels[width + i + 1] = convertYUVtoRGB(y4, u, v);
-
-      if (i != 0 && (i + 2) % width == 0) i += width;
-    }
-    print("PIXEL $pixels");
-    return pixels;
-  }
-
-  static int convertYUVtoRGB(int y, int u, int v) {
-    int r, g, b;
-
-    r = y + (1.402 * v).toInt();
-    g = y - (0.344 * u + 0.714 * v).toInt();
-    b = y + (1.772 * u).toInt();
-    r = r > 255
-        ? 255
-        : r < 0
-            ? 0
-            : r;
-    g = g > 255
-        ? 255
-        : g < 0
-            ? 0
-            : g;
-    b = b > 255
-        ? 255
-        : b < 0
-            ? 0
-            : b;
-    return 0xff000000 | (b << 16) | (g << 8) | r;
+    return r;
   }
 }

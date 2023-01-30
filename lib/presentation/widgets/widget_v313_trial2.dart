@@ -35,6 +35,8 @@ class _V313Trial2WidgetState extends State<V313Trial2Widget> {
 
   List<double> _instantBPMs = <double>[];
 
+  List<int> averageRed = [];
+
   Timer? _timer;
 
   int _counter = 0;
@@ -150,15 +152,30 @@ class _V313Trial2WidgetState extends State<V313Trial2Widget> {
       windowLength, SensorValue(time: DateTime.now(), value: 0),
       growable: true);
 
-  void _scanImage(CameraImage image) async {
+  void _scanImage(CameraImage image) {
     if (Platform.isAndroid) {
-      _isFingerOverlay = false;
+      int red = ImageProcessing.decodeYUV420ToRGB(image);
+      if (averageRed.length <= 10) {
+        averageRed.add(red);
+        if (averageRed.length == 10) {
+          int redAVG = (averageRed.reduce((value, element) => value + element) /
+                  averageRed.length)
+              .round();
+          if (redAVG > 230 && redAVG < 255) {
+            _isFingerOverlay = false;
+          } else {
+            _isFingerOverlay = true;
+          }
+          print("RED $red");
+        }
+      } else if (averageRed.length > 10) {
+        averageRed.clear();
+      }
     } else if (Platform.isIOS) {
       int h = image.height;
       int w = image.width;
       Uint8List bytes = image.planes.first.bytes;
-      double redAVG =
-          ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(bytes, w, h, 1);
+      double redAVG = ImageProcessing.decodeBGRA8888toRGB(bytes, w, h, 1);
       if (redAVG > 127.4 && redAVG < 127.6) {
         _isFingerOverlay = false;
       } else {
@@ -415,8 +432,7 @@ class _V313Trial2WidgetState extends State<V313Trial2Widget> {
                     const SizedBox(height: 130),
                     const Padding(
                       padding: EdgeInsets.all(20.0),
-                      child: Text(
-                          "",
+                      child: Text("",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 16.0,
