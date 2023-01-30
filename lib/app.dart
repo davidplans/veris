@@ -1,5 +1,5 @@
 import 'package:Veris/utils/download_json.dart';
-import 'package:Veris/qr_scanner.dart';
+import 'package:Veris/features/qr_scanner/qr_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/core/user/auth_repository.dart';

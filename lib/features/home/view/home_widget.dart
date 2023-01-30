@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:Veris/health_app.dart';
+import 'package:Veris/app.dart';
 import 'package:Veris/features/smile/smile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
