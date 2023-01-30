@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'core/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/bloc_observer.dart';
-import 'package:Veris/data/repositories/auth_repository.dart';
-import 'package:Veris/health_app.dart';
+import 'package:Veris/core/bloc_observer.dart';
+import 'package:Veris/core/user/auth_repository.dart';
+import 'package:Veris/app.dart';
 import 'package:flutter/services.dart';
 
 Future<void> main() {
@@ -33,4 +33,3 @@ Future<void> main() {
     blocObserver: AppBlocObserver(),
   );
 }
-
