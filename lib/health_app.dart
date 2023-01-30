@@ -1,9 +1,9 @@
-import 'package:Veris/presentation/utils/download_json.dart';
+import 'package:Veris/utils/download_json.dart';
 import 'package:Veris/qr_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/data/repositories/auth_repository.dart';
-import 'package:Veris/presentation/bloc/auth_bloc.dart';
+import 'package:Veris/core/user/auth_repository.dart';
+import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
 import 'package:Veris/style/theme.dart';
 
 class HealthApp extends StatelessWidget {
@@ -308,8 +308,8 @@ class _StudyViewState extends State<StudyView> {
                       ),
                       Text(
                         testURL,
-                        style:
-                            const TextStyle(fontSize: 14.0, color: Colors.black),
+                        style: const TextStyle(
+                            fontSize: 14.0, color: Colors.black),
                       ),
                     ],
                   ),

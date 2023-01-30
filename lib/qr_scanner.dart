@@ -1,4 +1,4 @@
-import 'package:Veris/presentation/utils/download_json.dart';
+import 'package:Veris/utils/download_json.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 
@@ -20,11 +20,9 @@ class _QrScannerState extends State<QrScanner> {
     super.dispose();
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
-    Future<bool> isSucccessfully;
+    Future<bool> isSuccessfully;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Study QR-code Scanner'),
@@ -59,8 +57,8 @@ class _QrScannerState extends State<QrScanner> {
                   setState(() {
                     code = decodeString;
                   });
-                  isSucccessfully = DownladJSON().downloadFile(code, context);
-                  if (await isSucccessfully) {
+                  isSuccessfully = DownladJSON().downloadFile(code, context);
+                  if (await isSuccessfully) {
                     cameraController.stop();
                     cameraController.dispose();
                   }
