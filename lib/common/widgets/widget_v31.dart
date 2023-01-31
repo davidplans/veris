@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import 'app_bar_widget.dart';
 import 'widget_v32.dart';
 
 class V31Widget extends StatefulWidget {
@@ -40,7 +41,7 @@ class _V31WidgetState extends State<V31Widget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          AppBar(title: const Text('Veris'), automaticallyImplyLeading: false),
+          AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(

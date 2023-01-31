@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:math' as math;
-import 'dart:io' show Platform;
 
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../utils/image_processing.dart';
+import 'app_bar_widget.dart';
 import 'widget_v312_trial1.dart';
 
 class V310Trial1Widget extends StatefulWidget {
@@ -35,8 +34,6 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
   double _max = 0;
 
   List<double> _instantBPMs = <double>[];
-
-  List<int> averageRed = [];
 
   Timer? _timer;
 
@@ -154,35 +151,7 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
       growable: true);
 
   void _scanImage(CameraImage image) {
-    if (Platform.isAndroid) {
-      int red = ImageProcessing.decodeYUV420ToRGB(image);
-      if (averageRed.length <= 10) {
-        averageRed.add(red);
-        if (averageRed.length == 10) {
-          int redAVG = (averageRed.reduce((value, element) => value + element) /
-                  averageRed.length)
-              .round();
-          if (redAVG > 230 && redAVG < 255) {
-            _isFingerOverlay = false;
-          } else {
-            _isFingerOverlay = true;
-          }
-          print("RED $red");
-        }
-      } else if (averageRed.length > 10) {
-        averageRed.clear();
-      }
-    } else if (Platform.isIOS) {
-      int h = image.height;
-      int w = image.width;
-      Uint8List bytes = image.planes.first.bytes;
-      double redAVG = ImageProcessing.decodeBGRA8888toRGB(bytes, w, h, 1);
-      if (redAVG > 127.4 && redAVG < 127.6) {
-        _isFingerOverlay = false;
-      } else {
-        _isFingerOverlay = true;
-      }
-    }
+    _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
 
     // get the average value of the image
     double _avg =
@@ -202,11 +171,8 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
         _counter = 0;
       }
     } else {
-      // _player.play();
-      // print('top');
       _max = 0;
       _counter = 0;
-      // _player.stop();
     }
     measureWindow.removeAt(0);
     measureWindow.add(SensorValue(time: DateTime.now(), value: _avg));
@@ -291,9 +257,7 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Scaffold(
-        appBar: AppBar(
-            title: const Text('Veris - PRACTICE TRIAL 1'),
-            automaticallyImplyLeading: false),
+        appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
         body: Container(
             child: isCameraInitialized
                 ? Column(
@@ -425,9 +389,7 @@ class _V310Trial1WidgetState extends State<V310Trial1Widget> {
           : Container(),
       _isFinished
           ? Scaffold(
-              appBar: AppBar(
-                  title: const Text('Veris - PRACTICE TRIAL 1'),
-                  automaticallyImplyLeading: false),
+              appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
               body: Container(
                 child: Column(
                   children: [

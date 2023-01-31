@@ -7,6 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../common/widgets/app_bar_widget.dart';
+
 class BodySelectPage extends StatefulWidget {
   const BodySelectPage({Key? key}) : super(key: key);
 
@@ -31,17 +33,7 @@ class _BodySelectPageState extends State<BodySelectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Selected : ${selectedBody?.title ?? ''}'),
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-              onPressed: () => Navigator.of(context).push<void>(
-                    HomePage.route(),
-                  ),
-              icon: const Icon(Icons.home))
-        ],
-      ),
+      appBar: AppBarWidget(title: "Selected : ${selectedBody?.title ?? ''}"),
       backgroundColor: const Color(0xFF2A2A2A),
       body: Center(
         child: Stack(

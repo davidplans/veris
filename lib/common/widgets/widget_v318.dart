@@ -1,5 +1,6 @@
 import 'package:Veris/features/home/view/home_page.dart';
 import 'package:flutter/material.dart';
+import 'app_bar_widget.dart';
 import 'widget_v22.dart';
 
 class V318Widget extends StatefulWidget {
@@ -13,8 +14,7 @@ class _V318WidgetState extends State<V318Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Veris'), automaticallyImplyLeading: false),
+        appBar: AppBarWidget(title: "Veris"),
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Row(

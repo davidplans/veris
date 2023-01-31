@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_bar_widget.dart';
 import 'widget_v313_trial2.dart';
 
 class V312Trial1Widget extends StatefulWidget {
@@ -21,86 +22,75 @@ class _V312Trial1WidgetState extends State<V312Trial1Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-                appBar: AppBar(
-              title: const Text('Veris - PRACTICE TRIAL 1'),
-              automaticallyImplyLeading: false),
-                        floatingActionButton: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child:  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Expanded(
-                      //   flex: 1,
-                      //   child: FloatingActionButton.extended(
-                      //     icon: const Icon(
-                      //       Icons.arrow_back,
-                      //       color: Colors.white,
-                      //     ),
-                      //     backgroundColor: const Color(0XFF0F2042),
-                      //     onPressed: () {
-                      //       Navigator.of(context).pop();
-                      //     },
-                      //     label: const Text(
-                      //       "Back",
-                      //       style: TextStyle(color: Colors.white),
-                      //     ),
-                      //   ),
-                      // ),
-                      const Expanded(flex: 1, child: SizedBox()),
-                      const Expanded(flex: 1, child: SizedBox()),
-                      Expanded(
-                        flex: 1,
-                        child: FloatingActionButton.extended(
-                          backgroundColor: const Color(0XFF0F2042),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const V313Trial2Widget(),
-                              ),
-                            );
-                          },
-                          label: const Text(
-                            "Confirm",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          icon: const Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-      children: [
-        const SizedBox(height: 20.0,),
-        const Text(
-          "How confident are you that the tone matched you heart-beat?",
-          style: TextStyle(fontSize: 20.0),
-          textAlign: TextAlign.center,
+      appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Expanded(flex: 1, child: SizedBox()),
+            const Expanded(flex: 1, child: SizedBox()),
+            Expanded(
+              flex: 1,
+              child: FloatingActionButton.extended(
+                backgroundColor: const Color(0XFF0F2042),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const V313Trial2Widget(),
+                    ),
+                  );
+                },
+                label: const Text(
+                  "Confirm",
+                  style: TextStyle(color: Colors.white),
+                ),
+                icon: const Icon(
+                  Icons.arrow_forward,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 100.0,),
-        Slider(
-          value: _currentSliderValue,
-          max: 100,
-          divisions: 100,
-          label: _currentSliderValue.round().toString(),
-          onChanged: (double value) {
-            _changeSlider(value);
-          },
-        ),
-        Row(children: const [
-          Expanded(child: Text("Not at all \nconfident")),
-          Expanded(child: Text("Extremely \nconfident", textAlign: TextAlign.end,)),
-        ],)
-      ],
-    )
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20.0,
+              ),
+              const Text(
+                "How confident are you that the tone matched you heart-beat?",
+                style: TextStyle(fontSize: 20.0),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 100.0,
+              ),
+              Slider(
+                value: _currentSliderValue,
+                max: 100,
+                divisions: 100,
+                label: _currentSliderValue.round().toString(),
+                onChanged: (double value) {
+                  _changeSlider(value);
+                },
+              ),
+              Row(
+                children: const [
+                  Expanded(child: Text("Not at all \nconfident")),
+                  Expanded(
+                      child: Text(
+                    "Extremely \nconfident",
+                    textAlign: TextAlign.end,
+                  )),
+                ],
+              )
+            ],
+          )),
     );
   }
 }

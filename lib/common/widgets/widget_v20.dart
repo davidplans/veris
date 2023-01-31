@@ -1,3 +1,4 @@
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/common/widgets/widget_v21.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,7 @@ class _V20WidgetState extends State<V20Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Veris'), automaticallyImplyLeading: false),
+        appBar: AppBarWidget(title: "Veris"),
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Row(

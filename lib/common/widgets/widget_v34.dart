@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_bar_widget.dart';
 import 'widget_v35.dart';
 
 class V34Widget extends StatefulWidget {
@@ -14,8 +15,7 @@ class _V34WidgetState extends State<V34Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: const Text('Veris'), automaticallyImplyLeading: false),
+      appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
