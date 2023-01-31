@@ -17,7 +17,7 @@ import 'package:survey_kit/survey_kit.dart';
 class QuestionsWidget extends StatefulWidget {
   final List<dynamic> questions;
   final int moduleId;
-  final int sectonId;
+  final int sectionId;
   final String sectionName;
   final String moduleName;
 
@@ -25,7 +25,7 @@ class QuestionsWidget extends StatefulWidget {
       {Key? key,
       required this.questions,
       required this.moduleId,
-      required this.sectonId,
+      required this.sectionId,
       required this.sectionName,
       required this.moduleName})
       : super(key: key);
@@ -56,10 +56,6 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.questions.first);
-    // print(widget.moduleId);
-    // print(widget.sectonId);
-
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -108,7 +104,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                     String formatedSectionName =
                         lowerSectionName.replaceAll(" ", "_");
                     String sectionId =
-                        "${formatedSectionName}_${widget.sectonId}";
+                        "${formatedSectionName}_${widget.sectionId}";
 
                     if (resultData.isNotEmpty) {
                       final moduleData = {

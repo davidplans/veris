@@ -15,16 +15,10 @@ class DownladJSON {
     final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
 
     final _prefs = await SharedPreferences.getInstance();
+
     try {
       var dir = await getApplicationDocumentsDirectory();
 
-      // var response = await dio.download(url, "${dir.path}/$unixTime.json",
-      //     options: Options(
-      //       responseType: ResponseType.json,
-      //     ),
-      //     onReceiveProgress: (rec, total) async {
-      //   progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
-      // });
       var response = await dio.get(
         url,
         options: Options(
@@ -34,21 +28,11 @@ class DownladJSON {
       // print(response);
 
       if (response.headers.value('content-type') == 'application/json') {
-        // showDialog(
-        //   context: context,
-        //   builder: (context) {
-        //     return AlertDialog(
-        //       title: const Text('Downloading...'),
-        //       content: Text(progressString),
-        //     );
-        //   },
-        // );
-        // var localFile = File("${dir.path}/$unixTime.json");
         try {
           // final json = await localFile.readAsString();
           final decodingFile = jsonDecode(response.toString());
           final studyId = decodingFile["properties"]["study_id"];
-          // print(nameFromId);
+
           if (studyId.isNotEmpty) {
             await _prefs.setString('studyId', studyId);
             await _prefs
@@ -67,26 +51,6 @@ class DownladJSON {
               );
             });
 
-            // var path = localFile.path;
-            // var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
-            // var newPath =
-            //     path.substring(0, lastSeparator + 1) + nameFromId + ".json";
-            // localFile.rename(newPath).whenComplete(() => {
-            //       localFile.delete,
-
-            //       // print(localFile.path),
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => const AuthView()),
-            //       ),
-            //       ScaffoldMessenger.of(context).showSnackBar(
-            //         SnackBar(
-            //           backgroundColor: Colors.green[200],
-            //           content: const Text("JSON file downloaded successfully!"),
-            //         ),
-            //       )
-            //     });
-            // localFile.delete();
             return true;
           } else {
             showDialog(
