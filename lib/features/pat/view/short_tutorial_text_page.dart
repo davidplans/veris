@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'widget_v34.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'short_tutorial_video_page.dart';
 
-class V33Widget extends StatefulWidget {
-  const V33Widget({super.key});
-
-  @override
-  State<V33Widget> createState() => _V33WidgetState();
-}
-
-class _V33WidgetState extends State<V33Widget> {
+class ShortTutorialPage extends StatelessWidget {
+  const ShortTutorialPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: const Text('Veris'), automaticallyImplyLeading: false),
+      appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -48,9 +42,9 @@ class _V33WidgetState extends State<V33Widget> {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
-                                      Navigator.of(context).push(
+                  Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V34Widget(),
+                      builder: (context) => const ShortTutorialVideoPage(),
                     ),
                   );
                 },
@@ -65,23 +59,21 @@ class _V33WidgetState extends State<V33Widget> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    child: const Text(
-                      textAlign: TextAlign.center,
-                      "Your objective is to find the point on the dial where the heartbeat and sound is in sync, by turning the dial left or right.",
-                      style: TextStyle(fontSize: 18.0),
-                    ),
-                  ),
-                
-              ],
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: const Text(
+                textAlign: TextAlign.center,
+                "Want to know how this might look like?\n\nPress “Continue” to watch a short tutorial.",
+                style: TextStyle(fontSize: 18.0),
+              ),
             ),
-          ),
+          ],
+        ),
+      ),
     );
   }
 }

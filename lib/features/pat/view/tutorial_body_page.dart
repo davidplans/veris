@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 
-import 'widget_v39.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'dont_try_pulse_text_page.dart';
 
-class V38Widget extends StatefulWidget {
-  const V38Widget({super.key});
+class TutorialBodyPage extends StatefulWidget {
+  const TutorialBodyPage({super.key});
 
   @override
-  State<V38Widget> createState() => _V38WidgetState();
+  State<TutorialBodyPage> createState() => _TutorialBodyPageState();
 }
 
-class _V38WidgetState extends State<V38Widget> {
-
+class _TutorialBodyPageState extends State<TutorialBodyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: const Text('Veris'), automaticallyImplyLeading: false),
+      appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -48,9 +47,9 @@ class _V38WidgetState extends State<V38Widget> {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
-                                      Navigator.of(context).push(
+                  Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V39Widget(),
+                      builder: (context) => const DontTryPulsePage(),
                     ),
                   );
                 },
@@ -65,23 +64,26 @@ class _V38WidgetState extends State<V38Widget> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    child: const Text(
-                      textAlign: TextAlign.center,
-                      "For the duration of this task, please do not actively try to feel your pulse with your hand; we are only interested in what you feel! You might feel your heartbeat in various bodily locations. Just make sure you pick one and stick to using that one during the task.\n\nWhen you are ready to start, please sit comfortably upright with your earphones on and press “Сontinue”.",
-                      style: TextStyle(fontSize: 18.0),
-                    ),
-                  ),
-
-                
-              ],
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Container(
+              child: const Text(
+                textAlign: TextAlign.center,
+                "You can feel your heartbeat in different places in your body, such as your chest or your fingers. You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
+                style: TextStyle(fontSize: 16.0),
+              ),
             ),
-          ),
+            const SizedBox(
+              height: 20,
+            ),
+            Image.asset(
+              'assets/images/mannequin2.png',
+              height: 400,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

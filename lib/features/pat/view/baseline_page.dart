@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:io' show Platform;
 
-import 'package:flutter/foundation.dart';
+import 'package:Veris/core/user/user.dart';
+import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/utils/image_processing.dart';
 import 'package:flutter/material.dart';
-
 import 'package:Veris/style/theme.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,19 +13,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/user/user.dart';
-import '../../features/authentication/bloc/auth_bloc.dart';
-import '../../utils/image_processing.dart';
-import 'widget_v25.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'finger_camera_text_page.dart';
 
-class V23Widget extends StatefulWidget {
-  const V23Widget({super.key});
+class BaselinePage extends StatefulWidget {
+  const BaselinePage({super.key});
 
   @override
-  State<V23Widget> createState() => _V23WidgetState();
+  State<BaselinePage> createState() => _BaselinePageState();
 }
 
-class _V23WidgetState extends State<V23Widget>
+class _BaselinePageState extends State<BaselinePage>
     with SingleTickerProviderStateMixin {
   bool _toggled = false; // toggle button value
   List<SensorValue> _data = <SensorValue>[]; // array to store the values
@@ -56,7 +53,6 @@ class _V23WidgetState extends State<V23Widget>
   String studyId = "";
   String currentModuleResultId = "";
   int moduleId = 0;
-  List<int> averageRed = [];
 
   @override
   initState() {
@@ -209,48 +205,17 @@ class _V23WidgetState extends State<V23Widget>
   }
 
   void _scanImage(CameraImage image) {
-    if (Platform.isAndroid) {
-      int red = ImageProcessing.decodeYUV420ToRGB(image);
-      if (averageRed.length <= 10) {
-        averageRed.add(red);
-        if (averageRed.length == 10) {
-          int redAVG = (averageRed.reduce((value, element) => value + element) /
-                  averageRed.length)
-              .round();
-          if (redAVG > 230 && redAVG < 255) {
-            _isFingerOverlay = false;
-          } else {
-            _isFingerOverlay = true;
-          }
-          print("RED $red");
-        }
-      } else if (averageRed.length > 10) {
-        averageRed.clear();
-      }
-    } else if (Platform.isIOS) {
-      int h = image.height;
-      int w = image.width;
-      Uint8List bytes = image.planes.first.bytes;
-      double redAVG = ImageProcessing.decodeBGRA8888toRGB(bytes, w, h, 1);
-      if (redAVG > 90 && redAVG < 127.6) {
-        _isFingerOverlay = false;
-      } else {
-        _isFingerOverlay = true;
-      }
-      print('redAVG $redAVG');
-    }
+    _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
 
     _now = DateTime.now();
     _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
             image.planes.first.bytes.length;
-    // print(_avg.toString());
     if (_data.length >= _windowLen) {
       _data.removeAt(0);
     }
     setState(() {
       _data.add(SensorValue(_now!, 255 - _avg!));
-      // print(_data);
     });
   }
 
@@ -314,9 +279,7 @@ class _V23WidgetState extends State<V23Widget>
 
     return Stack(children: [
       Scaffold(
-        appBar: AppBar(
-            title: const Text('Veris - Baseline'),
-            automaticallyImplyLeading: false),
+        appBar: AppBarWidget(title: "Veris - Beseline"),
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(20.0),
           child: _isFinished
@@ -332,7 +295,7 @@ class _V23WidgetState extends State<V23Widget>
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const V25Widget(),
+                              builder: (context) => const FingerCameraPage(),
                             ),
                           );
                         },
