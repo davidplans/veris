@@ -1,4 +1,4 @@
-import 'package:Veris/common/widgets/widget_v20.dart';
+import 'package:Veris/features/pat/view/start_pat_text_page.dart';
 import 'package:Veris/features/surveys/view/questions_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,7 +110,7 @@ class ModuleWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const V20Widget()),
+                                builder: (context) => const StartPatPage()),
                           );
                         });
                       }),
