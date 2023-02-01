@@ -1,15 +1,12 @@
 import 'dart:convert';
 
 import 'package:Veris/app.dart';
-import 'package:Veris/features/smile/smile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../common/widgets/start_pat_text_page.dart';
 import '../../../core/user/auth_repository.dart';
 import '../../surveys/view/questions_widget.dart';
-import '../../../common/widgets/widget_v20.dart';
-import '../../../common/widgets/widget_v31.dart';
-import '../../../common/widgets/widget_v310_trial1.dart';
-import '../../../common/widgets/widget_v318.dart';
+
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -244,7 +241,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     // const V20Widget(),
-                                                    const V20Widget()),
+                                                    const StartPatPage()),
                                           );
                                         });
                                       }),

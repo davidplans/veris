@@ -1,6 +1,6 @@
 import 'package:Veris/core/user/user.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
-import 'package:Veris/common/widgets/widget_v318.dart';
+import 'package:Veris/common/widgets/finish_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -143,7 +143,7 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
                       );
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const V318Widget(),
+                          builder: (context) => const FinishPage(),
                         ),
                       );
                     } else {

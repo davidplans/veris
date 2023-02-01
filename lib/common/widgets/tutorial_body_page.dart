@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'app_bar_widget.dart';
-import 'widget_v38.dart';
+import 'dont_try_pulse_text_page.dart';
 
-class V37Widget extends StatefulWidget {
-  const V37Widget({super.key});
+class TutorialBodyPage extends StatefulWidget {
+  const TutorialBodyPage({super.key});
 
   @override
-  State<V37Widget> createState() => _V37WidgetState();
+  State<TutorialBodyPage> createState() => _TutorialBodyPageState();
 }
 
-class _V37WidgetState extends State<V37Widget> {
+class _TutorialBodyPageState extends State<TutorialBodyPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _V37WidgetState extends State<V37Widget> {
                 onPressed: () {
                                       Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V38Widget(),
+                      builder: (context) => const DontTryPulsePage(),
                     ),
                   );
                 },

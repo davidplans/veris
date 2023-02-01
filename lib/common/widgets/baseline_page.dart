@@ -14,16 +14,16 @@ import '../../core/user/user.dart';
 import '../../features/authentication/bloc/auth_bloc.dart';
 import '../../utils/image_processing.dart';
 import 'app_bar_widget.dart';
-import 'widget_v25.dart';
+import 'finger_camera_text_page.dart';
 
-class V23Widget extends StatefulWidget {
-  const V23Widget({super.key});
+class BaselinePage extends StatefulWidget {
+  const BaselinePage({super.key});
 
   @override
-  State<V23Widget> createState() => _V23WidgetState();
+  State<BaselinePage> createState() => _BaselinePageState();
 }
 
-class _V23WidgetState extends State<V23Widget>
+class _BaselinePageState extends State<BaselinePage>
     with SingleTickerProviderStateMixin {
   bool _toggled = false; // toggle button value
   List<SensorValue> _data = <SensorValue>[]; // array to store the values
@@ -295,7 +295,7 @@ class _V23WidgetState extends State<V23Widget>
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const V25Widget(),
+                              builder: (context) => const FingerCameraPage(),
                             ),
                           );
                         },

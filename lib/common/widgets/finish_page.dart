@@ -1,17 +1,16 @@
+import 'package:Veris/features/home/view/home_page.dart';
 import 'package:flutter/material.dart';
-
 import 'app_bar_widget.dart';
-import 'widget_v31.dart';
+import 'get_ready_text_page.dart';
 
-
-class V25Widget extends StatefulWidget {
-  const V25Widget({super.key});
+class FinishPage extends StatefulWidget {
+  const FinishPage({super.key});
 
   @override
-  State<V25Widget> createState() => _V25WidgetState();
+  State<FinishPage> createState() => _FinishPageState();
 }
 
-class _V25WidgetState extends State<V25Widget> {
+class _FinishPageState extends State<FinishPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,34 +21,29 @@ class _V25WidgetState extends State<V25Widget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Expanded(flex: 1, child: SizedBox()),
-              const Expanded(flex: 1, child: SizedBox()),
               Expanded(
                 flex: 1,
                 child: FloatingActionButton.extended(
-                  icon: const Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                  ),
                   backgroundColor: const Color(0XFF0F2042),
+                  // child: const Text("Back", style: TextStyle(color: Colors.white),),
                   onPressed: () {
-                                        Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const V31Widget(),
-                      ),
+                    Navigator.of(context).push<void>(
+                      HomePage.route(),
                     );
                   },
                   label: const Text(
-                    "Next",
+                    "Exit",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
+              const Expanded(flex: 1, child: SizedBox()),
             ],
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(50.0),
           child: Center(
             child: Column(
               children: const [
@@ -58,7 +52,7 @@ class _V25WidgetState extends State<V25Widget> {
                 ),
                 Text(
                   textAlign: TextAlign.center,
-                  "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
+                  "Thank you for your time - please tap the button below to finish. Your Prolific pay code:",
                   style: TextStyle(fontSize: 18.0),
                 )
               ],

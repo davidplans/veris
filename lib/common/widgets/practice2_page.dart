@@ -6,16 +6,16 @@ import 'package:just_audio/just_audio.dart';
 
 import '../../utils/image_processing.dart';
 import 'app_bar_widget.dart';
-import 'widget_v315_trial2.dart';
+import 'practice2_slider_page.dart';
 
-class V313Trial2Widget extends StatefulWidget {
-  const V313Trial2Widget({super.key});
+class Practice2Page extends StatefulWidget {
+  const Practice2Page({super.key});
 
   @override
-  State<V313Trial2Widget> createState() => _V313Trial2WidgetState();
+  State<Practice2Page> createState() => _Practice2PageState();
 }
 
-class _V313Trial2WidgetState extends State<V313Trial2Widget> {
+class _Practice2PageState extends State<Practice2Page> {
   // ########## BPM VARs #############
 
   /// Camera controller
@@ -421,7 +421,7 @@ class _V313Trial2WidgetState extends State<V313Trial2Widget> {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const V315Trial2Widget(),
+                                builder: (context) => const Practice2SliderPage(),
                               ),
                             );
                           }),

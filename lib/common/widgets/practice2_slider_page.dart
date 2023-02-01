@@ -1,16 +1,16 @@
+import 'package:Veris/features/pat/view/trial_page.dart';
 import 'package:flutter/material.dart';
 
 import 'app_bar_widget.dart';
-import 'widget_v313_trial2.dart';
 
-class V312Trial1Widget extends StatefulWidget {
-  const V312Trial1Widget({Key? key}) : super(key: key);
+class Practice2SliderPage extends StatefulWidget {
+  const Practice2SliderPage({Key? key}) : super(key: key);
 
   @override
-  State<V312Trial1Widget> createState() => _V312Trial1WidgetState();
+  State<Practice2SliderPage> createState() => _Practice2SliderPageState();
 }
 
-class _V312Trial1WidgetState extends State<V312Trial1Widget> {
+class _Practice2SliderPageState extends State<Practice2SliderPage> {
   double _currentSliderValue = 50;
 
   _changeSlider(double value) {
@@ -22,7 +22,7 @@ class _V312Trial1WidgetState extends State<V312Trial1Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
+      appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 2"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -37,7 +37,7 @@ class _V312Trial1WidgetState extends State<V312Trial1Widget> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V313Trial2Widget(),
+                      builder: (context) => const TrialPage(),
                     ),
                   );
                 },

@@ -1,24 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'app_bar_widget.dart';
-import 'widget_v37.dart';
+import 'start_practice_page.dart';
 
-class V36Widget extends StatefulWidget {
-  const V36Widget({super.key});
-
-  @override
-  State<V36Widget> createState() => _V36WidgetState();
-}
-
-class _V36WidgetState extends State<V36Widget> {
-
-    double _currentSliderValue = 5;
-
-  _changeSlider(double value) {
-    setState(() {
-      _currentSliderValue = value;
-    });
-  }
+class DontTryPulsePage extends StatelessWidget {
+  const DontTryPulsePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +44,12 @@ class _V36WidgetState extends State<V36Widget> {
                 onPressed: () {
                                       Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V37Widget(),
+                      builder: (context) => const StartPracticePage(),
                     ),
                   );
                 },
                 label: const Text(
-                  "Done",
+                  "Continue",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -73,38 +59,23 @@ class _V36WidgetState extends State<V36Widget> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-        children: [
-          const SizedBox(height: 50,),
-          const Text(
-            "After you have matched the sound with your heartbeat, you will be asked how sure you are about the answer you gave.\n\nPress “confirm” then “Done” to start the following trial. In this task, there will be 20 trials in total.",
-            style: TextStyle(fontSize: 18.0),
-            textAlign: TextAlign.center,
+          padding: const EdgeInsets.all(16.0),
+          
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                    child: const Text(
+                      textAlign: TextAlign.center,
+                      "For the duration of this task, please do not actively try to feel your pulse with your hand; we are only interested in what you feel! You might feel your heartbeat in various bodily locations. Just make sure you pick one and stick to using that one during the task.\n\nWhen you are ready to start, please sit comfortably upright with your earphones on and press “Сontinue”.",
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+
+                
+              ],
+            ),
           ),
-          const SizedBox(height: 20.0,),
-          const Text(
-            "How confident are you that the tone matched your heart-beat?",
-            style: TextStyle(fontSize: 16.0),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 50,),
-          Slider(
-            value: _currentSliderValue,
-            max: 10,
-            divisions: 10,
-            label: _currentSliderValue.round().toString(),
-            onChanged: (double value) {
-              _changeSlider(value);
-            },
-          ),
-          Row(children: const [
-            Expanded(child: Text("Not at all \nconfident")),
-            Expanded(child: Text("Extremely \nconfident", textAlign: TextAlign.end,)),
-          ],)
-        ],
-    ),
-      ),
     );
   }
 }

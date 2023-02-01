@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'app_bar_widget.dart';
-import 'widget_v23.dart';
+import 'baseline_page.dart';
 
+class GetReadyPage extends StatelessWidget {
+  const GetReadyPage({super.key});
 
-class V22Widget extends StatefulWidget {
-  const V22Widget({super.key});
-
-  @override
-  State<V22Widget> createState() => _V22WidgetState();
-}
-
-class _V22WidgetState extends State<V22Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +44,9 @@ class _V22WidgetState extends State<V22Widget> {
                   backgroundColor: const Color(0XFF0F2042),
                   // child: const Text("Back", style: TextStyle(color: Colors.white),),
                   onPressed: () {
-                                                            Navigator.of(context).push(
+                    Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const V23Widget(),
+                        builder: (context) => const BaselinePage(),
                       ),
                     );
                   },
@@ -70,9 +64,12 @@ class _V22WidgetState extends State<V22Widget> {
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: Column(
-              children:  [
-                Image.asset('assets/images/hand.png', width: 200,),
-                           const Text(
+              children: [
+                Image.asset(
+                  'assets/images/hand.png',
+                  width: 200,
+                ),
+                const Text(
                   textAlign: TextAlign.center,
                   "Getting ready to check your heartbeat.",
                   style: TextStyle(fontSize: 28.0),

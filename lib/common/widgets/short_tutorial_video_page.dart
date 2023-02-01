@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import 'app_bar_widget.dart';
-import 'widget_v36.dart';
+import 'tutorial_slider_page.dart';
 
-class V35Widget extends StatefulWidget {
-  const V35Widget({super.key});
+class ShortTutorialVideoPage extends StatefulWidget {
+  const ShortTutorialVideoPage({super.key});
 
   @override
-  State<V35Widget> createState() => _V35WidgetState();
+  State<ShortTutorialVideoPage> createState() => _ShortTutorialVideoPageState();
 }
 
-class _V35WidgetState extends State<V35Widget> {
+class _ShortTutorialVideoPageState extends State<ShortTutorialVideoPage> {
   late VideoPlayerController controller2;
 
   @override
@@ -76,7 +76,7 @@ class _V35WidgetState extends State<V35Widget> {
                   controller2.pause();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V36Widget(),
+                      builder: (context) => const TutorialSliderPage(),
                     ),
                   );
                 },

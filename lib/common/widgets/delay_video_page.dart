@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import 'app_bar_widget.dart';
-import 'widget_v33.dart';
+import 'knob_video_page.dart';
 
-class V32Widget extends StatefulWidget {
-  const V32Widget({super.key});
+class DelayVideoPage extends StatefulWidget {
+  const DelayVideoPage({super.key});
 
   @override
-  State<V32Widget> createState() => _V32WidgetState();
+  State<DelayVideoPage> createState() => _DelayVideoPageState();
 }
 
-class _V32WidgetState extends State<V32Widget> {
+class _DelayVideoPageState extends State<DelayVideoPage> {
   late VideoPlayerController controller1;
 
   @override
@@ -40,7 +40,8 @@ class _V32WidgetState extends State<V32Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(title: "Veris"),
+      appBar:
+          AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -55,6 +56,7 @@ class _V32WidgetState extends State<V32Widget> {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
+                  controller1.dispose();
                   Navigator.of(context).pop();
                 },
                 label: const Text(
@@ -76,7 +78,7 @@ class _V32WidgetState extends State<V32Widget> {
                   controller1.pause();
                                       Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V33Widget(),
+                      builder: (context) => const KnobVideoPage(),
                     ),
                   );
                 },
@@ -96,9 +98,9 @@ class _V32WidgetState extends State<V32Widget> {
             Container(
               child: const Center(
                 child: Padding(
-                  padding: EdgeInsets.all(22.0),
+                  padding: EdgeInsets.only(left: 22.0, top: 10.0, right:22.0, bottom:0),
                   child: Text(
-                    "In order to rectify the delay, you will be asked to move a dial until the sounds are in most sync with your heartbeats. \n\nPlay the video below to hear an example!",
+                    "It might seem like there is a delay between the sounds and the heartbeats you feel.\n\nPlay the video below to hear an example!",
                     style: TextStyle(fontSize: 18.0),
                     textAlign: TextAlign.center,
                   ),
