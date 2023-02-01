@@ -1,16 +1,10 @@
-import 'package:Veris/features/home/view/home_page.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/view/find_place_text_page.dart';
 import 'package:flutter/material.dart';
-import 'app_bar_widget.dart';
-import 'get_ready_text_page.dart';
 
-class FinishPage extends StatefulWidget {
-  const FinishPage({super.key});
+class StartPatPage extends StatelessWidget {
+  const StartPatPage({super.key});
 
-  @override
-  State<FinishPage> createState() => _FinishPageState();
-}
-
-class _FinishPageState extends State<FinishPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,30 +14,39 @@ class _FinishPageState extends State<FinishPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Expanded(
+                flex: 1,
+                child: SizedBox(),
+              ),
               const Expanded(flex: 1, child: SizedBox()),
               Expanded(
                 flex: 1,
                 child: FloatingActionButton.extended(
+                  icon: const Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                  ),
                   backgroundColor: const Color(0XFF0F2042),
                   // child: const Text("Back", style: TextStyle(color: Colors.white),),
                   onPressed: () {
-                    Navigator.of(context).push<void>(
-                      HomePage.route(),
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const FindPlacePage(),
+                      ),
                     );
                   },
                   label: const Text(
-                    "Exit",
+                    "Next",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-              const Expanded(flex: 1, child: SizedBox()),
             ],
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Padding(
-          padding: const EdgeInsets.all(50.0),
+          padding: const EdgeInsets.all(16.0),
           child: Center(
             child: Column(
               children: const [
@@ -52,7 +55,7 @@ class _FinishPageState extends State<FinishPage> {
                 ),
                 Text(
                   textAlign: TextAlign.center,
-                  "Thank you for your time - please tap the button below to finish. Your Prolific pay code:",
+                  "How well can you match a sound with your heartbeat?\n\nLet’s find out!",
                   style: TextStyle(fontSize: 18.0),
                 )
               ],

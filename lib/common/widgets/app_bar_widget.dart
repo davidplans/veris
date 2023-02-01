@@ -1,6 +1,5 @@
+import 'package:Veris/features/home/view/home_page.dart';
 import 'package:flutter/material.dart';
-
-import '../../features/home/view/home_page.dart';
 
 class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   String title;

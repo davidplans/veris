@@ -1,22 +1,21 @@
 import 'dart:async';
 import 'dart:math' as math;
-
+import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-import '../../utils/image_processing.dart';
-import 'app_bar_widget.dart';
-import 'practice1_slider_page.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'practice2_slider_page.dart';
 
-class Practice1Page extends StatefulWidget {
-  const Practice1Page({super.key});
+class Practice2Page extends StatefulWidget {
+  const Practice2Page({super.key});
 
   @override
-  State<Practice1Page> createState() => _Practice1PageState();
+  State<Practice2Page> createState() => _Practice2PageState();
 }
 
-class _Practice1PageState extends State<Practice1Page> {
+class _Practice2PageState extends State<Practice2Page> {
   // ########## BPM VARs #############
 
   /// Camera controller
@@ -152,7 +151,6 @@ class _Practice1PageState extends State<Practice1Page> {
 
   void _scanImage(CameraImage image) {
     _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
-
     // get the average value of the image
     double _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
@@ -171,8 +169,11 @@ class _Practice1PageState extends State<Practice1Page> {
         _counter = 0;
       }
     } else {
+      // _player.play();
+      // print('top');
       _max = 0;
       _counter = 0;
+      // _player.stop();
     }
     measureWindow.removeAt(0);
     measureWindow.add(SensorValue(time: DateTime.now(), value: _avg));
@@ -257,7 +258,7 @@ class _Practice1PageState extends State<Practice1Page> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Scaffold(
-        appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
+        appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 2"),
         body: Container(
             child: isCameraInitialized
                 ? Column(
@@ -389,7 +390,7 @@ class _Practice1PageState extends State<Practice1Page> {
           : Container(),
       _isFinished
           ? Scaffold(
-              appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
+              appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 2"),
               body: Container(
                 child: Column(
                   children: [
@@ -420,7 +421,8 @@ class _Practice1PageState extends State<Practice1Page> {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const Practice1SliderPage(),
+                                builder: (context) =>
+                                    const Practice2SliderPage(),
                               ),
                             );
                           }),

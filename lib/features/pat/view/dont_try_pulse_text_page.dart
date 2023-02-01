@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'app_bar_widget.dart';
-import 'practice1_page.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'start_practice_page.dart';
 
-class StartPracticePage extends StatelessWidget {
-  const StartPracticePage({super.key});
+class DontTryPulsePage extends StatelessWidget {
+  const DontTryPulsePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +42,11 @@ class StartPracticePage extends StatelessWidget {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
-                                        Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const Practice1Page(),
-                      ),
-                    );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const StartPracticePage(),
+                    ),
+                  );
                 },
                 label: const Text(
                   "Continue",
@@ -59,23 +59,20 @@ class StartPracticePage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    child: const Text(
-                      textAlign: TextAlign.center,
-                      "You will now get a chance to do two practice trials.\n\nFocus on feeling your heartbeat and try to match the sounds to your own heartbeat.",
-                      style: TextStyle(fontSize: 18.0),
-                    ),
-                  ),
-
-                
-              ],
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: const Text(
+                textAlign: TextAlign.center,
+                "For the duration of this task, please do not actively try to feel your pulse with your hand; we are only interested in what you feel! You might feel your heartbeat in various bodily locations. Just make sure you pick one and stick to using that one during the task.\n\nWhen you are ready to start, please sit comfortably upright with your earphones on and press “Сontinue”.",
+                style: TextStyle(fontSize: 18.0),
+              ),
             ),
-          ),
+          ],
+        ),
+      ),
     );
   }
 }

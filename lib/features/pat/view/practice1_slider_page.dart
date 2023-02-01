@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'app_bar_widget.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'practice2_page.dart';
 
 class Practice1SliderPage extends StatefulWidget {

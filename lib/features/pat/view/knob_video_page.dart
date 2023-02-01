@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import 'app_bar_widget.dart';
-import 'knob_video_page.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'knob_point_text_page.dart';
 
-class DelayVideoPage extends StatefulWidget {
-  const DelayVideoPage({super.key});
+class KnobVideoPage extends StatefulWidget {
+  const KnobVideoPage({super.key});
 
   @override
-  State<DelayVideoPage> createState() => _DelayVideoPageState();
+  State<KnobVideoPage> createState() => _KnobVideoPageState();
 }
 
-class _DelayVideoPageState extends State<DelayVideoPage> {
+class _KnobVideoPageState extends State<KnobVideoPage> {
   late VideoPlayerController controller1;
 
   @override
@@ -40,8 +40,7 @@ class _DelayVideoPageState extends State<DelayVideoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBarWidget(title: "Veris"),
+      appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -56,7 +55,6 @@ class _DelayVideoPageState extends State<DelayVideoPage> {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
-                  controller1.dispose();
                   Navigator.of(context).pop();
                 },
                 label: const Text(
@@ -76,9 +74,9 @@ class _DelayVideoPageState extends State<DelayVideoPage> {
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
                   controller1.pause();
-                                      Navigator.of(context).push(
+                  Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const KnobVideoPage(),
+                      builder: (context) => const KnobPointPage(),
                     ),
                   );
                 },
@@ -98,16 +96,18 @@ class _DelayVideoPageState extends State<DelayVideoPage> {
             Container(
               child: const Center(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 22.0, top: 10.0, right:22.0, bottom:0),
+                  padding: EdgeInsets.all(22.0),
                   child: Text(
-                    "It might seem like there is a delay between the sounds and the heartbeats you feel.\n\nPlay the video below to hear an example!",
+                    "In order to rectify the delay, you will be asked to move a dial until the sounds are in most sync with your heartbeats. \n\nPlay the video below to hear an example!",
                     style: TextStyle(fontSize: 18.0),
                     textAlign: TextAlign.center,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             AspectRatio(
               aspectRatio: controller1.value.aspectRatio,
               child: VideoPlayer(controller1),

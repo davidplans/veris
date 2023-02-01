@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'app_bar_widget.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'short_tutorial_video_page.dart';
 
 class ShortTutorialPage extends StatelessWidget {

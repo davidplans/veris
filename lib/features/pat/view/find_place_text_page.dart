@@ -1,10 +1,9 @@
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'get_ready_text_page.dart';
 
-import 'app_bar_widget.dart';
-import 'baseline_page.dart';
-
-class GetReadyPage extends StatelessWidget {
-  const GetReadyPage({super.key});
+class FindPlacePage extends StatelessWidget {
+  const FindPlacePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +45,7 @@ class GetReadyPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const BaselinePage(),
+                        builder: (context) => const GetReadyPage(),
                       ),
                     );
                   },
@@ -64,22 +63,13 @@ class GetReadyPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: Column(
-              children: [
-                Image.asset(
-                  'assets/images/hand.png',
-                  width: 200,
+              children: const [
+                SizedBox(
+                  height: 200.0,
                 ),
-                const Text(
+                Text(
                   textAlign: TextAlign.center,
-                  "Getting ready to check your heartbeat.",
-                  style: TextStyle(fontSize: 28.0),
-                ),
-                const SizedBox(
-                  height: 50.0,
-                ),
-                const Text(
-                  textAlign: TextAlign.center,
-                  "We will shortly turn on the LED Flash and camera on this phone, and will use it to take your heart rate. Please place your index finger across both camera and flash.",
+                  "Find a quiet place where you can sit comfortably upright for around 10 minutes. We'll be recording your heart beats, so you therefore need to keep your hand still and in the correct position. Also, make sure you turn your phone's volume up and don't use earphones (plugged or bluetooth)",
                   style: TextStyle(fontSize: 18.0),
                 )
               ],

@@ -1,6 +1,6 @@
 import 'package:Veris/core/user/user.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
-import 'package:Veris/common/widgets/finish_page.dart';
+import 'package:Veris/features/pat/view/finish_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

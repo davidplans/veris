@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/features/pat/view/confidence_slider_page.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
@@ -9,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../common/widgets/app_bar_widget.dart';
 import 'body_select_page.dart';
 
 class TrialPage extends StatefulWidget {
@@ -493,7 +493,7 @@ class _TrialPageState extends State<TrialPage> {
           : Container(),
       _isFinished
           ? Scaffold(
-              appBar:AppBarWidget(title: "Veris - TRIALs"),
+              appBar: AppBarWidget(title: "Veris - TRIALs"),
               body: Container(
                 child: Column(
                   children: [

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'app_bar_widget.dart';
-import 'get_ready_text_page.dart';
 
-class FindPlacePage extends StatelessWidget {
-  const FindPlacePage({super.key});
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'delay_video_page.dart';
+
+class FingerCameraPage extends StatelessWidget {
+  const FingerCameraPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,24 +15,7 @@ class FindPlacePage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 1,
-                child: FloatingActionButton.extended(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                  backgroundColor: const Color(0XFF0F2042),
-                  // child: const Text("Back", style: TextStyle(color: Colors.white),),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  label: const Text(
-                    "Back",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
+              const Expanded(flex: 1, child: SizedBox()),
               const Expanded(flex: 1, child: SizedBox()),
               Expanded(
                 flex: 1,
@@ -41,11 +25,10 @@ class FindPlacePage extends StatelessWidget {
                     color: Colors.white,
                   ),
                   backgroundColor: const Color(0XFF0F2042),
-                  // child: const Text("Back", style: TextStyle(color: Colors.white),),
                   onPressed: () {
-                                        Navigator.of(context).push(
+                    Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const GetReadyPage(),
+                        builder: (context) => const DelayVideoPage(),
                       ),
                     );
                   },
@@ -69,7 +52,7 @@ class FindPlacePage extends StatelessWidget {
                 ),
                 Text(
                   textAlign: TextAlign.center,
-                  "Find a quiet place where you can sit comfortably upright for around 10 minutes. We'll be recording your heart beats, so you therefore need to keep your hand still and in the correct position. Also, make sure you turn your phone's volume up and don't use earphones (plugged or bluetooth)",
+                  "Ok, thanks! In the main task, you will be asked to place your finger on the phone camera (on the back) so that the app can read your heartbeat.\n\nOnce your finger is in position, you will hear a series of sounds.\n\nEach sound actually represents one of your own heartbeats!",
                   style: TextStyle(fontSize: 18.0),
                 )
               ],

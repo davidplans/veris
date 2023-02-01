@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
-import 'app_bar_widget.dart';
-import 'short_tutorial_text_page.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'dont_try_pulse_text_page.dart';
 
-class KnobPointPage extends StatelessWidget {
-  const KnobPointPage({super.key});
+class TutorialBodyPage extends StatefulWidget {
+  const TutorialBodyPage({super.key});
 
+  @override
+  State<TutorialBodyPage> createState() => _TutorialBodyPageState();
+}
+
+class _TutorialBodyPageState extends State<TutorialBodyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBarWidget(title: "Veris"),
+      appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -42,9 +47,9 @@ class KnobPointPage extends StatelessWidget {
                 ),
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
-                                      Navigator.of(context).push(
+                  Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const ShortTutorialPage(),
+                      builder: (context) => const DontTryPulsePage(),
                     ),
                   );
                 },
@@ -59,23 +64,26 @@ class KnobPointPage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    child: const Text(
-                      textAlign: TextAlign.center,
-                      "Your objective is to find the point on the dial where the heartbeat and sound is in sync, by turning the dial left or right.",
-                      style: TextStyle(fontSize: 18.0),
-                    ),
-                  ),
-                
-              ],
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Container(
+              child: const Text(
+                textAlign: TextAlign.center,
+                "You can feel your heartbeat in different places in your body, such as your chest or your fingers. You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
+                style: TextStyle(fontSize: 16.0),
+              ),
             ),
-          ),
+            const SizedBox(
+              height: 20,
+            ),
+            Image.asset(
+              'assets/images/mannequin2.png',
+              height: 400,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:Veris/core/user/user.dart';
+import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/utils/image_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:camera/camera.dart';
@@ -10,10 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/user/user.dart';
-import '../../features/authentication/bloc/auth_bloc.dart';
-import '../../utils/image_processing.dart';
-import 'app_bar_widget.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'finger_camera_text_page.dart';
 
 class BaselinePage extends StatefulWidget {

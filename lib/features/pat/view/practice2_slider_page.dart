@@ -1,7 +1,7 @@
 import 'package:Veris/features/pat/view/trial_page.dart';
 import 'package:flutter/material.dart';
 
-import 'app_bar_widget.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 
 class Practice2SliderPage extends StatefulWidget {
   const Practice2SliderPage({Key? key}) : super(key: key);

@@ -1,9 +1,10 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'package:Veris/common/widgets/find_place_text_page.dart';
 import 'package:flutter/material.dart';
 
-class StartPatPage extends StatelessWidget {
-  const StartPatPage({super.key});
+import 'baseline_page.dart';
+
+class GetReadyPage extends StatelessWidget {
+  const GetReadyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +15,23 @@ class StartPatPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Expanded(
+              Expanded(
                 flex: 1,
-                child: SizedBox(),
+                child: FloatingActionButton.extended(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: const Color(0XFF0F2042),
+                  // child: const Text("Back", style: TextStyle(color: Colors.white),),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  label: const Text(
+                    "Back",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
               const Expanded(flex: 1, child: SizedBox()),
               Expanded(
@@ -31,7 +46,7 @@ class StartPatPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const FindPlacePage(),
+                        builder: (context) => const BaselinePage(),
                       ),
                     );
                   },
@@ -49,13 +64,22 @@ class StartPatPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: Column(
-              children: const [
-                SizedBox(
-                  height: 200.0,
+              children: [
+                Image.asset(
+                  'assets/images/hand.png',
+                  width: 200,
                 ),
-                Text(
+                const Text(
                   textAlign: TextAlign.center,
-                  "How well can you match a sound with your heartbeat?\n\nLet’s find out!",
+                  "Getting ready to check your heartbeat.",
+                  style: TextStyle(fontSize: 28.0),
+                ),
+                const SizedBox(
+                  height: 50.0,
+                ),
+                const Text(
+                  textAlign: TextAlign.center,
+                  "We will shortly turn on the LED Flash and camera on this phone, and will use it to take your heart rate. Please place your index finger across both camera and flash.",
                   style: TextStyle(fontSize: 18.0),
                 )
               ],

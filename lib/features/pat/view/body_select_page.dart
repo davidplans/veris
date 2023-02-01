@@ -1,13 +1,11 @@
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/features/pat/models/body.dart';
-import 'package:Veris/features/home/view/home_page.dart';
 import 'package:Veris/features/pat/view/confidence_slider_page.dart';
 import 'package:Veris/utils/parser.dart';
 import 'package:Veris/utils/size_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../common/widgets/app_bar_widget.dart';
 
 class BodySelectPage extends StatefulWidget {
   const BodySelectPage({Key? key}) : super(key: key);

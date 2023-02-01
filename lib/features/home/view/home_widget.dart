@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:Veris/app.dart';
+import 'package:Veris/features/pat/view/start_pat_text_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../common/widgets/start_pat_text_page.dart';
 import '../../../core/user/auth_repository.dart';
 import '../../surveys/view/questions_widget.dart';
-
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);

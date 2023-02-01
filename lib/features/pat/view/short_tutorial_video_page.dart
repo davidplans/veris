@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import 'app_bar_widget.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'tutorial_slider_page.dart';
 
 class ShortTutorialVideoPage extends StatefulWidget {
