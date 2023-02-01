@@ -18,15 +18,8 @@ class _ProgressWidgetState extends State<ProgressWidget> {
   late User user;
   String studyId = "";
 
-  // @override
-  // void initState() {
-
-  //   super.initState();
-  // }
-
   String _formatDate(DateTime time) {
     final DateFormat format = DateFormat('yyyy-MM-dd – kk:mm');
-    // var date = DateTime.fromMillisecondsSinceEpoch(time);
 
     final String formatDate = format.format(time);
     return formatDate;
@@ -50,7 +43,6 @@ class _ProgressWidgetState extends State<ProgressWidget> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: ((context, index) {
                 DocumentSnapshot setDocument = snapshot.data!.docs[index];
-                // print(Text(setDocument.get('sectionName')));
                 final String date =
                     _formatDate(setDocument.get('datetime').toDate());
 

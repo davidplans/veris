@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:io' show Platform;
 import 'dart:math' as math;
 
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/features/pat/view/confidence_slider_page.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
@@ -71,8 +70,6 @@ class _TrialPageState extends State<TrialPage> {
   int _completeTrials = 0;
   int _currentStep = 1;
   List<int> listSelectSteps = [];
-
-  List<int> averageRed = [];
 
   // PROCESSING VARS
 
@@ -216,36 +213,7 @@ class _TrialPageState extends State<TrialPage> {
       growable: true);
 
   void _scanImage(CameraImage image) {
-    if (Platform.isAndroid) {
-      int red = ImageProcessing.decodeYUV420ToRGB(image);
-      if (averageRed.length <= 10) {
-        averageRed.add(red);
-        if (averageRed.length == 10) {
-          int redAVG = (averageRed.reduce((value, element) => value + element) /
-                  averageRed.length)
-              .round();
-          if (redAVG > 230 && redAVG < 255) {
-            _isFingerOverlay = false;
-          } else {
-            _isFingerOverlay = true;
-          }
-          print("RED $red");
-        }
-      } else if (averageRed.length > 10) {
-        averageRed.clear();
-      }
-    } else if (Platform.isIOS) {
-      int h = image.height;
-      int w = image.width;
-      Uint8List bytes = image.planes.first.bytes;
-      double redAVG = ImageProcessing.decodeBGRA8888toRGB(bytes, w, h, 1);
-      if (redAVG > 127.4 && redAVG < 127.6) {
-        _isFingerOverlay = false;
-      } else {
-        _isFingerOverlay = true;
-      }
-      print('redAVG $redAVG');
-    }
+    _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
 
     // get the average value of the image
     double avg =
@@ -369,9 +337,7 @@ class _TrialPageState extends State<TrialPage> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Scaffold(
-        appBar: AppBar(
-            title: const Text('Veris TRIALs'),
-            automaticallyImplyLeading: false),
+        appBar: AppBarWidget(title: "Veris - TRIALs"),
         body: Container(
             child: _isCameraInitialized
                 ? Column(
@@ -527,9 +493,7 @@ class _TrialPageState extends State<TrialPage> {
           : Container(),
       _isFinished
           ? Scaffold(
-              appBar: AppBar(
-                  title: const Text('Veris TRIALs'),
-                  automaticallyImplyLeading: false),
+              appBar: AppBarWidget(title: "Veris - TRIALs"),
               body: Container(
                 child: Column(
                   children: [

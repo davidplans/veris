@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import 'widget_v33.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'knob_point_text_page.dart';
 
-class V32Widget extends StatefulWidget {
-  const V32Widget({super.key});
+class KnobVideoPage extends StatefulWidget {
+  const KnobVideoPage({super.key});
 
   @override
-  State<V32Widget> createState() => _V32WidgetState();
+  State<KnobVideoPage> createState() => _KnobVideoPageState();
 }
 
-class _V32WidgetState extends State<V32Widget> {
+class _KnobVideoPageState extends State<KnobVideoPage> {
   late VideoPlayerController controller1;
 
   @override
@@ -39,8 +40,7 @@ class _V32WidgetState extends State<V32Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: const Text('Veris'), automaticallyImplyLeading: false),
+      appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -74,9 +74,9 @@ class _V32WidgetState extends State<V32Widget> {
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
                   controller1.pause();
-                                      Navigator.of(context).push(
+                  Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V33Widget(),
+                      builder: (context) => const KnobPointPage(),
                     ),
                   );
                 },
@@ -105,7 +105,9 @@ class _V32WidgetState extends State<V32Widget> {
                 ),
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             AspectRatio(
               aspectRatio: controller1.value.aspectRatio,
               child: VideoPlayer(controller1),

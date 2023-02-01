@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import 'widget_v36.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'tutorial_slider_page.dart';
 
-class V35Widget extends StatefulWidget {
-  const V35Widget({super.key});
+class ShortTutorialVideoPage extends StatefulWidget {
+  const ShortTutorialVideoPage({super.key});
 
   @override
-  State<V35Widget> createState() => _V35WidgetState();
+  State<ShortTutorialVideoPage> createState() => _ShortTutorialVideoPageState();
 }
 
-class _V35WidgetState extends State<V35Widget> {
+class _ShortTutorialVideoPageState extends State<ShortTutorialVideoPage> {
   late VideoPlayerController controller2;
 
   @override
@@ -39,8 +40,7 @@ class _V35WidgetState extends State<V35Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: const Text('Veris'), automaticallyImplyLeading: false),
+      appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -76,7 +76,7 @@ class _V35WidgetState extends State<V35Widget> {
                   controller2.pause();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V36Widget(),
+                      builder: (context) => const TutorialSliderPage(),
                     ),
                   );
                 },

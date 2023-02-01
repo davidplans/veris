@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:Veris/features/home/view/home_page.dart';
 import 'package:Veris/features/surveys/view/custom_instruction_view.dart';
 import 'package:Veris/features/surveys/view/custom_question_step.dart';
@@ -7,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:survey_kit/survey_kit.dart' as kit;
 import 'package:survey_kit/survey_kit.dart';
@@ -17,7 +14,7 @@ import 'package:survey_kit/survey_kit.dart';
 class QuestionsWidget extends StatefulWidget {
   final List<dynamic> questions;
   final int moduleId;
-  final int sectonId;
+  final int sectionId;
   final String sectionName;
   final String moduleName;
 
@@ -25,7 +22,7 @@ class QuestionsWidget extends StatefulWidget {
       {Key? key,
       required this.questions,
       required this.moduleId,
-      required this.sectonId,
+      required this.sectionId,
       required this.sectionName,
       required this.moduleName})
       : super(key: key);
@@ -56,10 +53,6 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.questions.first);
-    // print(widget.moduleId);
-    // print(widget.sectonId);
-
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -77,7 +70,30 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                 return kit.SurveyKit(
                   surveyController: kit.SurveyController(
                     onCloseSurvey: (context, resultFunction) {
-                      Navigator.of(context).push(HomePage.route());
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Are you sure!'),
+                            content:
+                                const Text("Do you want abort SURVEY module?"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cancel')),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push<void>(
+                                      HomePage.route(),
+                                    );
+                                  },
+                                  child: const Text('Yes, abort'))
+                            ],
+                          );
+                        },
+                      );
                     },
                     onNextStep: (context, resultFunction) {
                       BlocProvider.of<SurveyPresenter>(context).add(
@@ -108,7 +124,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                     String formatedSectionName =
                         lowerSectionName.replaceAll(" ", "_");
                     String sectionId =
-                        "${formatedSectionName}_${widget.sectonId}";
+                        "${formatedSectionName}_${widget.sectionId}";
 
                     if (resultData.isNotEmpty) {
                       final moduleData = {

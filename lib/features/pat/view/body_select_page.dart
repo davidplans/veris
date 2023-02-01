@@ -1,5 +1,5 @@
+import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/features/pat/models/body.dart';
-import 'package:Veris/features/home/view/home_page.dart';
 import 'package:Veris/features/pat/view/confidence_slider_page.dart';
 import 'package:Veris/utils/parser.dart';
 import 'package:Veris/utils/size_controller.dart';
@@ -31,17 +31,7 @@ class _BodySelectPageState extends State<BodySelectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Selected : ${selectedBody?.title ?? ''}'),
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-              onPressed: () => Navigator.of(context).push<void>(
-                    HomePage.route(),
-                  ),
-              icon: const Icon(Icons.home))
-        ],
-      ),
+      appBar: AppBarWidget(title: "Selected : ${selectedBody?.title ?? ''}"),
       backgroundColor: const Color(0xFF2A2A2A),
       body: Center(
         child: Stack(
