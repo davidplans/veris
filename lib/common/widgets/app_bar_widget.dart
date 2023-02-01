@@ -4,8 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import '../../features/home/view/home_page.dart';
 
-
-class AppBarWidget extends StatelessWidget  with PreferredSizeWidget {
+class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   String title;
   AppBarWidget({super.key, required this.title});
 
@@ -20,8 +19,9 @@ class AppBarWidget extends StatelessWidget  with PreferredSizeWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('Are you sure!'),
-                    content: const Text("Do you want abort PAT module?"),
+                    title: const Text('Cancel progress?'),
+                    content: const Text(
+                        "Are you sure you want to cancel this module?"),
                     actions: [
                       TextButton(
                           onPressed: () {
@@ -45,7 +45,7 @@ class AppBarWidget extends StatelessWidget  with PreferredSizeWidget {
       automaticallyImplyLeading: false,
     );
   }
-  
+
   @override
   // TODO: implement preferredSize
   Size get preferredSize => const Size.fromHeight(50);
