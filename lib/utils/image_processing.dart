@@ -1,10 +1,49 @@
 import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:io' show Platform;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 
+List<int> averageRed = [];
+bool isFingerOverlay = false;
+
 abstract class ImageProcessing {
+    
+  static bool decodeImageFromCamera(CameraImage image) {
+    if (Platform.isAndroid) {
+      int red = ImageProcessing.decodeYUV420ToRGB(image);
+      if (averageRed.length <= 10) {
+        averageRed.add(red);
+        if (averageRed.length == 10) {
+          int redAVG = (averageRed.reduce((value, element) => value + element) /
+                  averageRed.length)
+              .round();
+          if (redAVG > 230 && redAVG < 255) {
+            isFingerOverlay = false;
+          } else {
+            isFingerOverlay = true;
+          }
+          print("RED $red");
+        }
+      } else if (averageRed.length > 10) {
+        averageRed.clear();
+      }
+    } else if (Platform.isIOS) {
+      int h = image.height;
+      int w = image.width;
+      Uint8List bytes = image.planes.first.bytes;
+      double redAVG = ImageProcessing.decodeBGRA8888toRGB(bytes, w, h, 1);
+      if (redAVG > 90 && redAVG < 127.6) {
+        isFingerOverlay = false;
+      } else {
+        isFingerOverlay = true;
+      }
+      print('redAVG $redAVG');
+    }
+
+    return isFingerOverlay;
+  }
+
   static int _decodeYUV420SPtoRedBlueGreenSum(
       Uint8List yuv420sp, int width, int height, int type) {
     if (yuv420sp == null) return 0;
@@ -82,8 +121,6 @@ abstract class ImageProcessing {
 
     return (sum / frameSize);
   }
-
- 
 
   static int decodeYUV420ToRGB(CameraImage cameraImage) {
     int red = 0;

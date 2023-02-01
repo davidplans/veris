@@ -2,6 +2,10 @@ import { initializeApp } from "@firebase/app";
 import { doc, getFirestore, getDocs, query, collectionGroup, where, collection, getDoc } from "@firebase/firestore";
 import * as ld from 'lodash';
 
+
+const urlParams = new URLSearchParams(window.location.search);
+const apiKey = urlParams.get('apiKey') || 'AIzaSyCf_0n4ehVdWJwQ4qPT4Abu-dzB_cFipCQ';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -9,7 +13,7 @@ import * as ld from 'lodash';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyCf_0n4ehVdWJwQ4qPT4Abu-dzB_cFipCQ",
+    apiKey: apiKey,
     authDomain: "patdeployments.firebaseapp.com",
     databaseURL: "https://patdeployments-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "patdeployments",
@@ -27,7 +31,6 @@ const db = getFirestore(app);
 
     const modulesRef = await query(collectionGroup(db, "studies"));
     const docsModulesSnap = await getDocs(modulesRef);
-
 
     var studyIdArray = [];
     var table = document.getElementById('myTable');
@@ -53,13 +56,13 @@ const db = getFirestore(app);
             table.appendChild(tr);
         }
     });
-    try {
 
-    } catch (error) {
-    }
+    finishLoading();
 })();
 
 async function getStudies(idStudy) {
+
+    startLoading();
 
     try {
         const queryModules = await query(collectionGroup(db, "studies"), where("studyId", "==", idStudy));
@@ -68,7 +71,6 @@ async function getStudies(idStudy) {
         const basedData: any[] = [];
 
         for (const study of moduleSnapshot.docs) {
-            console.log("🚀 ~ file: index.ts:76 ~ getStudies ~ study", study)
             const studyItem = study.data();
             const moduleType = studyItem.type;
             let values: any = [];
@@ -108,12 +110,14 @@ async function getStudies(idStudy) {
                     sectionId: studyItem.sectionId,
                     type: moduleType,
                     datetime: studyItem.datetime?.seconds || studyItem.startTrial?.seconds,
-                    values: JSON.stringify(values)
+                    values: values
                 }
             );
         }
-        
-        saveArrAsCsv(basedData);
+
+        const order = 'desc'; // 'asc'
+        saveAsJson(ld.orderBy(basedData, 'datetime', [order]));
+        finishLoading();
 
     } catch (error) {
         console.log("🚀 ~ file: index.ts:123 ~ getStudies ~ error", error)
@@ -135,6 +139,15 @@ function createExportRows(dataSource: any, columns: any, separator: any) {
     return content;
 }
 
+function saveAsJson(dataSource: any = [], name = 'veris-test-data') {
+    const link      = document.createElement('a');
+    const blob = new Blob([JSON.stringify(dataSource)], { type: 'text/json;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${name}-${new Date().getTime()}.json`);
+    emulateSaveClick(link);
+}
+
 function saveArrAsCsv(dataSource: any = [], name = 'veris-test-data') {
     const link      = document.createElement('a');
     const separator = ';';
@@ -150,7 +163,11 @@ function saveArrAsCsv(dataSource: any = [], name = 'veris-test-data') {
     const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
     const url  = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `${name}-${new Date()}.csv`);
+    link.setAttribute('download', `${name}-${new Date().getTime()}.csv`);
+    emulateSaveClick(link);
+}
+
+function emulateSaveClick(link: HTMLAnchorElement) {
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -164,4 +181,26 @@ function createExportHeader(columns: any, separator: any) {
         headerRow += `${i > 0 ? separator : ''}"${columns[i]}"`;
     }
     return headerRow + newLine;
+}
+
+function show (id) {
+    const el = document.getElementById(id);
+    el?.classList.remove('hide');
+    el?.classList.add('show');
+}
+
+function hide (id) {
+    const el = document.getElementById(id);
+    el?.classList.remove('show');
+    el?.classList.add('hide');
+}
+
+function startLoading() {
+    hide('main');
+    show('loader');
+}
+
+function finishLoading() {
+    hide('loader');
+    show('main');
 }

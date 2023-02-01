@@ -55,99 +55,11 @@ class _StudyViewState extends State<StudyView> {
       'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test.json?alt=media&token=62344c9d-3d54-4a35-9ae6-8db9e867b43b';
   bool expanded = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _controller = TextEditingController();
-  // }
-
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-
-  // Future<void> _downloadFile(String url) async {
-  //   Dio dio = Dio();
-  //   final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
-  //   final String nameFromId;
-  //   try {
-  //     var dir = await getApplicationDocumentsDirectory();
-  //     await dio.download(url, "${dir.path}/$unixTime.json",
-  //         options: Options(
-  //           responseType: ResponseType.json,
-  //         ), onReceiveProgress: (rec, total) async {
-  //       // setState(() {
-  //       //   downloading = true;
-  //       //   progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
-  //       // });
-  //     });
-  //     final localFile = File("${dir.path}/$unixTime.json");
-  //     try {
-  //       final json = await localFile.readAsString();
-  //       final decodingFile = jsonDecode(json);
-  //       nameFromId = decodingFile["properties"]["study_id"];
-  //       var path = localFile.path;
-  //       var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
-  //       var newPath =
-  //           path.substring(0, lastSeparator + 1) + nameFromId + ".json";
-  //       localFile.rename(newPath).whenComplete(() => {
-  //             Navigator.push(
-  //               context,
-  //               MaterialPageRoute(builder: (context) => const AuthView()),
-  //             ),
-  //             ScaffoldMessenger.of(context).showSnackBar(
-  //               SnackBar(
-  //                 backgroundColor: Colors.green[200],
-  //                 content: const Text("JSON file uploaded successfully!"),
-  //               ),
-  //             )
-  //           });
-  //     } catch (error) {
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             title: const Text('Error file type!'),
-  //             content: const Text("Downloading file is not json!"),
-  //             actions: [
-  //               TextButton(
-  //                   onPressed: () {
-  //                     Navigator.of(context).pop();
-  //                   },
-  //                   child: const Text('Try again'))
-  //             ],
-  //           );
-  //         },
-  //       );
-  //       localFile.delete();
-  //     }
-  //   } catch (e) {
-  //     if (e is DioError) {
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             title: const Text('Link error!'),
-  //             content: const Text("Study json file not found!"),
-  //             actions: [
-  //               TextButton(
-  //                   onPressed: () {
-  //                     Navigator.of(context).pop();
-  //                   },
-  //                   child: const Text('Try again'))
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     }
-  //   }
-
-  //   // setState(() {
-  //   //   downloading = false;
-  //   //   progressString = "Completed";
-  //   // });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +76,7 @@ class _StudyViewState extends State<StudyView> {
                   width: MediaQuery.of(context).size.width,
                   color: const Color.fromARGB(255, 15, 32, 66),
                 ),
-                Container(
+                SizedBox(
                     height: 70.0,
                     child: Align(
                         alignment: Alignment.bottomCenter,
@@ -200,10 +112,10 @@ class _StudyViewState extends State<StudyView> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
+              const SizedBox(
                   width: 300,
-                  child: const Text(
-                    "Welcome to VERIS - a platform to participate in research suveys directly from your smartphone.",
+                  child: Text(
+                    "Welcome to VERIS - a platform to participate in research surveys directly from your smartphone.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,

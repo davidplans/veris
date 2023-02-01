@@ -1,14 +1,16 @@
-import 'package:Veris/features/pat/view/trial_page.dart';
 import 'package:flutter/material.dart';
 
-class V315Trial2Widget extends StatefulWidget {
-  const V315Trial2Widget({Key? key}) : super(key: key);
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'practice2_page.dart';
+
+class Practice1SliderPage extends StatefulWidget {
+  const Practice1SliderPage({Key? key}) : super(key: key);
 
   @override
-  State<V315Trial2Widget> createState() => _V315Trial2WidgetState();
+  State<Practice1SliderPage> createState() => _Practice1SliderPageState();
 }
 
-class _V315Trial2WidgetState extends State<V315Trial2Widget> {
+class _Practice1SliderPageState extends State<Practice1SliderPage> {
   double _currentSliderValue = 50;
 
   _changeSlider(double value) {
@@ -20,31 +22,12 @@ class _V315Trial2WidgetState extends State<V315Trial2Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: const Text('Veris - PRACTICE TRIAL 2'),
-          automaticallyImplyLeading: false),
+      appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Expanded(
-            //   flex: 1,
-            //   child: FloatingActionButton.extended(
-            //     icon: const Icon(
-            //       Icons.arrow_back,
-            //       color: Colors.white,
-            //     ),
-            //     backgroundColor: const Color(0XFF0F2042),
-            //     onPressed: () {
-            //       Navigator.of(context).pop();
-            //     },
-            //     label: const Text(
-            //       "Back",
-            //       style: TextStyle(color: Colors.white),
-            //     ),
-            //   ),
-            // ),
             const Expanded(flex: 1, child: SizedBox()),
             const Expanded(flex: 1, child: SizedBox()),
             Expanded(
@@ -54,7 +37,7 @@ class _V315Trial2WidgetState extends State<V315Trial2Widget> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const TrialPage(),
+                      builder: (context) => const Practice2Page(),
                     ),
                   );
                 },

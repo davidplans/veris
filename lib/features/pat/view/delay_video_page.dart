@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import 'widget_v32.dart';
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'knob_video_page.dart';
 
-class V31Widget extends StatefulWidget {
-  const V31Widget({super.key});
+class DelayVideoPage extends StatefulWidget {
+  const DelayVideoPage({super.key});
 
   @override
-  State<V31Widget> createState() => _V31WidgetState();
+  State<DelayVideoPage> createState() => _DelayVideoPageState();
 }
 
-class _V31WidgetState extends State<V31Widget> {
+class _DelayVideoPageState extends State<DelayVideoPage> {
   late VideoPlayerController controller1;
 
   @override
@@ -39,8 +40,7 @@ class _V31WidgetState extends State<V31Widget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: const Text('Veris'), automaticallyImplyLeading: false),
+      appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -75,9 +75,9 @@ class _V31WidgetState extends State<V31Widget> {
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
                   controller1.pause();
-                                      Navigator.of(context).push(
+                  Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const V32Widget(),
+                      builder: (context) => const KnobVideoPage(),
                     ),
                   );
                 },
@@ -97,7 +97,8 @@ class _V31WidgetState extends State<V31Widget> {
             Container(
               child: const Center(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 22.0, top: 10.0, right:22.0, bottom:0),
+                  padding: EdgeInsets.only(
+                      left: 22.0, top: 10.0, right: 22.0, bottom: 0),
                   child: Text(
                     "It might seem like there is a delay between the sounds and the heartbeats you feel.\n\nPlay the video below to hear an example!",
                     style: TextStyle(fontSize: 18.0),
@@ -106,7 +107,9 @@ class _V31WidgetState extends State<V31Widget> {
                 ),
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             AspectRatio(
               aspectRatio: controller1.value.aspectRatio,
               child: VideoPlayer(controller1),

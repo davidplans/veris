@@ -50,14 +50,8 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Colors.blue,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          // BottomNavigationBarItem(
-          //     icon: Icon(Icons.favorite), label: 'Heart'),
           BottomNavigationBarItem(
               icon: Icon(Icons.trending_up), label: 'My progress'),
-          // BottomNavigationBarItem(
-          //      icon: Icon(Icons.bar_chart), label: 'Survey'),
-          // BottomNavigationBarItem(
-          //     icon: Icon(Icons.favorite), label: 'Heart Beat'),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: 'Settings'),
         ],
