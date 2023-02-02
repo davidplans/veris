@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -351,42 +352,7 @@ class _Practice1PageState extends State<Practice1Page> {
                   )
                 : const Center(child: CircularProgressIndicator())),
       ),
-      _isFingerOverlay
-          ? Scaffold(
-              body: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Image.asset(
-                        'assets/images/hand.png',
-                        width: 200.0,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Readjust your grip',
-                        style: TextStyle(fontSize: 20.0),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Please make sure your finger is gently covering your phone's camera and flash to continue.",
-                        style: TextStyle(fontSize: 14.0),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : Container(),
+      WrongFingerPlace(isFingerOverlay: _isFingerOverlay),
       _isFinished
           ? Scaffold(
               appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
