@@ -1,8 +1,8 @@
+import 'package:Veris/features/pat/practice/practice1_page.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'practice1_page.dart';
 
 class StartPracticePage extends StatelessWidget {
   const StartPracticePage({super.key});

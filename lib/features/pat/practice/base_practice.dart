@@ -1,23 +1,24 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/practice/practice1_slider_page.dart';
+import 'package:Veris/features/pat/practice/practice2_slider_page.dart';
 import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'practice1_slider_page.dart';
-
-class Practice1Page extends StatefulWidget {
-  const Practice1Page({super.key});
+class PracticeWidget extends StatefulWidget {
+  int number;
+  PracticeWidget({super.key, required this.number});
 
   @override
-  State<Practice1Page> createState() => _Practice1PageState();
+  State<PracticeWidget> createState() => _PracticeWidgetState();
 }
 
-class _Practice1PageState extends State<Practice1Page> {
+class _PracticeWidgetState extends State<PracticeWidget> {
   // ########## BPM VARs #############
 
   /// Camera controller
@@ -258,7 +259,8 @@ class _Practice1PageState extends State<Practice1Page> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Scaffold(
-        appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
+        appBar: AppBarWidget(
+            title: "Veris - PRACTICE TRIAL ${widget.number.toString()}"),
         body: Container(
             child: isCameraInitialized
                 ? Column(
@@ -355,7 +357,8 @@ class _Practice1PageState extends State<Practice1Page> {
       WrongFingerPlace(isFingerOverlay: _isFingerOverlay),
       _isFinished
           ? Scaffold(
-              appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
+              appBar: AppBarWidget(
+                  title: "Veris - PRACTICE TRIAL ${widget.number.toString()}"),
               body: Container(
                 child: Column(
                   children: [
@@ -384,12 +387,23 @@ class _Practice1PageState extends State<Practice1Page> {
                           ),
                           child: const Text("Continue"),
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const Practice1SliderPage(),
-                              ),
-                            );
+                            switch (widget.number) {
+                              case 1:
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Practice1SliderPage(),
+                                  ),
+                                );
+                                break;
+                              case 2:
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Practice2SliderPage(),
+                                  ),
+                                );
+                            }
                           }),
                     ),
                   ],
