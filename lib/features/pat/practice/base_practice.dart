@@ -49,7 +49,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
 
   bool _isFinished = false;
 
-  bool _isFingerOverlay = false;
+  bool _isNoFinger = false;
 
   double finalAngle = 0.0;
 
@@ -91,7 +91,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
     // while (_processing) {}
     // _controller = null;
     if (_timer != null) _timer?.cancel();
-    _isFingerOverlay = false;
+    _isNoFinger = false;
   }
 
   /// Initialize the camera controller
@@ -153,7 +153,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
       growable: true);
 
   void _scanImage(CameraImage image) {
-    _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
+    _isNoFinger = !ImageProcessing.isAvailableFingerOnCamera(image);
 
     // get the average value of the image
     double _avg =
@@ -317,7 +317,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
                   )
                 : const Center(child: CircularProgressIndicator())),
       ),
-      WrongFingerPlace(isFingerOverlay: _isFingerOverlay),
+      WrongFingerPlace(isNoFinger: _isNoFinger),
       _isFinished
           ? Scaffold(
               appBar: AppBarWidget(

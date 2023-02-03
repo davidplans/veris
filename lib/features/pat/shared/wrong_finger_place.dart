@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class WrongFingerPlace extends StatelessWidget {
-  final bool isFingerOverlay;
+  final bool isNoFinger;
 
-  const WrongFingerPlace({Key? key, this.isFingerOverlay = false})
-      : super(key: key);
+  const WrongFingerPlace({Key? key, this.isNoFinger = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return isFingerOverlay
+    return isNoFinger
         ? Scaffold(
             body: Center(
               child: Padding(
