@@ -1,6 +1,7 @@
 import 'package:Veris/features/home/view/home_page.dart';
 import 'package:Veris/features/surveys/view/custom_instruction_view.dart';
 import 'package:Veris/features/surveys/view/custom_question_step.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,9 +86,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                                   child: const Text('Cancel')),
                               TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).push<void>(
-                                      HomePage.route(),
-                                    );
+                                    Routes.goHome(context);
                                   },
                                   child: const Text('Yes, abort'))
                             ],
@@ -145,8 +144,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                             .collection('studies')
                             .doc()
                             .set(moduleData)
-                            .then((value) => Navigator.of(context)
-                                .push<void>(HomePage.route()));
+                            .then((value) => Routes.goHome(context));
                       }
                     }
                   },

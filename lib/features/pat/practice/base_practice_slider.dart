@@ -13,7 +13,7 @@ class PracticeSliderWidget extends StatefulWidget {
 }
 
 class _PracticeSliderWidgetState extends State<PracticeSliderWidget> {
-  double _currentSliderValue = 50;
+  double _currentSliderValue = 5;
 
   _changeSlider(double value) {
     setState(() {
@@ -85,8 +85,8 @@ class _PracticeSliderWidgetState extends State<PracticeSliderWidget> {
               ),
               Slider(
                 value: _currentSliderValue,
-                max: 100,
-                divisions: 100,
+                max: 10,
+                divisions: 10,
                 label: _currentSliderValue.round().toString(),
                 onChanged: (double value) {
                   _changeSlider(value);
