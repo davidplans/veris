@@ -18,7 +18,7 @@ abstract class ImageProcessing {
           int redAVG = (averageRed.reduce((value, element) => value + element) /
                   averageRed.length)
               .round();
-          if (redAVG > 230 && redAVG < 255) {
+          if (redAVG >= 230 && redAVG <= 255) {
             isFingerOverlay = false;
           } else {
             isFingerOverlay = true;

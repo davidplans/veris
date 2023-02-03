@@ -2,19 +2,20 @@ import 'dart:async';
 
 import 'package:Veris/core/user/user.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/features/pat/shared/slider_navigation.dart';
+import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
+import 'package:Veris/features/pat/view/finger_camera_text_page.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Veris/utils/chart.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'finger_camera_text_page.dart';
 
 class BaselinePage extends StatefulWidget {
   const BaselinePage({super.key});
@@ -26,18 +27,18 @@ class BaselinePage extends StatefulWidget {
 class _BaselinePageState extends State<BaselinePage>
     with SingleTickerProviderStateMixin {
   bool _toggled = false; // toggle button value
-  List<SensorValue> _data = <SensorValue>[]; // array to store the values
-  List<double> _instantBPMs = <double>[];
+  final List<SensorValue> _data = <SensorValue>[]; // array to store the values
+  final List<double> _instantBPMs = <double>[];
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   CameraController? _controller;
-  double _alpha = 0.3; // factor for the mean value
+  final double _alpha = 0.3; // factor for the mean value
   AnimationController? _animationController;
   double _iconScale = 1;
   int _bpm = 0; // beats per minute
-  int _fs = 30; // sampling frequency (fps)
-  int _windowLen = 30 * 6; // window length to display - 6 seconds
+  final int _fs = 30; // sampling frequency (fps)
+  final int _windowLen = 30 * 6; // window length to display - 6 seconds
   CameraImage? _image; // store the last camera image
   double? _avg; // store the average value during calculation
   DateTime? _now; // store the now Datetime
@@ -45,7 +46,6 @@ class _BaselinePageState extends State<BaselinePage>
   int _start = 60;
   Timer? _timerDuration; // timer for duration
   bool _isFinished = false;
-  String _startDate = "";
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   late User user;
   bool _isFingerOverlay = false;
@@ -113,7 +113,6 @@ class _BaselinePageState extends State<BaselinePage>
       _initTimer();
       _countDown();
       _updateBPM();
-      _startDate = DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
     });
   }
 
@@ -180,8 +179,8 @@ class _BaselinePageState extends State<BaselinePage>
 
   Future<void> _initController() async {
     try {
-      List _cameras = await availableCameras();
-      _controller = CameraController(_cameras.first, ResolutionPreset.low);
+      List cameras = await availableCameras();
+      _controller = CameraController(cameras.first, ResolutionPreset.low);
       await _controller!.initialize();
       Future.delayed(const Duration(milliseconds: 100)).then((onValue) {
         _controller!.setFlashMode(FlashMode.torch);
@@ -220,56 +219,55 @@ class _BaselinePageState extends State<BaselinePage>
   }
 
   void _updateBPM() async {
-    // Bear in mind that the method used to calculate the BPM is very rudimentar
+    // Bear in mind that the method used to calculate the BPM is very rudimentary
     // feel free to improve it :)
 
     // Since this function doesn't need to be so "exact" regarding the time it executes,
     // I only used the a Future.delay to repeat it from time to time.
     // Ofc you can also use a Timer object to time the callback of this function
-    List<SensorValue> _values;
-    double _avg;
-    int _n;
-    double _m;
-    double _threshold;
-    double _bpm;
-    int _counter;
-    int _previous;
+    List<SensorValue> values;
+    double avg;
+    int n;
+    double m;
+    double threshold;
+    double bpm;
+    int counter;
+    int previous;
+
     while (_toggled) {
-      _values = List.from(_data); // create a copy of the current data array
-      _avg = 0;
-      _n = _values.length;
-      _m = 0;
-      _values.forEach((SensorValue value) {
-        _avg += value.value / _n;
-        if (value.value > _m) _m = value.value;
-      });
-      _threshold = (_m + _avg) / 2;
-      _bpm = 0;
-      _counter = 0;
-      _previous = 0;
-      for (int i = 1; i < _n; i++) {
-        if (_values[i - 1].value < _threshold &&
-            _values[i].value > _threshold) {
-          if (_previous != 0) {
-            _counter++;
-            _bpm += 60 *
-                1000 /
-                (_values[i].time.millisecondsSinceEpoch - _previous);
+      values = List.from(_data); // create a copy of the current data array
+      avg = 0;
+      n = values.length;
+      m = 0;
+      for (var value in values) {
+        avg += value.value / n;
+        if (value.value > m) m = value.value;
+      }
+      threshold = (m + avg) / 2;
+      bpm = 0;
+      counter = 0;
+      previous = 0;
+      for (int i = 1; i < n; i++) {
+        if (values[i - 1].value < threshold && values[i].value > threshold) {
+          if (previous != 0) {
+            counter++;
+            bpm +=
+                60 * 1000 / (values[i].time.millisecondsSinceEpoch - previous);
           }
-          _previous = _values[i].time.millisecondsSinceEpoch;
+          previous = values[i].time.millisecondsSinceEpoch;
         }
       }
-      if (_counter > 0) {
-        _bpm = _bpm / _counter;
+      if (counter > 0) {
+        bpm = bpm / counter;
 
-        _instantBPMs.add(_bpm);
+        _instantBPMs.add(bpm);
 
         setState(() {
-          this._bpm = ((1 - _alpha) * this._bpm + _alpha * _bpm).toInt();
+          _bpm = ((1 - _alpha) * _bpm + _alpha * bpm).toInt();
         });
       }
-      await Future.delayed(
-          Duration(milliseconds: 1000)); // wait for a new set of _data values
+      await Future.delayed(const Duration(
+          milliseconds: 1000)); // wait for a new set of _data values
     }
   }
 
@@ -279,40 +277,14 @@ class _BaselinePageState extends State<BaselinePage>
 
     return Stack(children: [
       Scaffold(
-        appBar: AppBarWidget(title: "Veris - Beseline"),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: _isFinished
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Expanded(flex: 1, child: SizedBox()),
-                    const Expanded(flex: 1, child: SizedBox()),
-                    Expanded(
-                      flex: 1,
-                      child: FloatingActionButton.extended(
-                        backgroundColor: const Color(0XFF0F2042),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const FingerCameraPage(),
-                            ),
-                          );
-                        },
-                        label: const Text(
-                          "Continue",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        icon: const Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : null,
-        ),
+        appBar: AppBarWidget(title: "Veris - Baselines"),
+        floatingActionButton: _isFinished
+            ? const SliderNavigation(
+                nexPage: FingerCameraPage(),
+                nextButtonName: 'Continue',
+                isNeedHideBackButton: true,
+              )
+            : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: SizedBox(
           height: 480,
@@ -376,21 +348,6 @@ class _BaselinePageState extends State<BaselinePage>
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  // const Text(
-                                  //   "Config:",
-                                  //   style: TextStyle(fontWeight: FontWeight.bold),
-                                  // ),
-                                  // Text('Total trials $_configMaxTrials'),
-                                  // Text(
-                                  //     'BodySelect after $_configStepBodySelect steps'),
-                                  // const SizedBox(
-                                  //   height: 20,
-                                  // ),
-                                  // Text(
-                                  //   "Complete trial $_completeTrials of $_configMaxTrials",
-                                  //   style: const TextStyle(
-                                  //       fontWeight: FontWeight.bold),
-                                  // ),
                                   const SizedBox(
                                     height: 20,
                                   ),
@@ -459,48 +416,12 @@ class _BaselinePageState extends State<BaselinePage>
                     ),
                   ],
                 ),
-                // _bpm > 30 && _bpm < 150 ? Container() : _toggled ? Center(child: Image.asset('assets/images/readjust.png' )): Container(),
               ],
             ),
           ),
         ),
       ),
-      _isFingerOverlay
-          ? Scaffold(
-              body: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Image.asset(
-                        'assets/images/hand.png',
-                        width: 200.0,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Readjust your grip',
-                        style: TextStyle(fontSize: 20.0),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Please make sure your finger is gently covering your phone's camera and flash to continue.",
-                        style: TextStyle(fontSize: 14.0),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : Container()
+      WrongFingerPlace(isFingerOverlay: _isFingerOverlay)
     ]);
   }
 }

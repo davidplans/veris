@@ -1,21 +1,24 @@
 import 'dart:async';
 import 'dart:math' as math;
+
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/practice/practice1_slider_page.dart';
+import 'package:Veris/features/pat/practice/practice2_slider_page.dart';
+import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'practice2_slider_page.dart';
-
-class Practice2Page extends StatefulWidget {
-  const Practice2Page({super.key});
+class PracticeWidget extends StatefulWidget {
+  int number;
+  PracticeWidget({super.key, required this.number});
 
   @override
-  State<Practice2Page> createState() => _Practice2PageState();
+  State<PracticeWidget> createState() => _PracticeWidgetState();
 }
 
-class _Practice2PageState extends State<Practice2Page> {
+class _PracticeWidgetState extends State<PracticeWidget> {
   // ########## BPM VARs #############
 
   /// Camera controller
@@ -151,6 +154,7 @@ class _Practice2PageState extends State<Practice2Page> {
 
   void _scanImage(CameraImage image) {
     _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
+
     // get the average value of the image
     double _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
@@ -169,11 +173,8 @@ class _Practice2PageState extends State<Practice2Page> {
         _counter = 0;
       }
     } else {
-      // _player.play();
-      // print('top');
       _max = 0;
       _counter = 0;
-      // _player.stop();
     }
     measureWindow.removeAt(0);
     measureWindow.add(SensorValue(time: DateTime.now(), value: _avg));
@@ -258,7 +259,8 @@ class _Practice2PageState extends State<Practice2Page> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Scaffold(
-        appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 2"),
+        appBar: AppBarWidget(
+            title: "Veris - PRACTICE TRIAL ${widget.number.toString()}"),
         body: Container(
             child: isCameraInitialized
                 ? Column(
@@ -352,45 +354,11 @@ class _Practice2PageState extends State<Practice2Page> {
                   )
                 : const Center(child: CircularProgressIndicator())),
       ),
-      _isFingerOverlay
-          ? Scaffold(
-              body: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Image.asset(
-                        'assets/images/hand.png',
-                        width: 200.0,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Readjust your grip',
-                        style: TextStyle(fontSize: 20.0),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Please make sure your finger is gently covering your phone's camera and flash to continue.",
-                        style: TextStyle(fontSize: 14.0),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : Container(),
+      WrongFingerPlace(isFingerOverlay: _isFingerOverlay),
       _isFinished
           ? Scaffold(
-              appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 2"),
+              appBar: AppBarWidget(
+                  title: "Veris - PRACTICE TRIAL ${widget.number.toString()}"),
               body: Container(
                 child: Column(
                   children: [
@@ -419,12 +387,23 @@ class _Practice2PageState extends State<Practice2Page> {
                           ),
                           child: const Text("Continue"),
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const Practice2SliderPage(),
-                              ),
-                            );
+                            switch (widget.number) {
+                              case 1:
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Practice1SliderPage(),
+                                  ),
+                                );
+                                break;
+                              case 2:
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Practice2SliderPage(),
+                                  ),
+                                );
+                            }
                           }),
                     ),
                   ],
