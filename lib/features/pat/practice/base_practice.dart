@@ -290,25 +290,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
                                 : GestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onPanUpdate: (details) {
-                                      Offset centerOfGestureDetector = Offset(
-                                          constraints.maxWidth / 2,
-                                          constraints.maxHeight / 2);
-                                      final touchPositionFromCenter =
-                                          details.localPosition -
-                                              centerOfGestureDetector;
-
-                                      setState(
-                                        () {
-                                          _currentKnobValue =
-                                              ((touchPositionFromCenter
-                                                      .direction /
-                                                  math.pi));
-
-                                          finalAngle =
-                                              touchPositionFromCenter.direction;
-                                          print(_currentKnobValue);
-                                        },
-                                      );
+                                      onKnobUpdate(constraints, details);
                                     },
                                     child: Transform.rotate(
                                       angle: finalAngle,
@@ -328,28 +310,9 @@ class _PracticeWidgetState extends State<PracticeWidget> {
                             textStyle: TextStyle(color: Colors.white),
                           ),
                           child: const Text("Confirm"),
-                          onPressed: () => setState(() {
-                            _deinitController();
-                          }),
+                          onPressed: () => setState(_deinitController),
                         ),
                       )
-                      // _isFinished
-                      //     ? Center(
-                      //         child: ElevatedButton.icon(
-                      //             icon: const Icon(Icons.favorite_rounded),
-                      //             label: const Text("Continue"),
-                      //             onPressed: () {}),
-                      //       )
-                      //     : Center(
-                      //         child: ElevatedButton.icon(
-                      //           icon: const Icon(Icons.favorite_rounded),
-                      //           label: const Text("Confirm"),
-                      //           onPressed: () => setState(() {
-                      //             _deinitController();
-
-                      //           }),
-                      //         ),
-                      //       )
                     ],
                   )
                 : const Center(child: CircularProgressIndicator())),
@@ -412,6 +375,22 @@ class _PracticeWidgetState extends State<PracticeWidget> {
             )
           : Container()
     ]);
+  }
+
+  void onKnobUpdate(BoxConstraints constraints, DragUpdateDetails details) {
+    Offset centerOfGestureDetector =
+        Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
+
+    final touchPositionFromCenter =
+        details.localPosition - centerOfGestureDetector;
+    final currentKnobValue = touchPositionFromCenter.direction / math.pi;
+
+    setState(
+      () {
+        _currentKnobValue = currentKnobValue;
+        finalAngle = touchPositionFromCenter.direction;
+      },
+    );
   }
 }
 

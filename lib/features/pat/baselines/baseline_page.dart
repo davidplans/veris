@@ -357,9 +357,9 @@ class _BaselinePageState extends State<BaselinePage>
                                         fontSize: 18, color: Colors.grey),
                                   ),
                                   Text(
-                                    (_bpm > 30 && _bpm < 150
+                                    _bpm > 30 && _bpm < 150
                                         ? _bpm.toString()
-                                        : "--"),
+                                        : "--",
                                     style: const TextStyle(
                                         fontSize: 32,
                                         fontWeight: FontWeight.bold),
