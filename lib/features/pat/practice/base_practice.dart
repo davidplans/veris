@@ -152,7 +152,7 @@ class _PracticeWidgetState extends State<PracticeWidget>
 
   _onKnobValue(BoxConstraints constraints, DragUpdateDetails details) {
     KnobRorateModel values =
-        KnobRotateService.onKnobUpdateService(constraints, details);
+        KnobRotateService.prepareCurrentValues(constraints, details);
     setState(() {
       _currentKnobValue = values.currentKnobValue;
       finalAngle = values.finalAngle;

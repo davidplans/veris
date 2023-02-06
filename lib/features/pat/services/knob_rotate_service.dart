@@ -5,7 +5,7 @@ import 'dart:math' as math;
 
 
 class KnobRotateService {
-  static KnobRorateModel onKnobUpdateService(
+  static KnobRorateModel prepareCurrentValues(
       BoxConstraints constraints, DragUpdateDetails details) {
     Offset centerOfGestureDetector =
         Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
