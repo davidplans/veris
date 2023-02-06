@@ -92,20 +92,19 @@ class _BaselinePageState extends State<BaselinePage>
     super.dispose();
   }
 
-  void _startMeasurements() {
-    // _clearData();
-    initCameraAndStartImageStream().then((onValue) async {
-      Wakelock.enable();
-      _animationController!.repeat(reverse: true);
+  void _startMeasurements() async {
+    _prepareCleanDataForGraph();
+    await initCameraAndStartImageStream();
+    Wakelock.enable();
+    _animationController!.repeat(reverse: true);
 
-      setState(() {
-        _measurementInProgress = true;
-      });
-
-      // after is started
-      _initTimer();
-      _startCounterDown();
+    setState(() {
+      _measurementInProgress = true;
     });
+
+    // after is started
+    _initTimer();
+    _startCounterDown();
   }
 
   void _stopMeasurementsAndSaveData() async {
@@ -177,9 +176,8 @@ class _BaselinePageState extends State<BaselinePage>
       List cameras = await availableCameras();
       _cameraController = CameraController(cameras.first, ResolutionPreset.low);
       await _cameraController!.initialize();
-      Future.delayed(const Duration(milliseconds: 100)).then((onValue) {
-        _cameraController!.setFlashMode(FlashMode.torch);
-      });
+      await Future.delayed(const Duration(milliseconds: 100));
+      _cameraController!.setFlashMode(FlashMode.torch);
       _cameraController!.startImageStream((CameraImage image) {
         _currentImageFromStream = image;
       });
@@ -218,17 +216,17 @@ class _BaselinePageState extends State<BaselinePage>
     });
   }
 
-  // void _clearData() {
-  //   // create array of 128 ~= 255/2
-  //   _data.clear();
-  //   int now = DateTime.now().millisecondsSinceEpoch;
-  //   for (int i = 0; i < _windowLen; i++) {
-  //     _data.insert(
-  //         0,
-  //         SensorValue(
-  //             DateTime.fromMillisecondsSinceEpoch(now - i * 1000 ~/ _fs), 128));
-  //   }
-  // }
+  void _prepareCleanDataForGraph() {
+    // create array of 128 ~= 255/2
+    _data.clear();
+    int now = DateTime.now().millisecondsSinceEpoch;
+    for (int i = 0; i < _windowLen; i++) {
+      _data.insert(
+          0,
+          SensorValue(
+              DateTime.fromMillisecondsSinceEpoch(now - i * 1000 ~/ _fs), 128));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
