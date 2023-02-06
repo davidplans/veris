@@ -22,6 +22,7 @@ class ActionButton extends StatelessWidget {
       backgroundColor: const Color(0XFF0F2042),
       onPressed: action,
       label: Text(name, style: const TextStyle(color: Colors.white)),
+      heroTag: null,
     );
   }
 }

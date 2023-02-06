@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Veris/core/user/user.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
 import 'package:Veris/features/pat/baselines/baseline_helper_service.dart';
+import 'package:Veris/features/pat/baselines/partials/estimated_bpm.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/features/pat/view/finger_camera_text_page.dart';
@@ -302,29 +303,7 @@ class _BaselinePageState extends State<BaselinePage>
                             ),
                             Expanded(
                               flex: 1,
-                              child: Center(
-                                  child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  const Text(
-                                    "Estimated BPM",
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.grey),
-                                  ),
-                                  Text(
-                                    _bpm > 30 && _bpm < 150
-                                        ? _bpm.toString()
-                                        : "--",
-                                    style: const TextStyle(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              )),
+                              child: EstimatedBPM(bpm: _bpm),
                             ),
                           ],
                         )),
