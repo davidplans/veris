@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/models/knob.dart';
 import 'package:Veris/features/pat/practice/practice1_slider_page.dart';
 import 'package:Veris/features/pat/practice/practice2_slider_page.dart';
+import 'package:Veris/features/pat/services/knob_rotate_service.dart';
 import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
@@ -18,7 +20,8 @@ class PracticeWidget extends StatefulWidget {
   State<PracticeWidget> createState() => _PracticeWidgetState();
 }
 
-class _PracticeWidgetState extends State<PracticeWidget> {
+class _PracticeWidgetState extends State<PracticeWidget>
+    with KnobRotateService {
   // ########## BPM VARs #############
 
   /// Camera controller
@@ -145,6 +148,15 @@ class _PracticeWidgetState extends State<PracticeWidget> {
     math.Random random = math.Random();
     double rand = random.nextDouble() * (random.nextBool() ? -1 : 1);
     return rand;
+  }
+
+  _onKnobValue(BoxConstraints constraints, DragUpdateDetails details) {
+    KnobRorateModel values =
+        KnobRotateService.prepareCurrentValues(constraints, details);
+    setState(() {
+      _currentKnobValue = values.currentKnobValue;
+      finalAngle = values.finalAngle;
+    });
   }
 
   static const int windowLength = 50;
@@ -290,7 +302,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
                                 : GestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onPanUpdate: (details) {
-                                      onKnobUpdate(constraints, details);
+                                      _onKnobValue(constraints, details);
                                     },
                                     child: Transform.rotate(
                                       angle: finalAngle,
