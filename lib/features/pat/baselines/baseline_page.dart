@@ -190,8 +190,10 @@ class _BaselinePageState extends State<BaselinePage>
 
   void _initTimer() {
     _timer = Timer.periodic(Duration(milliseconds: 1000 ~/ _fs), (timer) {
-      if (_measurementInProgress && _currentImageFromStream != null) {
-        _scanImage(_currentImageFromStream!);
+      if (_measurementInProgress) {
+        if (_currentImageFromStream != null) {
+          _scanImage(_currentImageFromStream!);
+        }
       } else {
         timer.cancel();
       }
