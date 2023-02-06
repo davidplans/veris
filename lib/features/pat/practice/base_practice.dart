@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/models/knob.dart';
 import 'package:Veris/features/pat/practice/practice1_slider_page.dart';
 import 'package:Veris/features/pat/practice/practice2_slider_page.dart';
 import 'package:Veris/features/pat/services/knob_rotate_service.dart';
@@ -10,8 +11,6 @@ import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-
-import '../models/knob.dart';
 
 class PracticeWidget extends StatefulWidget {
   int number;
@@ -149,6 +148,15 @@ class _PracticeWidgetState extends State<PracticeWidget>
     math.Random random = math.Random();
     double rand = random.nextDouble() * (random.nextBool() ? -1 : 1);
     return rand;
+  }
+
+  _onKnobValue(BoxConstraints constraints, DragUpdateDetails details) {
+    KnobRorateModel values =
+        KnobRotateService.onKnobUpdateService(constraints, details);
+    setState(() {
+      _currentKnobValue = values.currentKnobValue;
+      finalAngle = values.finalAngle;
+    });
   }
 
   static const int windowLength = 50;
@@ -294,12 +302,7 @@ class _PracticeWidgetState extends State<PracticeWidget>
                                 : GestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onPanUpdate: (details) {
-                                      KnobRorateModel values =
-                                          onKnobUpdate(constraints, details);
-                                      setState(() {
-                                        _currentKnobValue = values.currentKnobValue;
-                                        finalAngle = values.finalAngle;
-                                      });
+                                      _onKnobValue(constraints, details);
                                     },
                                     child: Transform.rotate(
                                       angle: finalAngle,

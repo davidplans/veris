@@ -1,10 +1,11 @@
+import 'package:Veris/features/pat/models/knob.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import '../models/knob.dart';
+
 
 class KnobRotateService {
-  KnobRorateModel onKnobUpdate(
+  static KnobRorateModel onKnobUpdateService(
       BoxConstraints constraints, DragUpdateDetails details) {
     Offset centerOfGestureDetector =
         Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
