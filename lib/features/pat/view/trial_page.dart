@@ -59,7 +59,7 @@ class _TrialPageState extends State<TrialPage> {
 
   bool _isFinished = false;
 
-  bool _isFingerOverlay = false;
+  bool _isNoFinger = false;
 
   double finalAngle = 0.0;
 
@@ -106,7 +106,7 @@ class _TrialPageState extends State<TrialPage> {
     _player.dispose();
     _isFinished = true;
     _isCameraInitialized = false;
-    _isFingerOverlay = false;
+    _isNoFinger = false;
 
     if (_controller == null) return;
     await _controller!.dispose();
@@ -214,7 +214,7 @@ class _TrialPageState extends State<TrialPage> {
       growable: true);
 
   void _scanImage(CameraImage image) {
-    _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
+    _isNoFinger = !ImageProcessing.isAvailableFingerOnCamera(image);
 
     // get the average value of the image
     double avg =
@@ -456,7 +456,7 @@ class _TrialPageState extends State<TrialPage> {
                   )
                 : const Center(child: CircularProgressIndicator())),
       ),
-      WrongFingerPlace(isFingerOverlay: _isFingerOverlay),
+      WrongFingerPlace(isNoFinger: _isNoFinger),
       _isFinished
           ? Scaffold(
               appBar: AppBarWidget(title: "Veris - TRIALs"),

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:Veris/core/user/user.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/features/pat/baselines/baseline_helper_service.dart';
+import 'package:Veris/features/pat/baselines/partials/estimated_bpm.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/features/pat/view/finger_camera_text_page.dart';
@@ -9,7 +11,6 @@ import 'package:Veris/utils/image_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:Veris/style/theme.dart';
 import 'package:camera/camera.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Veris/utils/chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
@@ -26,29 +27,32 @@ class BaselinePage extends StatefulWidget {
 
 class _BaselinePageState extends State<BaselinePage>
     with SingleTickerProviderStateMixin {
-  bool _toggled = false; // toggle button value
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  AnimationController? _animationController;
+  CameraController? _cameraController;
+  CameraImage? _currentImageFromStream; // store the last camera image
+
+  bool _measurementInProgress = false;
+  bool _measurementWasFinished = false;
+
   final List<SensorValue> _data = <SensorValue>[]; // array to store the values
   final List<double> _instantBPMs = <double>[];
 
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  CameraController? _controller;
-  final double _alpha = 0.3; // factor for the mean value
-  AnimationController? _animationController;
   double _iconScale = 1;
+  int _currentCounter = 60;
+
   int _bpm = 0; // beats per minute
+
   final int _fs = 30; // sampling frequency (fps)
   final int _windowLen = 30 * 6; // window length to display - 6 seconds
-  CameraImage? _image; // store the last camera image
-  double? _avg; // store the average value during calculation
-  DateTime? _now; // store the now Datetime
+
   Timer? _timer; // timer for image processing
-  int _start = 60;
+
   Timer? _timerDuration; // timer for duration
-  bool _isFinished = false;
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
+
   late User user;
-  bool _isFingerOverlay = false;
+  bool _isNoFinger = false;
 
   String studyId = "";
   String currentModuleResultId = "";
@@ -63,6 +67,7 @@ class _BaselinePageState extends State<BaselinePage>
     });
 
     super.initState();
+
     _animationController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
     _animationController!.addListener(() {
@@ -80,15 +85,139 @@ class _BaselinePageState extends State<BaselinePage>
     if (_timerDuration != null) {
       _timerDuration!.cancel();
     }
-    _toggled = false;
-    _disposeController();
+    _measurementInProgress = false;
+    _disposeCameraController();
     Wakelock.disable();
     _animationController!.stop();
     _animationController!.dispose();
     super.dispose();
   }
 
-  void _clearData() {
+  void _startMeasurements() async {
+    _prepareCleanDataForGraph();
+    await initCameraAndStartImageStream();
+    Wakelock.enable();
+    _animationController!.repeat(reverse: true);
+
+    setState(() {
+      _measurementInProgress = true;
+    });
+
+    // after is started
+    _initTimer();
+    _startCounterDown();
+  }
+
+  void _stopMeasurementsAndSaveData() async {
+    _disposeCameraController();
+    Wakelock.disable();
+
+    _animationController!.stop();
+    _animationController!.value = 0.0;
+
+    if (_timerDuration != null) {
+      _timerDuration!.cancel();
+    }
+
+    setState(() {
+      _measurementInProgress = false;
+      _measurementWasFinished = true;
+      _isNoFinger = false;
+    });
+
+    BaselineHelper.storeDataToDB(
+        user.id, studyId, moduleId, currentModuleResultId, _instantBPMs);
+
+    _instantBPMs.clear();
+  }
+
+  void _disposeCameraController() {
+    if (_cameraController != null) {
+      _cameraController!.dispose();
+    }
+    _cameraController = null;
+  }
+
+  void _startCounterDown() {
+    _timerDuration = Timer.periodic(
+      const Duration(seconds: 1),
+      (Timer t) {
+        if (_currentCounter == 0) {
+          setState(() {
+            _measurementInProgress = false;
+            _stopMeasurementsAndSaveData();
+            t.cancel();
+          });
+        } else {
+          setState(() {
+            _currentCounter--;
+          });
+          _updateBPM();
+        }
+      },
+    );
+  }
+
+  void _updateBPM() {
+    final currentValues = BaselineHelper.calculateCurrentBMP(_data);
+    if (currentValues.counter > 0) {
+      final bpm = currentValues.bpm / currentValues.counter;
+      const double alpha = 0.3; // factor for the mean value
+
+      _instantBPMs.add(bpm);
+
+      setState(() {
+        _bpm = ((1 - alpha) * _bpm + alpha * bpm).toInt();
+      });
+    }
+  }
+
+  Future<void> initCameraAndStartImageStream() async {
+    try {
+      List cameras = await availableCameras();
+      _cameraController = CameraController(cameras.first, ResolutionPreset.low);
+      await _cameraController!.initialize();
+      await Future.delayed(const Duration(milliseconds: 100));
+      _cameraController!.setFlashMode(FlashMode.torch);
+      _cameraController!.startImageStream((CameraImage image) {
+        _currentImageFromStream = image;
+      });
+    } on Exception {
+      debugPrint("Camera Error");
+    }
+  }
+
+  void _initTimer() {
+    _timer = Timer.periodic(Duration(milliseconds: 1000 ~/ _fs), (timer) {
+      if (_measurementInProgress) {
+        if (_currentImageFromStream != null) {
+          _scanImage(_currentImageFromStream!);
+        }
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  void _scanImage(CameraImage image) {
+    _isNoFinger = !ImageProcessing.isAvailableFingerOnCamera(image);
+
+    final DateTime now = DateTime.now();
+
+    final avg =
+        image.planes.first.bytes.reduce((value, element) => value + element) /
+            image.planes.first.bytes.length;
+
+    if (_data.length >= _windowLen) {
+      _data.removeAt(0);
+    }
+
+    setState(() {
+      _data.add(SensorValue(now!, 255 - avg!));
+    });
+  }
+
+  void _prepareCleanDataForGraph() {
     // create array of 128 ~= 255/2
     _data.clear();
     int now = DateTime.now().millisecondsSinceEpoch;
@@ -100,177 +229,6 @@ class _BaselinePageState extends State<BaselinePage>
     }
   }
 
-  void _toggle() {
-    _clearData();
-    _initController().then((onValue) async {
-      Wakelock.enable();
-      _animationController!.repeat(reverse: true);
-      setState(() {
-        _toggled = true;
-      });
-
-      // after is toggled
-      _initTimer();
-      _countDown();
-      _updateBPM();
-    });
-  }
-
-  void _untoggle() async {
-    _disposeController();
-    Wakelock.disable();
-    _animationController!.stop();
-    _animationController!.value = 0.0;
-    if (_timerDuration != null) {
-      _timerDuration!.cancel();
-    }
-
-    setState(() {
-      _toggled = false;
-      _isFinished = true;
-      _isFingerOverlay = false;
-    });
-
-    final baseStudyModuleData = {
-      "userId": user.id,
-      "studyId": studyId,
-      "moduleId": moduleId,
-      "sectionId": 'none',
-      "sectionName": 'none',
-      "moduleName": 'none',
-      "datetime": DateTime.now(),
-      "type": "pat",
-      "baselines": _instantBPMs
-    };
-
-    users
-        .doc(user.id)
-        .collection('studies')
-        .doc(currentModuleResultId)
-        .set(baseStudyModuleData);
-    _instantBPMs.clear();
-  }
-
-  void _disposeController() {
-    if (_controller != null) {
-      _controller!.dispose();
-    }
-    _controller = null;
-  }
-
-  void _countDown() {
-    _timerDuration = Timer.periodic(
-      const Duration(seconds: 1),
-      (Timer t) {
-        if (_start == 0) {
-          setState(() {
-            _toggled = false;
-            _untoggle();
-            t.cancel();
-          });
-        } else {
-          setState(() {
-            _start--;
-          });
-        }
-      },
-    );
-  }
-
-  Future<void> _initController() async {
-    try {
-      List cameras = await availableCameras();
-      _controller = CameraController(cameras.first, ResolutionPreset.low);
-      await _controller!.initialize();
-      Future.delayed(const Duration(milliseconds: 100)).then((onValue) {
-        _controller!.setFlashMode(FlashMode.torch);
-      });
-      _controller!.startImageStream((CameraImage image) {
-        _image = image;
-      });
-    } on Exception {
-      debugPrint("Camera Error");
-    }
-  }
-
-  void _initTimer() {
-    _timer = Timer.periodic(Duration(milliseconds: 1000 ~/ _fs), (timer) {
-      if (_toggled) {
-        if (_image != null) _scanImage(_image!);
-      } else {
-        timer.cancel();
-      }
-    });
-  }
-
-  void _scanImage(CameraImage image) {
-    _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
-
-    _now = DateTime.now();
-    _avg =
-        image.planes.first.bytes.reduce((value, element) => value + element) /
-            image.planes.first.bytes.length;
-    if (_data.length >= _windowLen) {
-      _data.removeAt(0);
-    }
-    setState(() {
-      _data.add(SensorValue(_now!, 255 - _avg!));
-    });
-  }
-
-  void _updateBPM() async {
-    // Bear in mind that the method used to calculate the BPM is very rudimentary
-    // feel free to improve it :)
-
-    // Since this function doesn't need to be so "exact" regarding the time it executes,
-    // I only used the a Future.delay to repeat it from time to time.
-    // Ofc you can also use a Timer object to time the callback of this function
-    List<SensorValue> values;
-    double avg;
-    int n;
-    double m;
-    double threshold;
-    double bpm;
-    int counter;
-    int previous;
-
-    while (_toggled) {
-      values = List.from(_data); // create a copy of the current data array
-      avg = 0;
-      n = values.length;
-      m = 0;
-      for (var value in values) {
-        avg += value.value / n;
-        if (value.value > m) m = value.value;
-      }
-      threshold = (m + avg) / 2;
-      bpm = 0;
-      counter = 0;
-      previous = 0;
-      for (int i = 1; i < n; i++) {
-        if (values[i - 1].value < threshold && values[i].value > threshold) {
-          if (previous != 0) {
-            counter++;
-            bpm +=
-                60 * 1000 / (values[i].time.millisecondsSinceEpoch - previous);
-          }
-          previous = values[i].time.millisecondsSinceEpoch;
-        }
-      }
-      if (counter > 0) {
-        bpm = bpm / counter;
-
-        _instantBPMs.add(bpm);
-
-        setState(() {
-          _bpm = ((1 - _alpha) * _bpm + _alpha * bpm).toInt();
-        });
-      }
-      await Future.delayed(const Duration(
-          milliseconds: 1000)); // wait for a new set of _data values
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     user = context.select((AuthBloc bloc) => bloc.state.user);
@@ -278,7 +236,7 @@ class _BaselinePageState extends State<BaselinePage>
     return Stack(children: [
       Scaffold(
         appBar: AppBarWidget(title: "Veris - Baselines"),
-        floatingActionButton: _isFinished
+        floatingActionButton: _measurementWasFinished
             ? const SliderNavigation(
                 nexPage: FingerCameraPage(),
                 nextButtonName: 'Continue',
@@ -310,12 +268,13 @@ class _BaselinePageState extends State<BaselinePage>
                                     fit: StackFit.expand,
                                     alignment: Alignment.center,
                                     children: <Widget>[
-                                      _controller != null && _toggled
+                                      _cameraController != null &&
+                                              _measurementInProgress
                                           ? AspectRatio(
-                                              aspectRatio: _controller!
+                                              aspectRatio: _cameraController!
                                                   .value.aspectRatio,
-                                              child:
-                                                  CameraPreview(_controller!),
+                                              child: CameraPreview(
+                                                  _cameraController!),
                                             )
                                           : Container(
                                               padding: const EdgeInsets.all(12),
@@ -326,13 +285,14 @@ class _BaselinePageState extends State<BaselinePage>
                                         alignment: Alignment.center,
                                         padding: const EdgeInsets.all(4),
                                         child: Text(
-                                          _toggled
+                                          _measurementInProgress
                                               ? "Cover both the camera and the flash with your finger"
                                               : "Camera feed will display here",
                                           style: TextStyle(
-                                              backgroundColor: _toggled
-                                                  ? Colors.white
-                                                  : Colors.transparent),
+                                              backgroundColor:
+                                                  _measurementInProgress
+                                                      ? Colors.white
+                                                      : Colors.transparent),
                                           textAlign: TextAlign.center,
                                         ),
                                       )
@@ -343,29 +303,7 @@ class _BaselinePageState extends State<BaselinePage>
                             ),
                             Expanded(
                               flex: 1,
-                              child: Center(
-                                  child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  const Text(
-                                    "Estimated BPM",
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.grey),
-                                  ),
-                                  Text(
-                                    _bpm > 30 && _bpm < 150
-                                        ? _bpm.toString()
-                                        : "--",
-                                    style: const TextStyle(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              )),
+                              child: EstimatedBPM(bpm: _bpm),
                             ),
                           ],
                         )),
@@ -376,9 +314,9 @@ class _BaselinePageState extends State<BaselinePage>
                           children: [
                             Transform.scale(
                               scale: _iconScale,
-                              child: _toggled
-                                  ? Text('$_start')
-                                  : _isFinished
+                              child: _measurementInProgress
+                                  ? Text('$_currentCounter')
+                                  : _measurementWasFinished
                                       ? Container()
                                       : ElevatedButton(
                                           style: ElevatedButton.styleFrom(
@@ -389,11 +327,7 @@ class _BaselinePageState extends State<BaselinePage>
                                             ),
                                           ),
                                           onPressed: () async {
-                                            if (_toggled) {
-                                              _untoggle();
-                                            } else {
-                                              _toggle();
-                                            }
+                                            _startMeasurements();
                                           },
                                           child: const Text('START'),
                                         ),
@@ -421,7 +355,7 @@ class _BaselinePageState extends State<BaselinePage>
           ),
         ),
       ),
-      WrongFingerPlace(isFingerOverlay: _isFingerOverlay)
+      WrongFingerPlace(isNoFinger: _isNoFinger)
     ]);
   }
 }

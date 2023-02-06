@@ -1,3 +1,4 @@
+import 'package:Veris/routes/routes.dart';
 import 'package:Veris/utils/download_json.dart';
 import 'package:Veris/features/qr_scanner/qr_scanner.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class AppView extends StatelessWidget {
       theme: theme,
       debugShowCheckedModeBanner: false,
       home: const StudyView(),
+      routes: routesConfig,
     );
   }
 }

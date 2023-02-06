@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/models/knob.dart';
 import 'package:Veris/features/pat/practice/practice1_slider_page.dart';
 import 'package:Veris/features/pat/practice/practice2_slider_page.dart';
+import 'package:Veris/features/pat/services/knob_rotate_service.dart';
 import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
@@ -18,7 +20,8 @@ class PracticeWidget extends StatefulWidget {
   State<PracticeWidget> createState() => _PracticeWidgetState();
 }
 
-class _PracticeWidgetState extends State<PracticeWidget> {
+class _PracticeWidgetState extends State<PracticeWidget>
+    with KnobRotateService {
   // ########## BPM VARs #############
 
   /// Camera controller
@@ -49,7 +52,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
 
   bool _isFinished = false;
 
-  bool _isFingerOverlay = false;
+  bool _isNoFinger = false;
 
   double finalAngle = 0.0;
 
@@ -91,7 +94,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
     // while (_processing) {}
     // _controller = null;
     if (_timer != null) _timer?.cancel();
-    _isFingerOverlay = false;
+    _isNoFinger = false;
   }
 
   /// Initialize the camera controller
@@ -147,13 +150,22 @@ class _PracticeWidgetState extends State<PracticeWidget> {
     return rand;
   }
 
+  _onKnobValue(BoxConstraints constraints, DragUpdateDetails details) {
+    KnobRorateModel values =
+        KnobRotateService.prepareCurrentValues(constraints, details);
+    setState(() {
+      _currentKnobValue = values.currentKnobValue;
+      finalAngle = values.finalAngle;
+    });
+  }
+
   static const int windowLength = 50;
   final List<SensorValue> measureWindow = List<SensorValue>.filled(
       windowLength, SensorValue(time: DateTime.now(), value: 0),
       growable: true);
 
   void _scanImage(CameraImage image) {
-    _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
+    _isNoFinger = !ImageProcessing.isAvailableFingerOnCamera(image);
 
     // get the average value of the image
     double _avg =
@@ -290,7 +302,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
                                 : GestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onPanUpdate: (details) {
-                                      onKnobUpdate(constraints, details);
+                                      _onKnobValue(constraints, details);
                                     },
                                     child: Transform.rotate(
                                       angle: finalAngle,
@@ -317,7 +329,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
                   )
                 : const Center(child: CircularProgressIndicator())),
       ),
-      WrongFingerPlace(isFingerOverlay: _isFingerOverlay),
+      WrongFingerPlace(isNoFinger: _isNoFinger),
       _isFinished
           ? Scaffold(
               appBar: AppBarWidget(
