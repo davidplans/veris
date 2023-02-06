@@ -4,11 +4,14 @@ import 'dart:math' as math;
 import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/features/pat/practice/practice1_slider_page.dart';
 import 'package:Veris/features/pat/practice/practice2_slider_page.dart';
+import 'package:Veris/features/pat/services/knob_rotate_service.dart';
 import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+
+import '../models/knob.dart';
 
 class PracticeWidget extends StatefulWidget {
   int number;
@@ -18,7 +21,8 @@ class PracticeWidget extends StatefulWidget {
   State<PracticeWidget> createState() => _PracticeWidgetState();
 }
 
-class _PracticeWidgetState extends State<PracticeWidget> {
+class _PracticeWidgetState extends State<PracticeWidget>
+    with KnobRotateService {
   // ########## BPM VARs #############
 
   /// Camera controller
@@ -290,25 +294,12 @@ class _PracticeWidgetState extends State<PracticeWidget> {
                                 : GestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onPanUpdate: (details) {
-                                      Offset centerOfGestureDetector = Offset(
-                                          constraints.maxWidth / 2,
-                                          constraints.maxHeight / 2);
-                                      final touchPositionFromCenter =
-                                          details.localPosition -
-                                              centerOfGestureDetector;
-
-                                      setState(
-                                        () {
-                                          _currentKnobValue =
-                                              ((touchPositionFromCenter
-                                                      .direction /
-                                                  math.pi));
-
-                                          finalAngle =
-                                              touchPositionFromCenter.direction;
-                                          print(_currentKnobValue);
-                                        },
-                                      );
+                                      KnobRorateModel values =
+                                          onKnobUpdate(constraints, details);
+                                      setState(() {
+                                        _currentKnobValue = values.currentKnobValue;
+                                        finalAngle = values.finalAngle;
+                                      });
                                     },
                                     child: Transform.rotate(
                                       angle: finalAngle,
