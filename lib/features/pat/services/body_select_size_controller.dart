@@ -1,14 +1,14 @@
 import 'dart:ui';
 
-class SizeController {
-  static SizeController? _instance;
+class BodySelectSizeController {
+  static BodySelectSizeController? _instance;
 
-  static SizeController get instance {
-    _instance ??= SizeController._init();
+  static BodySelectSizeController get instance {
+    _instance ??= BodySelectSizeController._init();
     return _instance!;
   }
 
-  SizeController._init();
+  BodySelectSizeController._init();
 
   final BodyArea _bodyArea = BodyArea();
   Size bodySize = Size.zero;

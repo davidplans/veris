@@ -1,8 +1,9 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/features/pat/models/body.dart';
+import 'package:Veris/features/pat/services/body_select_size_controller.dart';
 import 'package:Veris/features/pat/view/confidence_slider_page.dart';
-import 'package:Veris/utils/parser.dart';
-import 'package:Veris/utils/size_controller.dart';
+import 'package:Veris/features/pat/services/body_svg_parser.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -118,19 +119,19 @@ class BodyPickerState extends State<BodyPicker> {
   final List<Body> _bodyList = [];
   Body? selectedBody;
 
-  final _sizeController = SizeController.instance;
+  final _sizeController = BodySelectSizeController.instance;
   Size? bodySize;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadCityList();
+      _loadBodyList();
     });
   }
 
-  _loadCityList() async {
-    final list = await Parser.instance.svgToCityList(widget.body);
+  _loadBodyList() async {
+    final list = await BodySVGParser.instance.svgToBodyList(widget.body);
     _bodyList.clear();
     setState(() {
       _bodyList.addAll(list);
@@ -195,7 +196,7 @@ class BodyPainter extends CustomPainter {
   final Color? strokeColor;
   final Color? selectedColor;
 
-  final sizeController = SizeController.instance;
+  final sizeController = BodySelectSizeController.instance;
 
   double _scale = 1.0;
 
