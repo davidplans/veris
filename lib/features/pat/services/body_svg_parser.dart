@@ -1,29 +1,31 @@
 import 'package:Veris/features/pat/models/body.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import './size_controller.dart';
 
-class Parser {
-  static Parser? _instance;
+import 'body_select_size_controller.dart';
 
-  static Parser get instance {
-    _instance ??= Parser._init();
+
+class BodySVGParser {
+  static BodySVGParser? _instance;
+
+  static BodySVGParser get instance {
+    _instance ??= BodySVGParser._init();
     return _instance!;
   }
 
-  final sizeController = SizeController.instance;
+  final sizeController = BodySelectSizeController.instance;
 
-  Parser._init();
+  BodySVGParser._init();
 
-  Future<List<Body>> svgToCityList(String country) async {
-    final svgCountry = await rootBundle.loadString('assets/images/$country');
+  Future<List<Body>> svgToBodyList(String body) async {
+    final svgBody = await rootBundle.loadString('assets/images/$body');
 
     List<Body> bodyList = [];
 
     final regExp = RegExp('.* id="(.*)" title="(.*)" .* d="(.*)"',
         multiLine: true, caseSensitive: false, dotAll: false);
 
-    regExp.allMatches(svgCountry).forEach((cityData) {
+    regExp.allMatches(svgBody).forEach((cityData) {
       final body = Body(
           id: cityData.group(1)!,
           title: cityData.group(2)!,

@@ -1,5 +1,5 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'package:Veris/features/home/view/home_page.dart';
+import 'package:Veris/core/view/home_nav_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../routes/routes.dart';
