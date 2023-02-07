@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/core/utils/image_constant.dart';
 import 'package:Veris/features/pat/models/knob.dart';
 import 'package:Veris/features/pat/practice/practice1_slider_page.dart';
 import 'package:Veris/features/pat/practice/practice2_slider_page.dart';
@@ -258,12 +259,9 @@ class _PracticeWidgetState extends State<PracticeWidget>
 
       setState(() {
         currentValue = _tempBPM.toInt();
-        // _bpm = _tempBPM;
       });
     }
 
-    // double newOut = widget.alpha * newValue + (1 - widget.alpha) * _pastBPM;
-    // _pastBPM = newOut;
     return currentValue;
   }
 
@@ -306,9 +304,9 @@ class _PracticeWidgetState extends State<PracticeWidget>
                                     },
                                     child: Transform.rotate(
                                       angle: finalAngle,
-                                      child: const Image(
-                                        image: AssetImage(
-                                            "assets/images/knob.png"),
+                                      child: Image(
+                                        image:
+                                            AssetImage(ImageConstant.imgKnob),
                                       ),
                                     ),
                                   );
