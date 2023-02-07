@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:Veris/utils/form_inputs.dart';
+import 'package:Veris/core/utils/form_inputs.dart';
 import 'package:formz/formz.dart';
 
 enum ConfirmPasswordValidationError { invalid }

@@ -1,5 +1,5 @@
 import 'package:Veris/features/pat/baselines/models/baseline_model.dart';
-import 'package:Veris/utils/chart.dart';
+import 'package:Veris/features/pat/shared/chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BaselineHelper {

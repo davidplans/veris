@@ -1,5 +1,5 @@
 import 'package:Veris/features/qr_scanner/qr_scanner.dart';
-import 'package:Veris/utils/download_json.dart';
+import 'package:Veris/core/utils/download_json.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatefulWidget {

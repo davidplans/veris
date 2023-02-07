@@ -1,20 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:Veris/features/authentication/view/auth_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../features/authentication/view/auth_view.dart';
-
 class DownladJSON {
   Future<bool> downloadFile(String url, BuildContext context) async {
-    var progressString = "";
     Dio dio = Dio();
     final String unixTime = (DateTime.now().millisecondsSinceEpoch).toString();
 
-    final _prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
 
     try {
       var dir = await getApplicationDocumentsDirectory();
@@ -34,8 +31,8 @@ class DownladJSON {
           final studyId = decodingFile["properties"]["study_id"];
 
           if (studyId.isNotEmpty) {
-            await _prefs.setString('studyId', studyId);
-            await _prefs
+            await prefs.setString('studyId', studyId);
+            await prefs
                 .setString('json_file', jsonEncode(decodingFile))
                 .whenComplete(() {
               // localFile.delete;

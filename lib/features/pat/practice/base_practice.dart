@@ -8,7 +8,7 @@ import 'package:Veris/features/pat/practice/practice1_slider_page.dart';
 import 'package:Veris/features/pat/practice/practice2_slider_page.dart';
 import 'package:Veris/features/pat/services/knob_rotate_service.dart';
 import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
-import 'package:Veris/utils/image_processing.dart';
+import 'package:Veris/features/pat/services/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
