@@ -1,8 +1,6 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'package:Veris/core/view/home_nav_bar.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
-
-import '../../../routes/routes.dart';
 
 class FinishPage extends StatefulWidget {
   const FinishPage({super.key});

@@ -6,16 +6,16 @@ import 'package:Veris/features/authentication/bloc/auth_event.dart';
 import 'package:Veris/features/home/view/home_widget.dart';
 import 'package:Veris/features/my_progress/view/progress_widget.dart';
 
-class HomeBottomNavBar extends StatefulWidget {
-  const HomeBottomNavBar({Key? key}) : super(key: key);
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({Key? key}) : super(key: key);
 
-  static Page page() => const MaterialPage<void>(child: HomeBottomNavBar());
+  static Page page() => const MaterialPage<void>(child: BottomNavBar());
 
   @override
-  State<HomeBottomNavBar> createState() => _HomeBottomNavBarState();
+  State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
-class _HomeBottomNavBarState extends State<HomeBottomNavBar> {
+class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
 
   final pages = [

@@ -1,4 +1,3 @@
-import 'package:Veris/core/view/home_nav_bar.dart';
 import 'package:Veris/features/surveys/view/custom_instruction_view.dart';
 import 'package:Veris/features/surveys/view/custom_question_step.dart';
 import 'package:Veris/routes/routes.dart';

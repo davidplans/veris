@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:Veris/core/view/home_nav_bar.dart';
+import 'package:Veris/core/view/bottom_nav_bar.dart';
 
 final routesConfig = <String, WidgetBuilder>{
-  "/home": (BuildContext context) => const HomeBottomNavBar(),
+  "/home": (BuildContext context) => const BottomNavBar(),
 };
 
 class Routes {

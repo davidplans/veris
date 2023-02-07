@@ -83,14 +83,11 @@ class _IntroPageState extends State<IntroPage> {
                       fontSize: 14.0,
                     ),
                   )),
-              const SizedBox(
-                height: 10,
-              ),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 height: !expanded ? 120 : 0,
                 child: Container(
-                  height: 15,
+                  height: 5,
                   color: Colors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -108,6 +105,9 @@ class _IntroPageState extends State<IntroPage> {
                     ],
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 30,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -132,22 +132,25 @@ class _IntroPageState extends State<IntroPage> {
                 duration: const Duration(milliseconds: 200),
                 height: expanded ? 250 : 0,
                 child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
                   child: Column(
                     children: [
                       TextField(
                         controller: _controller,
+                        keyboardType: TextInputType.url,
                         decoration: const InputDecoration(
-                          labelText: 'Enter JSON file url',
-                          fillColor: Colors.white,
-                          filled: true,
-                          // use the getter variable defined above
-                          // errorText: _errorText,
-                        ),
+                            labelText: 'Study protocol URL',
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: EdgeInsets.all(8.0)),
                         onChanged: ((value) {
                           setState(() {
                             _controller.text = value;
                           });
                         }),
+                      ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       ElevatedButton(
                         onPressed: _controller.value.text.isNotEmpty
@@ -156,7 +159,7 @@ class _IntroPageState extends State<IntroPage> {
                                     _controller.value.text, context);
                               }
                             : null,
-                        child: const Text("Enrol"),
+                        child: const Text("Start"),
                       ),
                       const SizedBox(
                         height: 20,
@@ -172,17 +175,9 @@ class _IntroPageState extends State<IntroPage> {
                           ));
                         },
                         child: const Text(
-                          "Paste test URL",
-                          style: TextStyle(color: Colors.amber, fontSize: 22),
+                          "Use Demo protocol",
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        testURL,
-                        style: const TextStyle(
-                            fontSize: 14.0, color: Colors.black),
                       ),
                     ],
                   ),
