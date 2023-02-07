@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ListTileWithDivider extends StatelessWidget {
@@ -10,7 +9,7 @@ class ListTileWithDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: [
         ListTile(
           title: Text(title),
