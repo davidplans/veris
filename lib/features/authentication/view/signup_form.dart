@@ -1,3 +1,4 @@
+import 'package:Veris/core/utils/image_constant.dart';
 import 'package:Veris/features/authentication/models/signup_state.dart';
 import 'package:Veris/features/authentication/services/signup_cubit.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class SignUpForm extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  'assets/images/dark_circle.png',
+                  ImageConstant.imgDarkCircle,
                   height: 120,
                 ),
                 const SizedBox(height: 16),

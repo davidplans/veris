@@ -1,3 +1,4 @@
+import 'package:Veris/core/utils/image_constant.dart';
 import 'package:Veris/routes/routes.dart';
 import 'package:Veris/utils/download_json.dart';
 import 'package:Veris/features/qr_scanner/qr_scanner.dart';
@@ -86,7 +87,7 @@ class _StudyViewState extends State<StudyView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              'assets/images/icon.png',
+                              ImageConstant.imgBase,
                               width: 20,
                             ),
                             const Text(
@@ -100,7 +101,7 @@ class _StudyViewState extends State<StudyView> {
                 height: 20,
               ),
               Image.asset(
-                'assets/images/dark_circle.png',
+                ImageConstant.imgDarkCircle,
                 width: 150,
                 height: 150,
               ),

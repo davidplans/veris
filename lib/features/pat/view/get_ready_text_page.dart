@@ -1,4 +1,5 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/core/utils/image_constant.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class GetReadyPage extends StatelessWidget {
             child: Column(
               children: [
                 Image.asset(
-                  'assets/images/hand.png',
+                  ImageConstant.imgHand,
                   width: 200,
                 ),
                 const Text(
