@@ -1,17 +1,19 @@
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/practice/practice2_page.dart';
+import 'package:Veris/features/pat/view/trial_page.dart';
 import 'package:flutter/material.dart';
 
-import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'practice2_page.dart';
-
-class Practice1SliderPage extends StatefulWidget {
-  const Practice1SliderPage({Key? key}) : super(key: key);
+class PracticeSliderWidget extends StatefulWidget {
+  final int number;
+  const PracticeSliderWidget({Key? key, required this.number})
+      : super(key: key);
 
   @override
-  State<Practice1SliderPage> createState() => _Practice1SliderPageState();
+  State<PracticeSliderWidget> createState() => _PracticeSliderWidgetState();
 }
 
-class _Practice1SliderPageState extends State<Practice1SliderPage> {
-  double _currentSliderValue = 50;
+class _PracticeSliderWidgetState extends State<PracticeSliderWidget> {
+  double _currentSliderValue = 5;
 
   _changeSlider(double value) {
     setState(() {
@@ -22,7 +24,8 @@ class _Practice1SliderPageState extends State<Practice1SliderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 1"),
+      appBar: AppBarWidget(
+          title: "Veris - PRACTICE TRIAL ${widget.number.toString()}"),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -35,11 +38,21 @@ class _Practice1SliderPageState extends State<Practice1SliderPage> {
               child: FloatingActionButton.extended(
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const Practice2Page(),
-                    ),
-                  );
+                  switch (widget.number) {
+                    case 1:
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const Practice2Page(),
+                        ),
+                      );
+                      break;
+                    case 2:
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const TrialPage(),
+                        ),
+                      );
+                  }
                 },
                 label: const Text(
                   "Confirm",
@@ -72,8 +85,8 @@ class _Practice1SliderPageState extends State<Practice1SliderPage> {
               ),
               Slider(
                 value: _currentSliderValue,
-                max: 100,
-                divisions: 100,
+                max: 10,
+                divisions: 10,
                 label: _currentSliderValue.round().toString(),
                 onChanged: (double value) {
                   _changeSlider(value);

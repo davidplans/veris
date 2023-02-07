@@ -152,12 +152,6 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
                       );
                     }
                   });
-
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const V313Trial2Widget(),
-                  //   ),
-                  // );
                 },
                 label: const Text(
                   "Confirm",

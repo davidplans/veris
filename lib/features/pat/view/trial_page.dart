@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/features/pat/view/confidence_slider_page.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
@@ -58,7 +59,7 @@ class _TrialPageState extends State<TrialPage> {
 
   bool _isFinished = false;
 
-  bool _isFingerOverlay = false;
+  bool _isNoFinger = false;
 
   double finalAngle = 0.0;
 
@@ -105,7 +106,7 @@ class _TrialPageState extends State<TrialPage> {
     _player.dispose();
     _isFinished = true;
     _isCameraInitialized = false;
-    _isFingerOverlay = false;
+    _isNoFinger = false;
 
     if (_controller == null) return;
     await _controller!.dispose();
@@ -213,7 +214,7 @@ class _TrialPageState extends State<TrialPage> {
       growable: true);
 
   void _scanImage(CameraImage image) {
-    _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
+    _isNoFinger = !ImageProcessing.isAvailableFingerOnCamera(image);
 
     // get the average value of the image
     double avg =
@@ -455,42 +456,7 @@ class _TrialPageState extends State<TrialPage> {
                   )
                 : const Center(child: CircularProgressIndicator())),
       ),
-      _isFingerOverlay
-          ? Scaffold(
-              body: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Image.asset(
-                        'assets/images/hand.png',
-                        width: 200.0,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Readjust your grip',
-                        style: TextStyle(fontSize: 20.0),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Please make sure your finger is gently covering your phone's camera and flash to continue.",
-                        style: TextStyle(fontSize: 14.0),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : Container(),
+      WrongFingerPlace(isNoFinger: _isNoFinger),
       _isFinished
           ? Scaffold(
               appBar: AppBarWidget(title: "Veris - TRIALs"),

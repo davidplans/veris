@@ -5,15 +5,11 @@ import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
 import 'package:Veris/features/authentication/bloc/auth_event.dart';
 import 'package:Veris/features/home/view/home_widget.dart';
 import 'package:Veris/features/my_progress/view/progress_widget.dart';
-import 'package:Veris/style/theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static Page page() => const MaterialPage<void>(child: HomePage());
-  static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const HomePage());
-  }
 
   @override
   State<HomePage> createState() => _HomePageState();

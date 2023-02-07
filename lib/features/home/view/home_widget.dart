@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:Veris/app.dart';
-import 'package:Veris/features/pat/view/partials/module_widget.dart';
+import 'package:Veris/features/home/view/partials/module_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/user/auth_repository.dart';

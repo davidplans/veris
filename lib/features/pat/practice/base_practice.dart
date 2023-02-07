@@ -1,21 +1,27 @@
 import 'dart:async';
 import 'dart:math' as math;
+
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/models/knob.dart';
+import 'package:Veris/features/pat/practice/practice1_slider_page.dart';
+import 'package:Veris/features/pat/practice/practice2_slider_page.dart';
+import 'package:Veris/features/pat/services/knob_rotate_service.dart';
+import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/utils/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'practice2_slider_page.dart';
-
-class Practice2Page extends StatefulWidget {
-  const Practice2Page({super.key});
+class PracticeWidget extends StatefulWidget {
+  int number;
+  PracticeWidget({super.key, required this.number});
 
   @override
-  State<Practice2Page> createState() => _Practice2PageState();
+  State<PracticeWidget> createState() => _PracticeWidgetState();
 }
 
-class _Practice2PageState extends State<Practice2Page> {
+class _PracticeWidgetState extends State<PracticeWidget>
+    with KnobRotateService {
   // ########## BPM VARs #############
 
   /// Camera controller
@@ -46,7 +52,7 @@ class _Practice2PageState extends State<Practice2Page> {
 
   bool _isFinished = false;
 
-  bool _isFingerOverlay = false;
+  bool _isNoFinger = false;
 
   double finalAngle = 0.0;
 
@@ -88,7 +94,7 @@ class _Practice2PageState extends State<Practice2Page> {
     // while (_processing) {}
     // _controller = null;
     if (_timer != null) _timer?.cancel();
-    _isFingerOverlay = false;
+    _isNoFinger = false;
   }
 
   /// Initialize the camera controller
@@ -144,13 +150,23 @@ class _Practice2PageState extends State<Practice2Page> {
     return rand;
   }
 
+  _onKnobValue(BoxConstraints constraints, DragUpdateDetails details) {
+    KnobRorateModel values =
+        KnobRotateService.prepareCurrentValues(constraints, details);
+    setState(() {
+      _currentKnobValue = values.currentKnobValue;
+      finalAngle = values.finalAngle;
+    });
+  }
+
   static const int windowLength = 50;
   final List<SensorValue> measureWindow = List<SensorValue>.filled(
       windowLength, SensorValue(time: DateTime.now(), value: 0),
       growable: true);
 
   void _scanImage(CameraImage image) {
-    _isFingerOverlay = ImageProcessing.decodeImageFromCamera(image);
+    _isNoFinger = !ImageProcessing.isAvailableFingerOnCamera(image);
+
     // get the average value of the image
     double _avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
@@ -169,11 +185,8 @@ class _Practice2PageState extends State<Practice2Page> {
         _counter = 0;
       }
     } else {
-      // _player.play();
-      // print('top');
       _max = 0;
       _counter = 0;
-      // _player.stop();
     }
     measureWindow.removeAt(0);
     measureWindow.add(SensorValue(time: DateTime.now(), value: _avg));
@@ -258,7 +271,8 @@ class _Practice2PageState extends State<Practice2Page> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Scaffold(
-        appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 2"),
+        appBar: AppBarWidget(
+            title: "Veris - PRACTICE TRIAL ${widget.number.toString()}"),
         body: Container(
             child: isCameraInitialized
                 ? Column(
@@ -288,25 +302,7 @@ class _Practice2PageState extends State<Practice2Page> {
                                 : GestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onPanUpdate: (details) {
-                                      Offset centerOfGestureDetector = Offset(
-                                          constraints.maxWidth / 2,
-                                          constraints.maxHeight / 2);
-                                      final touchPositionFromCenter =
-                                          details.localPosition -
-                                              centerOfGestureDetector;
-
-                                      setState(
-                                        () {
-                                          _currentKnobValue =
-                                              ((touchPositionFromCenter
-                                                      .direction /
-                                                  math.pi));
-
-                                          finalAngle =
-                                              touchPositionFromCenter.direction;
-                                          print(_currentKnobValue);
-                                        },
-                                      );
+                                      _onKnobValue(constraints, details);
                                     },
                                     child: Transform.rotate(
                                       angle: finalAngle,
@@ -326,71 +322,18 @@ class _Practice2PageState extends State<Practice2Page> {
                             textStyle: TextStyle(color: Colors.white),
                           ),
                           child: const Text("Confirm"),
-                          onPressed: () => setState(() {
-                            _deinitController();
-                          }),
+                          onPressed: () => setState(_deinitController),
                         ),
                       )
-                      // _isFinished
-                      //     ? Center(
-                      //         child: ElevatedButton.icon(
-                      //             icon: const Icon(Icons.favorite_rounded),
-                      //             label: const Text("Continue"),
-                      //             onPressed: () {}),
-                      //       )
-                      //     : Center(
-                      //         child: ElevatedButton.icon(
-                      //           icon: const Icon(Icons.favorite_rounded),
-                      //           label: const Text("Confirm"),
-                      //           onPressed: () => setState(() {
-                      //             _deinitController();
-
-                      //           }),
-                      //         ),
-                      //       )
                     ],
                   )
                 : const Center(child: CircularProgressIndicator())),
       ),
-      _isFingerOverlay
-          ? Scaffold(
-              body: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Image.asset(
-                        'assets/images/hand.png',
-                        width: 200.0,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Readjust your grip',
-                        style: TextStyle(fontSize: 20.0),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Please make sure your finger is gently covering your phone's camera and flash to continue.",
-                        style: TextStyle(fontSize: 14.0),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : Container(),
+      WrongFingerPlace(isNoFinger: _isNoFinger),
       _isFinished
           ? Scaffold(
-              appBar: AppBarWidget(title: "Veris - PRACTICE TRIAL 2"),
+              appBar: AppBarWidget(
+                  title: "Veris - PRACTICE TRIAL ${widget.number.toString()}"),
               body: Container(
                 child: Column(
                   children: [
@@ -419,12 +362,23 @@ class _Practice2PageState extends State<Practice2Page> {
                           ),
                           child: const Text("Continue"),
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const Practice2SliderPage(),
-                              ),
-                            );
+                            switch (widget.number) {
+                              case 1:
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Practice1SliderPage(),
+                                  ),
+                                );
+                                break;
+                              case 2:
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Practice2SliderPage(),
+                                  ),
+                                );
+                            }
                           }),
                     ),
                   ],
@@ -433,6 +387,22 @@ class _Practice2PageState extends State<Practice2Page> {
             )
           : Container()
     ]);
+  }
+
+  void onKnobUpdate(BoxConstraints constraints, DragUpdateDetails details) {
+    Offset centerOfGestureDetector =
+        Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
+
+    final touchPositionFromCenter =
+        details.localPosition - centerOfGestureDetector;
+    final currentKnobValue = touchPositionFromCenter.direction / math.pi;
+
+    setState(
+      () {
+        _currentKnobValue = currentKnobValue;
+        finalAngle = touchPositionFromCenter.direction;
+      },
+    );
   }
 }
 

@@ -1,6 +1,8 @@
 import 'package:Veris/features/home/view/home_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../routes/routes.dart';
+
 class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   String title;
   AppBarWidget({super.key, required this.title});
@@ -27,9 +29,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
                           child: const Text('Cancel')),
                       TextButton(
                           onPressed: () {
-                            Navigator.of(context).push<void>(
-                              HomePage.route(),
-                            );
+                            Routes.goHome(context);
                           },
                           child: const Text('Yes, abort'))
                     ],
