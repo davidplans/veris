@@ -1,5 +1,9 @@
-import 'package:Veris/features/qr_scanner/qr_scanner.dart';
-import 'package:Veris/core/utils/download_json.dart';
+import 'package:Veris/features/authentication/view/auth_view.dart';
+import 'package:Veris/features/intro/view/partials/intro_go_to_qr_button.dart';
+import 'package:Veris/features/intro/view/partials/intro_info.dart';
+import 'package:Veris/features/intro/view/partials/intro_mode_switch.dart';
+import 'package:Veris/features/intro/view/partials/intro_top_bar.dart';
+import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatefulWidget {
@@ -22,6 +26,21 @@ class _IntroPageState extends State<IntroPage> {
     super.dispose();
   }
 
+  _onSelectedStudyProtocol(BuildContext context) async {
+    final res = await StudyProtocolHelper.saveStudyProtocol(
+        context, _controller.value.text);
+
+    if (!res) {
+      return;
+    }
+
+    // ignore: use_build_context_synchronously
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AuthView()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,103 +50,19 @@ class _IntroPageState extends State<IntroPage> {
         child: Center(
           child: Column(
             children: [
-              Stack(children: [
-                Container(
-                  height: 80.0,
-                  width: MediaQuery.of(context).size.width,
-                  color: const Color.fromARGB(255, 15, 32, 66),
-                ),
-                SizedBox(
-                    height: 70.0,
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/icon.png',
-                              width: 20,
-                            ),
-                            const Text(
-                              "  VERIS",
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        )))
-              ]),
-              const SizedBox(
-                height: 20,
+              const IntroTopBar(),
+              const IntroInfo(),
+              IntroGoToQRButton(expanded: expanded),
+              const SizedBox(height: 30),
+              IntroModeSwitch(
+                expanded: expanded,
+                onChanged: (val) => {
+                  setState(() {
+                    expanded = val;
+                  })
+                },
               ),
-              Image.asset(
-                'assets/images/dark_circle.png',
-                width: 150,
-                height: 150,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                "Lets get started",
-                style: TextStyle(color: Colors.black, fontSize: 20.0),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const SizedBox(
-                  width: 300,
-                  child: Text(
-                    "Welcome to VERIS - a platform to participate in research surveys directly from your smartphone.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.0,
-                    ),
-                  )),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                height: !expanded ? 120 : 0,
-                child: Container(
-                  height: 5,
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        child: const Text('Scan QR'),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const QrScanner()),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FloatingActionButton.extended(
-                    label: Text(!expanded ? 'Enter URL' : 'Scan QR',
-                        style: const TextStyle(color: Colors.white)),
-                    backgroundColor: const Color.fromARGB(255, 15, 32, 66),
-                    icon: Icon(
-                        color: Colors.white,
-                        expanded ? Icons.arrow_upward : Icons.arrow_downward),
-                    onPressed: () => setState(() {
-                      expanded = !expanded;
-                    }),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 height: expanded ? 250 : 0,
@@ -149,16 +84,9 @@ class _IntroPageState extends State<IntroPage> {
                           });
                         }),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: _controller.value.text.isNotEmpty
-                            ? () {
-                                DownladJSON().downloadFile(
-                                    _controller.value.text, context);
-                              }
-                            : null,
+                        onPressed: () => {_onSelectedStudyProtocol(context)},
                         child: const Text("Start"),
                       ),
                       const SizedBox(
@@ -172,6 +100,7 @@ class _IntroPageState extends State<IntroPage> {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Colors.green[200],
                             content: const Text('Pasted!'),
+                            duration: const Duration(seconds: 2),
                           ));
                         },
                         child: const Text(

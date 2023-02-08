@@ -55,9 +55,10 @@ class _HomeWidgetState extends State<HomeWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => HealthApp(
-                authenticationRepository: authenticationRepository,
-              )),
+        builder: (context) => HealthApp(
+          authenticationRepository: authenticationRepository,
+        ),
+      ),
     );
   }
 

@@ -1,4 +1,5 @@
-import 'package:Veris/core/utils/download_json.dart';
+import 'package:Veris/core/utils/study_protocol_helper.dart';
+import 'package:Veris/features/authentication/view/auth_view.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,6 @@ class _QrScannerState extends State<QrScanner> {
 
   @override
   Widget build(BuildContext context) {
-    Future<bool> isSuccessfully;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Study QR-code Scanner'),
@@ -57,11 +57,22 @@ class _QrScannerState extends State<QrScanner> {
                   setState(() {
                     code = decodeString;
                   });
-                  isSuccessfully = DownladJSON().downloadFile(code, context);
-                  if (await isSuccessfully) {
-                    cameraController.stop();
-                    cameraController.dispose();
+
+                  final res = await StudyProtocolHelper.saveStudyProtocol(
+                      context, decodeString);
+
+                  if (!res) {
+                    return;
                   }
+
+                  cameraController.stop();
+                  cameraController.dispose();
+
+                  // ignore: use_build_context_synchronously
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AuthView()),
+                  );
 
                   debugPrint('Barcode found! $code');
                 }
@@ -69,7 +80,7 @@ class _QrScannerState extends State<QrScanner> {
           Center(
             child: Text(
               code,
-              style: const TextStyle(fontSize: 20, color: Colors.amber),
+              style: const TextStyle(fontSize: 12, color: Colors.amber),
             ),
           ),
         ]));
