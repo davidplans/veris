@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Veris/app.dart';
+import 'package:Veris/core/user/auth_repository.dart';
+import 'package:Veris/core/utils/notification_service.dart';
 import 'package:Veris/features/home/view/partials/module_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../core/user/auth_repository.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -16,14 +19,25 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  // List<FileSystemEntity> _files = [];
+  late final NotificationService notificationService;
+
   List<dynamic> _modules = [];
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String _bannerUrl = '';
 
+  bool _notificationsEnabled = false;
+
   @override
   initState() {
     getFile();
+
+    notificationService = NotificationService();
+    notificationService.setupLocalNotifications();
+    notificationService.configureDidReceiveLocalNotificationSubject(context);
+    notificationService.zonedScheduleNotification();
+    _isAndroidPermissionGranted();
+    _requestPermissions();
+    _configureSelectNotificationSubject();
 
     super.initState();
   }
@@ -62,11 +76,69 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
+  Future<void> _isAndroidPermissionGranted() async {
+    if (Platform.isAndroid) {
+      final bool granted = await flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>()
+              ?.areNotificationsEnabled() ??
+          false;
+
+      setState(() {
+        _notificationsEnabled = granted;
+      });
+    }
+  }
+
+  Future<void> _requestPermissions() async {
+    if (Platform.isIOS || Platform.isMacOS) {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              MacOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    } else if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+          flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+
+      final bool? granted = await androidImplementation?.requestPermission();
+      setState(() {
+        _notificationsEnabled = granted ?? false;
+      });
+    }
+  }
+
+  void _configureSelectNotificationSubject() {
+    selectNotificationStream.stream.listen((String? payload) async {
+      // TODO: implement routing to current module and section
+      // await Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const StartPatPage()),
+      // );
+    });
+  }
+
+  @override
+  void dispose() {
+    didReceiveLocalNotificationStream.close();
+    selectNotificationStream.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final textTheme = Theme.of(context).textTheme;
-    // final user = context.select((AuthBloc bloc) => bloc.state.user);
-
     return Align(
       alignment: const Alignment(0, -1 / 3),
       child: Column(

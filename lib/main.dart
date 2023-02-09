@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'core/firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,20 @@ import 'package:Veris/core/user/auth_repository.dart';
 import 'package:Veris/app.dart';
 import 'package:flutter/services.dart';
 
-Future<void> main() {
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+Future<void> main() async {
+  // needed if you intend to initialize in the `main` function
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await _configureLocalTimeZone();
+
   return BlocOverrides.runZoned(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
@@ -26,10 +37,17 @@ Future<void> main() {
       SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
       final authenticationRepository = AuthenticationRepository();
-      runApp(HealthApp(
-        authenticationRepository: authenticationRepository,
-      ));
+      runApp(HealthApp(authenticationRepository: authenticationRepository));
     },
     blocObserver: AppBlocObserver(),
   );
+}
+
+Future<void> _configureLocalTimeZone() async {
+  if (kIsWeb || Platform.isLinux) {
+    return;
+  }
+  tz.initializeTimeZones();
+  final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
 }
