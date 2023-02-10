@@ -789,6 +789,8 @@ PODS:
   - Libuv-gRPC/Implementation (0.0.10):
     - Libuv-gRPC/Interface (= 0.0.10)
   - Libuv-gRPC/Interface (0.0.10)
+  - lodash_flutter (0.0.1):
+    - Flutter
   - MLImage (1.0.0-beta3)
   - MLKitBarcodeScanning (2.2.0):
     - MLKitCommon (~> 8.0)
@@ -850,6 +852,7 @@ DEPENDENCIES:
   - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
   - flutter_timezone (from `.symlinks/plugins/flutter_timezone/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
+  - lodash_flutter (from `.symlinks/plugins/lodash_flutter/ios`)
   - mobile_scanner (from `.symlinks/plugins/mobile_scanner/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
@@ -915,6 +918,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_timezone/ios"
   just_audio:
     :path: ".symlinks/plugins/just_audio/ios"
+  lodash_flutter:
+    :path: ".symlinks/plugins/lodash_flutter/ios"
   mobile_scanner:
     :path: ".symlinks/plugins/mobile_scanner/ios"
   path_provider_foundation:
@@ -966,6 +971,7 @@ SPEC CHECKSUMS:
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
+  lodash_flutter: 67703deebcb443e5f1974da2b42767572159a40f
   MLImage: 489dfec109f21da8621b28d476401aaf7a0d4ff4
   MLKitBarcodeScanning: d92fe1911001ec36870162c5a0eb206f612b7169
   MLKitCommon: f6da6c5659618c070b50a80db01248ebe2964175

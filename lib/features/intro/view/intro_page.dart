@@ -15,6 +15,7 @@ class IntroPage extends StatefulWidget {
 
 class _IntroPageState extends State<IntroPage> {
   TextEditingController _controller = TextEditingController();
+  final studyProtocolHelper = StudyProtocolHelper();
 
   String testURL =
       'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test.json?alt=media&token=62344c9d-3d54-4a35-9ae6-8db9e867b43b';
@@ -27,7 +28,7 @@ class _IntroPageState extends State<IntroPage> {
   }
 
   _onSelectedStudyProtocol(BuildContext context) async {
-    final res = await StudyProtocolHelper.saveStudyProtocol(
+    final res = await studyProtocolHelper.getAndSaveStudyProtocol(
         context, _controller.value.text);
 
     if (!res) {

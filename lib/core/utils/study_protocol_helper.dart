@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:Veris/core/models/study_module_model.dart';
+import 'package:Veris/core/models/study_section_model.dart';
+import 'package:Veris/core/utils/study_module_db_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
@@ -16,6 +19,8 @@ class StudyProtocolFetchResult {
 }
 
 class StudyProtocolHelper {
+  final dbProvider = ModuleDatabaseProvider();
+
   static Future<StudyProtocolFetchResult> fetchDataFromStudyProtocol(
       String url) async {
     Dio dio = Dio();
@@ -60,7 +65,97 @@ class StudyProtocolHelper {
     }
   }
 
-  static Future<bool> saveStudyProtocol(context, String url) async {
+  Future<bool> saveDataToLocalDB(
+    StudyProtocolFetchResult studyProtocol,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('studyId');
+    await dbProvider.deleteAllStudyModules();
+    await dbProvider.deleteAllStudySections();
+
+    Map parsedJson = jsonDecode(studyProtocol.result ?? '');
+    saveGeneralDataForStudyProtocol(parsedJson, prefs, studyProtocol);
+
+    final modules = List.from((parsedJson['modules']));
+
+    for (var item in modules) {
+      StudyModule studyModule = prepareModuleForSaving(item, studyProtocol);
+      final createdModuleId =
+          await dbProvider.addStudyModuleToDatabase(studyModule);
+
+      await addSectionsForModule(item, createdModuleId);
+    }
+
+    final allSaved = await dbProvider.getAllStudyModules();
+    for (var item in allSaved) {
+      await dbProvider.getAllStudySectionsByModuleId(item.id.toString());
+    }
+
+    return true;
+  }
+
+  void saveGeneralDataForStudyProtocol(
+    Map<dynamic, dynamic> parsedJson,
+    SharedPreferences prefs,
+    StudyProtocolFetchResult studyProtocol,
+  ) {
+    Map<String, dynamic> prop = parsedJson['properties'];
+    prefs.setString('studyId', studyProtocol.studyId.toString());
+    prefs.setString('study_name', prop['study_name']);
+    prefs.setString('study_id', prop['study_id']);
+    prefs.setString('created_by', prop['created_by']);
+    prefs.setString('instructions', prop['instructions']);
+    prefs.setString('empty_msg', prop['empty_msg']);
+    prefs.setString('support_url', prop['support_url']);
+    prefs.setString('support_email', prop['support_email']);
+    prefs.setString('ethics', prop['ethics']);
+    prefs.setString('pls', prop['pls']);
+  }
+
+  StudyModule prepareModuleForSaving(
+      item, StudyProtocolFetchResult studyProtocol) {
+    final String uuid = item['uuid'].toString();
+    final String name = item['name'].toString();
+    final String type = item['type'].toString();
+    final String condition = item['condition'].toString();
+    final String alerts = jsonEncode(item['alerts']);
+    final String unlockAfter = jsonEncode(item['unlockAfter']);
+
+    final studyModule = StudyModule(
+      studyId: studyProtocol.studyId.toString(),
+      uuid: uuid,
+      name: name,
+      type: type,
+      condition: condition,
+      alerts: alerts,
+      unlockAfter: unlockAfter,
+    );
+    return studyModule;
+  }
+
+  Future<void> addSectionsForModule(module, int createdModuleId) async {
+    try {
+      List? sections;
+      if (module['sections'] != null) {
+        sections = List.from(module['sections']);
+      } else {
+        sections = null;
+      }
+
+      for (var section in sections!) {
+        final String name = section['name'].toString();
+        final studySection = StudySection(
+          moduleId: createdModuleId.toString(),
+          name: name,
+          questions: jsonEncode(section['questions']),
+          completedAt: '',
+        );
+        final id = await dbProvider.addStudySectionToDatabase(studySection);
+      }
+    } catch (e) {}
+  }
+
+  Future<bool> getAndSaveStudyProtocol(context, String url) async {
     if (url.isEmpty) {
       return false;
     }
@@ -77,9 +172,7 @@ class StudyProtocolHelper {
       return false;
     }
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('studyId', res.studyId.toString());
-    await prefs.setString('json_file', res.result.toString());
+    await saveDataToLocalDB(res);
 
     return true;
   }

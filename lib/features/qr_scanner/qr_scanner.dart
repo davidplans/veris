@@ -14,6 +14,8 @@ class _QrScannerState extends State<QrScanner> {
   MobileScannerController cameraController = MobileScannerController();
   String code = '';
 
+  final studyProtocolHelper = StudyProtocolHelper();
+
   @override
   void dispose() {
     cameraController.stop();
@@ -58,7 +60,7 @@ class _QrScannerState extends State<QrScanner> {
                     code = decodeString;
                   });
 
-                  final res = await StudyProtocolHelper.saveStudyProtocol(
+                  final res = await studyProtocolHelper.getAndSaveStudyProtocol(
                       context, decodeString);
 
                   if (!res) {
