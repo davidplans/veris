@@ -7,6 +7,7 @@ class StudyModule {
   String condition;
   String alerts;
   String unlockAfter;
+  String? options;
 
   StudyModule({
     this.id,
@@ -17,6 +18,7 @@ class StudyModule {
     required this.condition,
     required this.alerts,
     required this.unlockAfter,
+    this.options,
   });
 
   factory StudyModule.fromMap(Map<String, dynamic> json) => StudyModule(
@@ -28,6 +30,7 @@ class StudyModule {
         condition: json["condition"],
         alerts: json["alerts"],
         unlockAfter: json["unlockAfter"],
+        options: json["options"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -39,5 +42,6 @@ class StudyModule {
         "condition": condition,
         "alerts": alerts,
         "unlockAfter": unlockAfter,
+        "options": options,
       };
 }

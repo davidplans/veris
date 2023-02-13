@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:Veris/app.dart';
 import 'package:Veris/core/user/auth_repository.dart';
 import 'package:Veris/core/utils/notification_service.dart';
+import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/home/view/partials/module_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -21,15 +22,16 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   late final NotificationService notificationService;
 
-  List<dynamic> _modules = [];
+  List<ModuleForHomePage> _modules = [];
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final studyProtocolHelper = StudyProtocolHelper();
   String _bannerUrl = '';
 
   bool _notificationsEnabled = false;
 
   @override
   initState() {
-    getFile();
+    getModules();
 
     notificationService = NotificationService();
     notificationService.setupLocalNotifications();
@@ -42,25 +44,20 @@ class _HomeWidgetState extends State<HomeWidget> {
     super.initState();
   }
 
-  Future<void> getFile() async {
-    _prefs.then((SharedPreferences p) {
-      Map parsedJson = jsonDecode(p.getString('json_file') ?? '');
-      Map<String, dynamic> prop = parsedJson['properties'];
+  Future<void> getModules() async {
+    final prefs = await SharedPreferences.getInstance();
 
-      p.setString('study_name', prop['study_name']);
-      p.setString('study_id', prop['study_id']);
-      p.setString('created_by', prop['created_by']);
-      p.setString('instructions', prop['instructions']);
-      p.setString('empty_msg', prop['empty_msg']);
-      p.setString('support_url', prop['support_url']);
-      p.setString('support_email', prop['support_email']);
-      p.setString('ethics', prop['ethics']);
-      p.setString('pls', prop['pls']);
+    final modules =
+        await studyProtocolHelper.getAllAvailableModulesWithSections();
 
-      setState(() {
-        _modules = List.from((parsedJson['modules']));
-        _bannerUrl = prop['banner_url'] ?? '';
-      });
+    for (var element in modules) {
+      print(element.id);
+      print(element.name);
+    }
+
+    setState(() {
+      _modules = modules;
+      _bannerUrl = prefs.getString('banner_url') ?? '';
     });
   }
 
@@ -175,10 +172,11 @@ class _HomeWidgetState extends State<HomeWidget> {
                 padding: const EdgeInsets.all(8),
                 itemCount: _modules.length,
                 itemBuilder: (BuildContext context, int indexModule) {
+                  final module = _modules[indexModule];
                   return Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: ModuleWidget(
-                        module: _modules[indexModule],
+                        module: module,
                         indexModule: indexModule,
                         prefs: _prefs),
                   );

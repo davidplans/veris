@@ -18,7 +18,7 @@ class _IntroPageState extends State<IntroPage> {
   final studyProtocolHelper = StudyProtocolHelper();
 
   String testURL =
-      'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test.json?alt=media&token=62344c9d-3d54-4a35-9ae6-8db9e867b43b';
+      'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test_2.json?alt=media&token=80d0dfa5-8720-4449-bbf0-cf630189768f';
   bool expanded = false;
 
   @override
@@ -75,10 +75,11 @@ class _IntroPageState extends State<IntroPage> {
                         controller: _controller,
                         keyboardType: TextInputType.url,
                         decoration: const InputDecoration(
-                            labelText: 'Study protocol URL',
-                            fillColor: Colors.white,
-                            filled: true,
-                            contentPadding: EdgeInsets.all(8.0)),
+                          labelText: 'Study protocol URL',
+                          fillColor: Colors.white,
+                          filled: true,
+                          contentPadding: EdgeInsets.all(8.0),
+                        ),
                         onChanged: ((value) {
                           setState(() {
                             _controller.text = value;

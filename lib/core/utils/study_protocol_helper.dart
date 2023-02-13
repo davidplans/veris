@@ -8,6 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class ModuleForHomePage {
+  final int id;
+  final String type;
+  final String name;
+  final dynamic options;
+  final List<StudySection>? sections;
+
+  ModuleForHomePage(this.id, this.type, this.name,
+      [this.options, this.sections]);
+}
+
 class StudyProtocolFetchResult {
   final bool status;
   final String? error;
@@ -80,18 +91,35 @@ class StudyProtocolHelper {
 
     for (var item in modules) {
       StudyModule studyModule = prepareModuleForSaving(item, studyProtocol);
+      print(studyModule);
       final createdModuleId =
           await dbProvider.addStudyModuleToDatabase(studyModule);
 
       await addSectionsForModule(item, createdModuleId);
     }
 
-    final allSaved = await dbProvider.getAllStudyModules();
-    for (var item in allSaved) {
-      await dbProvider.getAllStudySectionsByModuleId(item.id.toString());
-    }
-
     return true;
+  }
+
+  Future<List<ModuleForHomePage>> getAllAvailableModulesWithSections() async {
+    List<ModuleForHomePage> result = [];
+    final allSaved = await dbProvider.getAllStudyModules();
+
+    for (var module in allSaved) {
+      final sections = await dbProvider.getAllStudySectionsByModuleId(
+        module.id.toString(),
+      );
+
+      final forHomeItem = ModuleForHomePage(
+        module.id!,
+        module.type,
+        module.name,
+        jsonDecode(module.options!),
+        sections,
+      );
+      result.add(forHomeItem);
+    }
+    return result;
   }
 
   void saveGeneralDataForStudyProtocol(
@@ -110,6 +138,7 @@ class StudyProtocolHelper {
     prefs.setString('support_email', prop['support_email']);
     prefs.setString('ethics', prop['ethics']);
     prefs.setString('pls', prop['pls']);
+    prefs.setString('banner_url', prop['banner_url']);
   }
 
   StudyModule prepareModuleForSaving(
@@ -120,6 +149,7 @@ class StudyProtocolHelper {
     final String condition = item['condition'].toString();
     final String alerts = jsonEncode(item['alerts']);
     final String unlockAfter = jsonEncode(item['unlockAfter']);
+    final String options = jsonEncode(item['options']);
 
     final studyModule = StudyModule(
       studyId: studyProtocol.studyId.toString(),
@@ -129,6 +159,7 @@ class StudyProtocolHelper {
       condition: condition,
       alerts: alerts,
       unlockAfter: unlockAfter,
+      options: options,
     );
     return studyModule;
   }
@@ -173,6 +204,8 @@ class StudyProtocolHelper {
     }
 
     await saveDataToLocalDB(res);
+
+    // await setupLocalPushAlert(res);
 
     return true;
   }

@@ -24,8 +24,8 @@ class ModuleDatabaseProvider {
 
   Future<Database> getDatabaseInstance() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = join(directory.path, "study-protocol-local.db");
-    return await openDatabase(path, version: 1,
+    String path = join(directory.path, "study-protocol-local-2.db");
+    return await openDatabase(path, version: 2,
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE StudyModule ("
           "id integer primary key AUTOINCREMENT,"
@@ -35,7 +35,8 @@ class ModuleDatabaseProvider {
           "type TEXT,"
           "condition TEXT,"
           "alerts TEXT,"
-          "unlockAfter TEXT"
+          "unlockAfter TEXT,"
+          "options TEXT"
           ")");
       await db.execute("CREATE TABLE StudySection ("
           "id integer primary key AUTOINCREMENT,"

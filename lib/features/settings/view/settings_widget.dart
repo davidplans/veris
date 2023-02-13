@@ -28,18 +28,17 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   }
 
   Future<void> getProperties() async {
-    await _prefs.then((SharedPreferences p) {
-      setState(() {
-        studyName = p.getString('study_name') ?? '';
-        studyId = p.getString('study_id') ?? '';
-        createdBy = p.getString('created_by') ?? '';
-        instructions = p.getString('instructions') ?? '';
-        emptyMsg = p.getString('empty_msg') ?? '';
-        supportUrl = p.getString('support_url') ?? '';
-        supportEmail = p.getString('support_email') ?? '';
-        ethics = p.getString('ethics') ?? '';
-        pls = p.getString('pls') ?? '';
-      });
+    final SharedPreferences p = await _prefs;
+    setState(() {
+      studyName = p.getString('study_name') ?? '';
+      studyId = p.getString('study_id') ?? '';
+      createdBy = p.getString('created_by') ?? '';
+      instructions = p.getString('instructions') ?? '';
+      emptyMsg = p.getString('empty_msg') ?? '';
+      supportUrl = p.getString('support_url') ?? '';
+      supportEmail = p.getString('support_email') ?? '';
+      ethics = p.getString('ethics') ?? '';
+      pls = p.getString('pls') ?? '';
     });
   }
 
