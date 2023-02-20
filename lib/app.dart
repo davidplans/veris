@@ -26,7 +26,6 @@ class HealthApp extends StatelessWidget {
       theme: theme,
       debugShowCheckedModeBanner: false,
       home: const IntroPage(),
-      routes: routesConfig,
     ),
       ),
     );
