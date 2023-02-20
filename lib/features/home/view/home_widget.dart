@@ -50,11 +50,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     final modules =
         await studyProtocolHelper.getAllAvailableModulesWithSections();
 
-    for (var element in modules) {
-      print(element.id);
-      print(element.name);
-    }
-
     setState(() {
       _modules = modules;
       _bannerUrl = prefs.getString('banner_url') ?? '';
