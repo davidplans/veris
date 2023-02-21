@@ -1,3 +1,4 @@
+import 'package:Veris/core/utils/image_constant.dart';
 import 'package:Veris/features/authentication/models/login_state.dart';
 import 'package:Veris/features/authentication/services/login_cubit.dart';
 import 'package:Veris/features/authentication/view/signup_page.dart';
@@ -32,7 +33,7 @@ class LoginForm extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  'assets/images/dark_circle.png',
+                  ImageConstant.imgDarkCircle,
                   height: 120,
                 ),
                 const SizedBox(height: 30),

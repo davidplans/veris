@@ -1,4 +1,4 @@
-import 'package:Veris/utils/download_json.dart';
+import 'package:Veris/core/utils/download_json.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 

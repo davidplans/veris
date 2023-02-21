@@ -9,6 +9,8 @@ import '../../../core/user/auth_repository.dart';
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
 
+  static Page page() => const MaterialPage<void>(child: HomeWidget());
+
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
 }
@@ -48,6 +50,17 @@ class _HomeWidgetState extends State<HomeWidget> {
     });
   }
 
+  void startWithNewStudyProtocol(BuildContext context) {
+    final authenticationRepository = AuthenticationRepository();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => HealthApp(
+                authenticationRepository: authenticationRepository,
+              )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // final textTheme = Theme.of(context).textTheme;
@@ -79,16 +92,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     flex: 1,
                     child: ElevatedButton(
                         onPressed: () {
-                          final authenticationRepository =
-                              AuthenticationRepository();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HealthApp(
-                                      authenticationRepository:
-                                          authenticationRepository,
-                                    )),
-                          );
+                          startWithNewStudyProtocol(context);
                         },
                         child: const Text('Use other JSON')))
               ])),

@@ -1,7 +1,7 @@
 import 'package:Veris/features/authentication/models/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/core/user/auth_repository.dart';
-import 'package:Veris/utils/form_inputs.dart';
+import 'package:Veris/core/utils/form_inputs.dart';
 import 'package:formz/formz.dart';
 
 class LoginCubit extends Cubit<LoginState> {

@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/core/utils/image_constant.dart';
 import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/features/pat/view/confidence_slider_page.dart';
-import 'package:Veris/utils/image_processing.dart';
+import 'package:Veris/features/pat/services/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -428,9 +429,9 @@ class _TrialPageState extends State<TrialPage> {
                                     },
                                     child: Transform.rotate(
                                       angle: finalAngle,
-                                      child: const Image(
-                                        image: AssetImage(
-                                            "assets/images/knob.png"),
+                                      child: Image(
+                                        image:
+                                            AssetImage(ImageConstant.imgKnob),
                                       ),
                                     ),
                                   );

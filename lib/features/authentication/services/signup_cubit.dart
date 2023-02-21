@@ -1,5 +1,5 @@
 import 'package:Veris/features/authentication/models/signup_state.dart';
-import 'package:Veris/utils/form_inputs.dart';
+import 'package:Veris/core/utils/form_inputs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/core/user/auth_repository.dart';
 import 'package:formz/formz.dart';

@@ -1,3 +1,4 @@
+import 'package:Veris/core/utils/image_constant.dart';
 import 'package:flutter/material.dart';
 
 class WrongFingerPlace extends StatelessWidget {
@@ -18,7 +19,7 @@ class WrongFingerPlace extends StatelessWidget {
                       height: 50,
                     ),
                     Image.asset(
-                      'assets/images/hand.png',
+                      ImageConstant.imgHand,
                       width: 200.0,
                     ),
                     const SizedBox(

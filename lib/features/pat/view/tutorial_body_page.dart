@@ -1,3 +1,4 @@
+import 'package:Veris/core/utils/image_constant.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class _TutorialBodyPageState extends State<TutorialBodyPage> {
               height: 20,
             ),
             Image.asset(
-              'assets/images/mannequin2.png',
+              ImageConstant.imgMannequin2,
               height: 400,
             ),
           ],

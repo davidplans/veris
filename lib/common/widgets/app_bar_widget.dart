@@ -1,10 +1,8 @@
-import 'package:Veris/features/home/view/home_page.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
 
-import '../../routes/routes.dart';
-
 class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
-  String title;
+  final String title;
   AppBarWidget({super.key, required this.title});
 
   @override
