@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,51 +49,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCf_0n4ehVdWJwQ4qPT4Abu-dzB_cFipCQ',
-    appId: '1:347571404214:web:260485014dcd4431cb1517',
-    messagingSenderId: '347571404214',
-    projectId: 'patdeployments',
-    authDomain: 'patdeployments.firebaseapp.com',
-    databaseURL:
-        'https://patdeployments-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'patdeployments.appspot.com',
-    measurementId: 'G-PT10DRKY56',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAUiJCbmUZAyIx2Vgtc-PK6O9ria8CdgGA',
-    appId: '1:347571404214:android:7bb7c6a6d4ea31f5cb1517',
-    messagingSenderId: '347571404214',
-    projectId: 'patdeployments',
-    databaseURL:
-        'https://patdeployments-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'patdeployments.appspot.com',
+    apiKey: 'AIzaSyCsSfhY6iB74Xej2naiY_1kE4sm5g5d5-U',
+    appId: '1:270328431400:android:c9b77551769ea62c7c461d',
+    messagingSenderId: '270328431400',
+    projectId: 'digit-veris',
+    storageBucket: 'digit-veris.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB2JZgdt5iAOsRL1n-WCJxglrvsV92hMK8',
-    appId: '1:347571404214:ios:f33a8b581ed7612ccb1517',
-    messagingSenderId: '347571404214',
-    projectId: 'patdeployments',
-    databaseURL:
-        'https://patdeployments-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'patdeployments.appspot.com',
-    iosClientId:
-        '347571404214-f7171k0pp7nglq7g2d2s698dfge29p79.apps.googleusercontent.com',
+    apiKey: 'AIzaSyC8Ms996qhSS9GiUswVfSkxHIvv6GWbBI4',
+    appId: '1:270328431400:ios:d8c222823cfb57227c461d',
+    messagingSenderId: '270328431400',
+    projectId: 'digit-veris',
+    storageBucket: 'digit-veris.appspot.com',
+    iosClientId: '270328431400-5bgtpjch96564ic3rqf72cupbc8m4t5p.apps.googleusercontent.com',
     iosBundleId: 'com.digit.veris',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB2JZgdt5iAOsRL1n-WCJxglrvsV92hMK8',
-    appId: '1:347571404214:ios:3738ba3741294367cb1517',
-    messagingSenderId: '347571404214',
-    projectId: 'patdeployments',
-    databaseURL:
-        'https://patdeployments-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'patdeployments.appspot.com',
-    iosClientId:
-        '347571404214-0lvnn0gdem1l24i7c04kg4b1aggkdh5s.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterSchemaHealth',
   );
 }
