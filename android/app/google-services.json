@@ -1,41 +1,40 @@
 {
   "project_info": {
-    "project_number": "347571404214",
-    "firebase_url": "https://patdeployments-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "patdeployments",
-    "storage_bucket": "patdeployments.appspot.com"
+    "project_number": "270328431400",
+    "project_id": "digit-veris",
+    "storage_bucket": "digit-veris.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:347571404214:android:7bb7c6a6d4ea31f5cb1517",
+        "mobilesdk_app_id": "1:270328431400:android:c9b77551769ea62c7c461d",
         "android_client_info": {
-          "package_name": "com.davidplans.veris"
+          "package_name": "com.digit.veris"
         }
       },
       "oauth_client": [
         {
-          "client_id": "347571404214-tnqra07gcets7htde4qukhft2jtfo74a.apps.googleusercontent.com",
+          "client_id": "270328431400-5q2h3p2vk5upub71ag22pn7mvif2hs9s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAUiJCbmUZAyIx2Vgtc-PK6O9ria8CdgGA"
+          "current_key": "AIzaSyCsSfhY6iB74Xej2naiY_1kE4sm5g5d5-U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "347571404214-tnqra07gcets7htde4qukhft2jtfo74a.apps.googleusercontent.com",
+              "client_id": "270328431400-5q2h3p2vk5upub71ag22pn7mvif2hs9s.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "347571404214-0lvnn0gdem1l24i7c04kg4b1aggkdh5s.apps.googleusercontent.com",
+              "client_id": "270328431400-5bgtpjch96564ic3rqf72cupbc8m4t5p.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.davidplans.veris"
+                "bundle_id": "com.digit.veris"
               }
             }
           ]
