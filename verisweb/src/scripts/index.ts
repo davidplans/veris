@@ -4,7 +4,7 @@ import * as ld from 'lodash';
 
 
 const urlParams = new URLSearchParams(window.location.search);
-const apiKey = urlParams.get('apiKey') || 'AIzaSyCf_0n4ehVdWJwQ4qPT4Abu-dzB_cFipCQ';
+const apiKey = urlParams.get('apiKey') || 'AIzaSyA-59XTB519YapZt9qXgSRXc3qF9q5IhC8';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -14,13 +14,12 @@ const apiKey = urlParams.get('apiKey') || 'AIzaSyCf_0n4ehVdWJwQ4qPT4Abu-dzB_cFip
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: apiKey,
-    authDomain: "patdeployments.firebaseapp.com",
-    databaseURL: "https://patdeployments-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "patdeployments",
-    storageBucket: "patdeployments.appspot.com",
-    messagingSenderId: "347571404214",
-    appId: "1:347571404214:web:b14c10f03f7e63accb1517",
-    measurementId: "G-4C07Z35G64"
+    authDomain: "digit-veris.firebaseapp.com",
+    projectId: "digit-veris",
+    storageBucket: "digit-veris.appspot.com",
+    messagingSenderId: "270328431400",
+    appId: "1:270328431400:web:5bfb1402730272437c461d",
+    measurementId: "G-0LV9JLSHBW"
 };
 
 const app = initializeApp(firebaseConfig);

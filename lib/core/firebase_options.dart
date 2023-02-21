@@ -75,7 +75,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'patdeployments.appspot.com',
     iosClientId:
         '347571404214-f7171k0pp7nglq7g2d2s698dfge29p79.apps.googleusercontent.com',
-    iosBundleId: 'com.davidplans.veris',
+    iosBundleId: 'com.digit.veris',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

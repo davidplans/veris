@@ -1,4 +1,4 @@
-package com.davidplans.veris
+package com.digit.veris
 
 import io.flutter.embedding.android.FlutterActivity
 
