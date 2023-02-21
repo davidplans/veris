@@ -11,19 +11,8 @@ abstract class ImageProcessing {
     bool result = false;
     if (Platform.isAndroid) {
       int red = ImageProcessing.decodeYUV420ToRGB(image);
-      if (averageRed.length <= 10) {
-        averageRed.add(red);
-        if (averageRed.length == 10) {
-          int redAVG = (averageRed.reduce((value, element) => value + element) /
-                  averageRed.length)
-              .round();
-          if (redAVG >= 230 && redAVG <= 255) {
-            result = true;
-          }
-          print("RED $red");
-        }
-      } else if (averageRed.length > 10) {
-        averageRed.clear();
+      if (red >= 200 && red <= 255) {
+        result = true;
       }
     } else if (Platform.isIOS) {
       int h = image.height;
