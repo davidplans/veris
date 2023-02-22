@@ -375,8 +375,7 @@ class StudyProtocolHelper {
     // get a set of completed task uuids
     Set<String> completedUUIDs = Set<String>();
     for (StudyTask studyTask in studyTasks) {
-      // studyTask['completed']
-      if (studyTask.completed != 1) {
+      if (studyTask.completed == 1) {
         completedUUIDs.add(studyTask.uuid);
       }
     }
