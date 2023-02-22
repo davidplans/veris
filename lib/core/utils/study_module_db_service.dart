@@ -24,18 +24,27 @@ class ModuleDatabaseProvider {
 
   Future<Database> getDatabaseInstance() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = join(directory.path, "study-protocol-local-2.db");
+    String path = join(directory.path, "study-protocol-local-11.db");
     return await openDatabase(path, version: 2,
         onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE StudyModule ("
+      await db.execute("CREATE TABLE StudyTask ("
           "id integer primary key AUTOINCREMENT,"
-          "studyId TEXT,"
           "uuid TEXT,"
+          "moduleIndex integer,"
+          "studyId TEXT,"
           "name TEXT,"
           "type TEXT,"
-          "condition TEXT,"
-          "alerts TEXT,"
+          "hidden integer,"
           "unlockAfter TEXT,"
+          "sticky integer,"
+          "stickyLabel TEXT,"
+          "alertTitle TEXT,"
+          "alertMessage TEXT,"
+          "timeout integer,"
+          "timeoutAfter integer,"
+          "time TEXT,"
+          "locale TEXT,"
+          "completed integer,"
           "options TEXT"
           ")");
       await db.execute("CREATE TABLE StudySection ("
@@ -49,46 +58,45 @@ class ModuleDatabaseProvider {
   }
 
   // Methods for working with module db
-  addStudyModuleToDatabase(StudyModule module) async {
+  addStudyTaskToDatabase(StudyTask module) async {
     final db = await database;
     var raw = await db.insert(
-      "StudyModule",
+      "StudyTask",
       module.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     return raw;
   }
 
-  updateStudyModule(StudyModule module) async {
+  updateStudyTask(StudyTask module) async {
     final db = await database;
-    var response = await db.update("StudyModule", module.toMap(),
+    var response = await db.update("StudyTask", module.toMap(),
         where: "id = ?", whereArgs: [module.id]);
     return response;
   }
 
-  Future<StudyModule?> getStudyModuleById(int id) async {
+  Future<StudyTask?> getStudyTaskById(int id) async {
     final db = await database;
     var response =
-        await db.query("StudyModule", where: "id = ?", whereArgs: [id]);
-    return response.isNotEmpty ? StudyModule.fromMap(response.first) : null;
+        await db.query("StudyTask", where: "id = ?", whereArgs: [id]);
+    return response.isNotEmpty ? StudyTask.fromMap(response.first) : null;
   }
 
-  Future<List<StudyModule>> getAllStudyModules() async {
+  Future<List<StudyTask>> getAllStudyTasks() async {
     final db = await database;
-    var response = await db.query("StudyModule");
-    List<StudyModule> list =
-        response.map((c) => StudyModule.fromMap(c)).toList();
+    var response = await db.query("StudyTask");
+    List<StudyTask> list = response.map((c) => StudyTask.fromMap(c)).toList();
     return list;
   }
 
-  deleteStudyModuleWithId(int id) async {
+  deleteStudyTaskWithId(int id) async {
     final db = await database;
-    return db.delete("StudyModule", where: "id = ?", whereArgs: [id]);
+    return db.delete("StudyTask", where: "id = ?", whereArgs: [id]);
   }
 
-  deleteAllStudyModules() async {
+  deleteAllStudyTasks() async {
     final db = await database;
-    db.delete("StudyModule");
+    db.delete("StudyTask");
   }
 
   // Methods for working with section db
