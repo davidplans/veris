@@ -36,7 +36,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     notificationService = NotificationService();
     notificationService.setupLocalNotifications();
     notificationService.configureDidReceiveLocalNotificationSubject(context);
-    notificationService.zonedScheduleNotification();
     _isAndroidPermissionGranted();
     _requestPermissions();
     _configureSelectNotificationSubject();

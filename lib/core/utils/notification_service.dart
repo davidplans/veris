@@ -21,8 +21,6 @@ const String darwinNotificationCategoryText = 'textCategory';
 /// Defines a iOS/MacOS notification category for plain actions.
 const String darwinNotificationCategoryPlain = 'plainCategory';
 
-int id = 0;
-
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -168,20 +166,30 @@ class NotificationService {
     return notificationAppLaunchDetails;
   }
 
-  Future<void> _cancelAllNotifications() async {
+  Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
 
-  Future<void> zonedScheduleNotification() async {
+  Future<void> zonedScheduleNotification(
+    String title,
+    String body,
+    int showAfter,
+    String? channelId,
+    String? channelName,
+    String? channelDescriptions,
+  ) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
-        'scheduled title',
-        'scheduled body',
-        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-        const NotificationDetails(
-            android: AndroidNotificationDetails(
-                'your channel id', 'your channel name',
-                channelDescription: 'your channel description')),
+        title,
+        body,
+        tz.TZDateTime.now(tz.local).add(Duration(milliseconds: showAfter)),
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            'channelId',
+            'channelName',
+            channelDescription: channelDescriptions,
+          ),
+        ),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);

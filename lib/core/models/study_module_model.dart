@@ -1,4 +1,4 @@
-class StudyTask {
+class StudyModule {
   int? id;
   String uuid;
   int moduleIndex;
@@ -18,7 +18,7 @@ class StudyTask {
   int completed;
   String? options;
 
-  StudyTask({
+  StudyModule({
     this.id,
     required this.uuid,
     required this.moduleIndex,
@@ -39,7 +39,7 @@ class StudyTask {
     this.options,
   });
 
-  factory StudyTask.fromMap(Map<String, dynamic> json) => StudyTask(
+  factory StudyModule.fromMap(Map<String, dynamic> json) => StudyModule(
         id: json["id"],
         uuid: json["uuid"],
         moduleIndex: json["moduleIndex"],

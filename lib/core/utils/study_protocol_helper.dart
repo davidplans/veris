@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Veris/core/models/study_module_model.dart';
 import 'package:Veris/core/models/study_section_model.dart';
+import 'package:Veris/core/utils/notification_service.dart';
 import 'package:Veris/core/utils/study_module_db_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,9 @@ import 'package:intl/intl.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
+
+// only set 30 alerts into the future
+var setupMaximumAlerts = 30;
 
 class ModuleForHomePage {
   final int id;
@@ -32,9 +36,56 @@ class StudyProtocolFetchResult {
 }
 
 class StudyProtocolHelper {
-  final dbProvider = ModuleDatabaseProvider();
+  final _dbProvider = ModuleDatabaseProvider();
+  final NotificationService _notificationService = NotificationService();
 
-  static Future<StudyProtocolFetchResult> fetchDataFromStudyProtocol(
+  // Public methods
+  Future<bool> getAndSaveStudyProtocol(context, String url) async {
+    if (url.isEmpty) {
+      return false;
+    }
+
+    OverlayLoadingProgress.start(context);
+    final res = await StudyProtocolHelper._fetchDataFromStudyProtocol(url);
+    OverlayLoadingProgress.stop();
+
+    if (!res.status) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red[200],
+        content: Text(res.error.toString()),
+      ));
+      return false;
+    }
+
+    await _saveDataToLocalDB(res);
+    await _setupLocalPushAlerts();
+
+    return true;
+  }
+
+  Future<List<ModuleForHomePage>> getAllAvailableModulesWithSections() async {
+    List<ModuleForHomePage> result = [];
+    final availableTasks = await _getTaskDisplayList();
+
+    for (var module in availableTasks) {
+      final sections = await _dbProvider.getAllStudySectionsByModuleId(
+        module.id.toString(),
+      );
+
+      final forHomeItem = ModuleForHomePage(
+        module.id!,
+        module.type,
+        module.name,
+        jsonDecode(module.options!),
+        sections,
+      );
+      result.add(forHomeItem);
+    }
+    return result;
+  }
+
+  // Private methods
+  static Future<StudyProtocolFetchResult> _fetchDataFromStudyProtocol(
       String url) async {
     Dio dio = Dio();
 
@@ -78,18 +129,18 @@ class StudyProtocolHelper {
     }
   }
 
-  Future<bool> saveDataToLocalDB(
+  Future<bool> _saveDataToLocalDB(
     StudyProtocolFetchResult studyProtocol,
   ) async {
     final prefs = await SharedPreferences.getInstance();
-    await cleanInfoAboutCurrentStudyProtocol(prefs);
+    await _cleanInfoAboutCurrentStudyProtocol(prefs);
 
     Map parsedJson = jsonDecode(studyProtocol.result ?? '');
 
-    final generatedTasks = generateStudyTasks(parsedJson);
+    final generatedTasks = _generateStudyTasks(parsedJson);
 
     for (dynamic item in generatedTasks) {
-      final task = StudyTask(
+      final task = StudyModule(
         uuid: item["uuid"],
         moduleIndex: item["moduleIndex"],
         studyId: parsedJson["properties"]["study_id"],
@@ -108,46 +159,24 @@ class StudyProtocolHelper {
         completed: 0,
         options: jsonEncode(item["options"]),
       );
-      final createdTaskId = await dbProvider.addStudyTaskToDatabase(task);
-      await addSectionsForModule(item, createdTaskId);
+      final createdTaskId = await _dbProvider.addStudyModuleToDatabase(task);
+      await _addSectionsForModule(item, createdTaskId);
     }
 
-    saveGeneralDataForStudyProtocol(parsedJson, prefs, studyProtocol);
+    _saveGeneralDataForStudyProtocol(parsedJson, prefs, studyProtocol);
 
     return true;
   }
 
-  Future<void> cleanInfoAboutCurrentStudyProtocol(
+  Future<void> _cleanInfoAboutCurrentStudyProtocol(
       SharedPreferences prefs) async {
     prefs.remove('studyId');
-    await dbProvider.deleteAllStudyTasks();
-    await dbProvider.deleteAllStudySections();
+    await _dbProvider.deleteAllStudyModules();
+    await _dbProvider.deleteAllStudySections();
+    await _notificationService.cancelAllNotifications();
   }
 
-  Future<List<ModuleForHomePage>> getAllAvailableModulesWithSections() async {
-    List<ModuleForHomePage> result = [];
-    // final allSaved = await dbProvider.getAllStudyTasks();
-    final availableTasks = await getTaskDisplayList();
-    print(availableTasks);
-
-    for (var module in availableTasks) {
-      final sections = await dbProvider.getAllStudySectionsByModuleId(
-        module.id.toString(),
-      );
-
-      final forHomeItem = ModuleForHomePage(
-        module.id!,
-        module.type,
-        module.name,
-        jsonDecode(module.options!),
-        sections,
-      );
-      result.add(forHomeItem);
-    }
-    return result;
-  }
-
-  void saveGeneralDataForStudyProtocol(
+  void _saveGeneralDataForStudyProtocol(
     Map<dynamic, dynamic> parsedJson,
     SharedPreferences prefs,
     StudyProtocolFetchResult studyProtocol,
@@ -166,9 +195,9 @@ class StudyProtocolHelper {
     prefs.setString('banner_url', prop['banner_url']);
   }
 
-  /// Creates a list of tasks (e.g. surveys, interventions) based on their alert schedules
+  /// Creates a list of tasks (e.g. surveys, pat, voice) based on their alert schedules
   /// studyObject: A JSON object that contains all data about a study
-  List<Map<String, dynamic>> generateStudyTasks(
+  List<Map<String, dynamic>> _generateStudyTasks(
       Map<dynamic, dynamic> studyObject) {
     // allocate the participant to a study condition
     int min = 1;
@@ -177,9 +206,6 @@ class StudyProtocolHelper {
     String condition = studyObject["properties"]["conditions"][conditionIndex];
 
     List<Map<String, dynamic>> studyTasks = [];
-
-    // the ID for a task
-    int taskID = 101;
 
     // loop through all of the modules in this study
     // and create the associated study tasks based
@@ -206,11 +232,6 @@ class StudyProtocolHelper {
         String alertMessage = mod["alerts"]["message"];
 
         String moduleType = mod["type"];
-        // if (mod["type"] == "survey") moduleType = "checkmark-circle-outline";
-        // if (mod["type"] == "video") moduleType = "film-outline";
-        // if (mod["type"] == "audio") moduleType = "headset-outline";
-        // if (mod["type"] == "info") moduleType = "bulb-outline";
-
         String moduleName = studyObject["modules"][i]["name"];
         int moduleIndex = i;
 
@@ -252,7 +273,6 @@ class StudyProtocolHelper {
             Map<String, dynamic> taskObj = {
               'uuid': moduleUuid,
               'moduleIndex': moduleIndex,
-              'taskId': taskID,
               'name': moduleName,
               'type': moduleType,
               'hidden': (moduleSticky && stickyCount == 0) ? 0 : 1,
@@ -270,9 +290,6 @@ class StudyProtocolHelper {
             };
 
             studyTasks.add(taskObj);
-
-            // increment task id
-            taskID++;
 
             // increment the sticky count
             stickyCount++;
@@ -293,26 +310,20 @@ class StudyProtocolHelper {
     return studyTasks;
   }
 
-  Future<List<dynamic>> getTaskDisplayList() async {
-    List<dynamic> studyTasks = await dbProvider.getAllStudyTasks();
+  Future<List<dynamic>> _getTaskDisplayList() async {
+    List<dynamic> studyTasks = await _dbProvider.getAllStudyModules();
 
-    List<dynamic> tasksToDisplay = [];
-    List<dynamic> stickyTasks = [];
     List<dynamic> timeTasks = [];
 
-    String lastHeader = "";
-
     for (var i = 0; i < studyTasks.length; i++) {
-      StudyTask task = studyTasks[i];
+      StudyModule task = studyTasks[i];
       // check if task has a preReq
-      bool unlocked = checkTaskIsUnlocked(task, studyTasks);
+      bool unlocked = _checkTaskIsUnlocked(task, studyTasks);
       DateTime alertTime = DateTime.parse(task.time);
       DateTime now = DateTime.now();
 
       if (now.isAfter(alertTime) && unlocked) {
         if (task.timeout == 1) {
-          print(unlocked);
-          print(task.timeout);
           DateTime timeoutTime = DateTime.parse(task.time);
           timeoutTime =
               timeoutTime.add(Duration(milliseconds: task.timeoutAfter));
@@ -323,58 +334,21 @@ class StudyProtocolHelper {
         } else if (task.completed == 0) {
           timeTasks.add(task);
         }
-
-        // TODO disscuss and if it needed implement sticky logic
-        // if (task.sticky == 1) {
-        //   if (task.hidden == 0) {
-        //     if (lastHeader != task.stickyLabel) {
-        //       // push a new header into the stickyTasks array
-        //       Map<String, String> header = {
-        //         'type': 'header',
-        //         'label': task.stickyLabel.toString()
-        //       };
-        //       stickyTasks.add(header);
-        //       lastHeader = task.stickyLabel.toString();
-        //     }
-        //     // push the sticky task
-        //     stickyTasks.add(task);
-        //   }
-        // } else {
-        //   // check if task is set to timeout
-        //   if (task.timeout == 1) {
-        //     print(unlocked);
-        //     print(task.timeout);
-        //     DateTime timeoutTime = DateTime.parse(task.time);
-        //     timeoutTime =
-        //         timeoutTime.add(Duration(milliseconds: task.timeoutAfter));
-
-        //     if (now.isBefore(timeoutTime) && task.completed == 0) {
-        //       timeTasks.add(task);
-        //     }
-        //   } else if (task.completed == 0) {
-        //     timeTasks.add(task);
-        //   }
-        // }
       }
     }
 
-    print(timeTasks);
     // reverse the timeTasks list so newest is displayed first
     if (timeTasks.isNotEmpty) {
       timeTasks = List<dynamic>.from(timeTasks.reversed);
-      // Map<String, String> header = {'type': 'header', 'label': 'Recent'};
-      // timeTasks.insert(0, header);
     }
-    // merge the timeTasks array with the stickyTasks array
-    tasksToDisplay = timeTasks + stickyTasks;
     // return the tasks list reversed to ensure correct order
-    return List<dynamic>.from(tasksToDisplay.reversed);
+    return List<dynamic>.from(timeTasks.reversed);
   }
 
-  bool checkTaskIsUnlocked(StudyTask task, List<dynamic> studyTasks) {
+  bool _checkTaskIsUnlocked(StudyModule task, List<dynamic> studyTasks) {
     // get a set of completed task uuids
     Set<String> completedUUIDs = Set<String>();
-    for (StudyTask studyTask in studyTasks) {
+    for (StudyModule studyTask in studyTasks) {
       if (studyTask.completed == 1) {
         completedUUIDs.add(studyTask.uuid);
       }
@@ -393,7 +367,7 @@ class StudyProtocolHelper {
     return unlock;
   }
 
-  Future<void> addSectionsForModule(module, int createdModuleId) async {
+  Future<void> _addSectionsForModule(module, int createdModuleId) async {
     try {
       List? sections;
       if (module['sections'] != null) {
@@ -410,34 +384,46 @@ class StudyProtocolHelper {
           questions: jsonEncode(section['questions']),
           completedAt: '',
         );
-        final id = await dbProvider.addStudySectionToDatabase(studySection);
+        final id = await _dbProvider.addStudySectionToDatabase(studySection);
       }
     } catch (e) {
       print(e);
     }
   }
 
-  Future<bool> getAndSaveStudyProtocol(context, String url) async {
-    if (url.isEmpty) {
-      return false;
+  _setupLocalPushAlerts() async {
+    final List<dynamic> studyTasks = await _dbProvider.getAllStudyModules();
+    int alertCount = 0;
+    for (int i = 0; i < studyTasks.length; i++) {
+      StudyModule task = studyTasks[i];
+      var alertTime = DateTime.parse(task.time);
+
+      // now
+      var now = DateTime.now();
+
+      if (alertTime.isBefore(now)) {
+        break;
+      }
+
+      var msAlertTime = alertTime.microsecondsSinceEpoch;
+      final showAfter = msAlertTime - now.microsecondsSinceEpoch;
+
+      if (!_checkTaskIsUnlocked(task, studyTasks)) {
+        break;
+      }
+
+      _notificationService.zonedScheduleNotification(
+        task.alertTitle!,
+        task.alertMessage!,
+        showAfter,
+        task.moduleIndex.toString(),
+        task.name,
+        '',
+      );
+
+      alertCount++;
+
+      if (alertCount == setupMaximumAlerts) break;
     }
-
-    OverlayLoadingProgress.start(context);
-    final res = await StudyProtocolHelper.fetchDataFromStudyProtocol(url);
-    OverlayLoadingProgress.stop();
-
-    if (!res.status) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.red[200],
-        content: Text(res.error.toString()),
-      ));
-      return false;
-    }
-
-    await saveDataToLocalDB(res);
-
-    // await setupLocalPushAlert(res);
-
-    return true;
   }
 }
