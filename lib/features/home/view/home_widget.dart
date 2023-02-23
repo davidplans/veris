@@ -170,9 +170,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                   return Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: ModuleWidget(
-                        module: module,
-                        indexModule: indexModule,
-                        prefs: _prefs),
+                      module: module,
+                      moduleId: module.id,
+                      prefs: _prefs,
+                    ),
                   );
                 }),
           ),

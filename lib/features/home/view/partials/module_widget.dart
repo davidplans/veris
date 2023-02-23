@@ -8,11 +8,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ModuleWidget extends StatelessWidget {
   final ModuleForHomePage module;
-  final int indexModule;
+  final int moduleId;
   final dynamic prefs;
 
   const ModuleWidget(
-      {Key? key, required this.module, this.indexModule = 0, this.prefs})
+      {Key? key, required this.module, this.moduleId = 0, this.prefs})
       : super(key: key);
 
   @override
@@ -70,8 +70,8 @@ class ModuleWidget extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => QuestionsWidget(
                               questions: questions,
-                              moduleId: indexModule,
-                              sectionId: indexSection,
+                              moduleId: moduleId,
+                              sectionId: sectionItem.id!,
                               sectionName: sectionName,
                               moduleName: moduleName,
                             ),
@@ -101,7 +101,7 @@ class ModuleWidget extends StatelessWidget {
                           final studyId = p.getString('study_id');
                           final now = DateTime.now().microsecondsSinceEpoch;
                           final String moduleResultID =
-                              '$studyId-$indexModule-$now';
+                              '$studyId-$moduleId-$now';
 
                           p.setInt('maxTrials', module.options['total_trials']);
                           p.setInt('stepBodySelect',
@@ -109,7 +109,7 @@ class ModuleWidget extends StatelessWidget {
                           p.setInt('numRuns', 0);
                           p.setInt('completeTrials', 0);
                           p.setString('currentModuleResultId', moduleResultID);
-                          p.setInt('moduleId', indexModule);
+                          p.setInt('moduleId', moduleId);
                         }).whenComplete(() {
                           Navigator.push(
                             context,

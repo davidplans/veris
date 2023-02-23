@@ -72,16 +72,39 @@ class StudyProtocolHelper {
         module.id.toString(),
       );
 
+      // only not completed sections
       final forHomeItem = ModuleForHomePage(
         module.id!,
         module.type,
         module.name,
         jsonDecode(module.options!),
-        sections,
+        sections.where((item) => item.completedAt.isEmpty).toList(),
       );
       result.add(forHomeItem);
     }
     return result;
+  }
+
+  markTaskAsComplemented(int sectionId) async {
+    StudySection? taskInDb = await _dbProvider.getStudySectionById(sectionId);
+    taskInDb?.completedAt = DateTime.now().toString();
+
+    await _dbProvider.updateStudySection(taskInDb!);
+    final sections = await _dbProvider.getAllStudySectionsByModuleId(
+      taskInDb.moduleId,
+    );
+
+    // only not completed sections
+    final notCompletedSections =
+        sections.where((item) => item.completedAt.isEmpty).toList();
+
+    // in case all sections are ready set completed for module
+    if (notCompletedSections.isEmpty) {
+      StudyModule? moduleInDb =
+          await _dbProvider.getStudyModuleById(int.parse(taskInDb.moduleId));
+      moduleInDb?.completed = 1;
+      await _dbProvider.updateStudyModule(moduleInDb!);
+    }
   }
 
   // Private methods
