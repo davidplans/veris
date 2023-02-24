@@ -1,3 +1,5 @@
+import 'package:Veris/core/utils/study_protocol_helper.dart';
+import 'package:Veris/features/intro/view/intro_page.dart';
 import 'package:Veris/features/settings/view/partials/listtile_with_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +13,8 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsWidgetState extends State<SettingsWidget> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final studyProtocolHelper = StudyProtocolHelper();
+
   String studyName = "";
   String studyId = "";
   String createdBy = "";
@@ -61,7 +65,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           child: Center(
               child: Column(children: [
             ElevatedButton(
-              onPressed: () => {},
+              onPressed: () async {
+                await studyProtocolHelper.cleanInfoAboutCurrentStudyProtocol();
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const IntroPage()),
+                );
+              },
               child: const Text("Start with new Study protocol"),
             ),
           ])),

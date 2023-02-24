@@ -20,10 +20,11 @@ Future<void> main() async {
   // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
 
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   await _configureLocalTimeZone();
-  final SharedPreferences sharedPreferences = await _prefs;
+  final SharedPreferences sharedPreferences =
+      await SharedPreferences.getInstance();
+
+  bool isStudyProtocolAvailable = sharedPreferences.get('studyId') != null;
 
   return BlocOverrides.runZoned(
     () async {
@@ -43,7 +44,7 @@ Future<void> main() async {
       final authenticationRepository = AuthenticationRepository();
       runApp(HealthApp(
         authenticationRepository: authenticationRepository,
-        studyProtocol: sharedPreferences.get('studyId').toString(),
+        isStudyProtocolAvailable: isStudyProtocolAvailable,
       ));
     },
     blocObserver: AppBlocObserver(),

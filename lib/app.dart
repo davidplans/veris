@@ -8,12 +8,12 @@ import 'package:Veris/style/theme.dart';
 
 class HealthApp extends StatelessWidget {
   final AuthenticationRepository authenticationRepository;
-  final String studyProtocol;
+  final bool isStudyProtocolAvailable;
 
   const HealthApp({
     Key? key,
     required this.authenticationRepository,
-    required this.studyProtocol,
+    required this.isStudyProtocolAvailable,
   }) : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class HealthApp extends StatelessWidget {
         child: MaterialApp(
           theme: theme,
           debugShowCheckedModeBanner: false,
-          home: studyProtocol.isEmpty ? const IntroPage() : const AuthView(),
+          home: isStudyProtocolAvailable ? const AuthView() : const IntroPage(),
         ),
       ),
     );
