@@ -156,7 +156,7 @@ class StudyProtocolHelper {
     StudyProtocolFetchResult studyProtocol,
   ) async {
     final prefs = await SharedPreferences.getInstance();
-    await _cleanInfoAboutCurrentStudyProtocol(prefs);
+    await cleanInfoAboutCurrentStudyProtocol();
 
     Map parsedJson = jsonDecode(studyProtocol.result ?? '');
 
@@ -191,8 +191,8 @@ class StudyProtocolHelper {
     return true;
   }
 
-  Future<void> _cleanInfoAboutCurrentStudyProtocol(
-      SharedPreferences prefs) async {
+  Future<void> cleanInfoAboutCurrentStudyProtocol() async {
+    final prefs = await SharedPreferences.getInstance();
     prefs.remove('studyId');
     await _dbProvider.deleteAllStudyModules();
     await _dbProvider.deleteAllStudySections();

@@ -53,7 +53,19 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         ListTileWithDivider(title: 'Support', value: supportEmail),
         ListTileWithDivider(title: 'Website', value: supportUrl),
         ListTileWithDivider(title: 'Ethics Information', value: ethics),
-        ListTileWithDivider(title: 'Pls file', value: pls)
+        ListTileWithDivider(title: 'Pls file', value: pls),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 50,
+          // color: const Color.fromARGB(255, 49, 56, 71),
+          child: Center(
+              child: Column(children: [
+            ElevatedButton(
+              onPressed: () => {},
+              child: const Text("Start with new Study protocol"),
+            ),
+          ])),
+        )
       ],
     );
   }

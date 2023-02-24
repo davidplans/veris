@@ -1,8 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:Veris/app.dart';
-import 'package:Veris/core/user/auth_repository.dart';
 import 'package:Veris/core/utils/notification_service.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/home/view/partials/module_widget.dart';
@@ -53,18 +50,6 @@ class _HomeWidgetState extends State<HomeWidget> {
       _modules = modules;
       _bannerUrl = prefs.getString('banner_url') ?? '';
     });
-  }
-
-  void startWithNewStudyProtocol(BuildContext context) {
-    final authenticationRepository = AuthenticationRepository();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HealthApp(
-          authenticationRepository: authenticationRepository,
-        ),
-      ),
-    );
   }
 
   Future<void> _isAndroidPermissionGranted() async {
@@ -136,34 +121,10 @@ class _HomeWidgetState extends State<HomeWidget> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
-          Container(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              color: const Color.fromARGB(255, 49, 56, 71),
-              child: Row(children: [
-                const Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      '',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Expanded(
-                    flex: 1,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          startWithNewStudyProtocol(context);
-                        },
-                        child: const Text('Use other JSON')))
-              ])),
           Expanded(
             flex: 4,
             child: ListView.builder(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(0),
                 itemCount: _modules.length,
                 itemBuilder: (BuildContext context, int indexModule) {
                   final module = _modules[indexModule];
@@ -171,8 +132,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                     padding: const EdgeInsets.all(4.0),
                     child: ModuleWidget(
                       module: module,
-                      moduleId: module.id,
-                      prefs: _prefs,
                     ),
                   );
                 }),

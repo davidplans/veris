@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,10 @@ Future<void> main() async {
   // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
 
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   await _configureLocalTimeZone();
+  final SharedPreferences sharedPreferences = await _prefs;
 
   return BlocOverrides.runZoned(
     () async {
@@ -37,7 +41,10 @@ Future<void> main() async {
       SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
       final authenticationRepository = AuthenticationRepository();
-      runApp(HealthApp(authenticationRepository: authenticationRepository));
+      runApp(HealthApp(
+        authenticationRepository: authenticationRepository,
+        studyProtocol: sharedPreferences.get('studyId').toString(),
+      ));
     },
     blocObserver: AppBlocObserver(),
   );

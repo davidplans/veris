@@ -8,12 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ModuleWidget extends StatelessWidget {
   final ModuleForHomePage module;
-  final int moduleId;
-  final dynamic prefs;
 
-  const ModuleWidget(
-      {Key? key, required this.module, this.moduleId = 0, this.prefs})
-      : super(key: key);
+  const ModuleWidget({Key? key, required this.module}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +66,7 @@ class ModuleWidget extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => QuestionsWidget(
                               questions: questions,
-                              moduleId: moduleId,
+                              moduleId: module.id,
                               sectionId: sectionItem.id!,
                               sectionName: sectionName,
                               moduleName: moduleName,
@@ -93,30 +89,32 @@ class ModuleWidget extends StatelessWidget {
                         spacing: 12, // space between two icons
                         children: const <Widget>[
                           Icon(Icons.arrow_forward), // icon-1
-                          // Icon(Icons.message), // icon-2
                         ],
                       ),
                       onTap: (() async {
-                        await prefs.then((SharedPreferences p) {
-                          final studyId = p.getString('study_id');
-                          final now = DateTime.now().microsecondsSinceEpoch;
-                          final String moduleResultID =
-                              '$studyId-$moduleId-$now';
+                        final prefs = await SharedPreferences.getInstance();
 
-                          p.setInt('maxTrials', module.options['total_trials']);
-                          p.setInt('stepBodySelect',
-                              module.options['step_body_select']);
-                          p.setInt('numRuns', 0);
-                          p.setInt('completeTrials', 0);
-                          p.setString('currentModuleResultId', moduleResultID);
-                          p.setInt('moduleId', moduleId);
-                        }).whenComplete(() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const StartPatPage()),
-                          );
-                        });
+                        final studyId = prefs.getString('study_id');
+                        final now = DateTime.now().microsecondsSinceEpoch;
+                        final String moduleResultID =
+                            '$studyId-${module.id}-$now';
+
+                        prefs.setInt(
+                            'maxTrials', module.options['total_trials']);
+                        prefs.setInt('stepBodySelect',
+                            module.options['step_body_select']);
+                        prefs.setInt('numRuns', 0);
+                        prefs.setInt('completeTrials', 0);
+                        prefs.setString(
+                            'currentModuleResultId', moduleResultID);
+                        prefs.setInt('moduleId', module.id);
+
+                        // ignore: use_build_context_synchronously
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const StartPatPage()),
+                        );
                       }),
                     ),
                   )
