@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class Routes {
   static void goHome(BuildContext context) {
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const AuthView()));
+      MaterialPageRoute(builder: (context) => const AuthView()),
+    );
   }
 }

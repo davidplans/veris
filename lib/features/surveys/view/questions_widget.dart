@@ -1,3 +1,4 @@
+import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/surveys/view/custom_instruction_view.dart';
 import 'package:Veris/features/surveys/view/custom_question_step.dart';
 import 'package:Veris/routes/routes.dart';
@@ -9,8 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:survey_kit/survey_kit.dart' as kit;
 import 'package:survey_kit/survey_kit.dart';
 
-// import 'package:survey_kit/survey_kit.dart';
-
+// TODO: refactoring here!!!!!!!!!!!!
 class QuestionsWidget extends StatefulWidget {
   final List<dynamic> questions;
   final int moduleId;
@@ -34,6 +34,7 @@ class QuestionsWidget extends StatefulWidget {
 class _QuestionsWidgetState extends State<QuestionsWidget> {
   int count = 0;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final studyProtocolHelper = StudyProtocolHelper();
   List resultData = [];
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -121,7 +122,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                         widget.sectionName.trim().toLowerCase();
                     String formatedSectionName =
                         lowerSectionName.replaceAll(" ", "_");
-                    String sectionId =
+                    String formatedSectionId =
                         "${formatedSectionName}_${widget.sectionId}";
 
                     if (resultData.isNotEmpty) {
@@ -129,7 +130,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                         "userId": userId,
                         "studyId": studyId,
                         "moduleId": widget.moduleId,
-                        "sectionId": sectionId,
+                        "sectionId": formatedSectionId,
                         "sectionName": widget.sectionName,
                         "moduleName": widget.moduleName,
                         "datetime": DateTime.now(),
@@ -138,12 +139,15 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                       };
 
                       if (userId.isNotEmpty && studyId.isNotEmpty) {
-                        users
+                        await users
                             .doc(userId)
                             .collection('studies')
                             .doc()
-                            .set(moduleData)
-                            .then((value) => Routes.goHome(context));
+                            .set(moduleData);
+
+                        await studyProtocolHelper
+                            .markTaskAsComplemented(widget.sectionId);
+                        Routes.goHome(context);
                       }
                     }
                   },

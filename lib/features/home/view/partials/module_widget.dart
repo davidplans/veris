@@ -1,24 +1,24 @@
+import 'dart:convert';
+
+import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/pat/view/start_pat_text_page.dart';
 import 'package:Veris/features/surveys/view/questions_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ModuleWidget extends StatelessWidget {
-  final dynamic module;
-  final int indexModule;
-  final dynamic prefs;
+  final ModuleForHomePage module;
 
-  const ModuleWidget({Key? key, this.module, this.indexModule = 0, this.prefs})
-      : super(key: key);
+  const ModuleWidget({Key? key, required this.module}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final moduleName = module["name"];
+    final moduleName = module.name;
     return ExpansionTile(
       title: Text(moduleName),
       backgroundColor: const Color.fromARGB(255, 100, 155, 200),
       collapsedBackgroundColor: (() {
-        switch (module["type"]) {
+        switch (module.type) {
           case "survey":
             return Colors.blue;
           case "pat":
@@ -28,7 +28,7 @@ class ModuleWidget extends StatelessWidget {
         }
       }()),
       leading: (() {
-        switch (module["type"]) {
+        switch (module.type) {
           case "survey":
             return const Icon(Icons.bar_chart, color: Colors.amber);
           case "pat":
@@ -38,15 +38,15 @@ class ModuleWidget extends StatelessWidget {
         }
       }()),
       children: [
-        module["type"] == 'survey'
+        module.type == 'survey'
             ? Padding(
                 padding: const EdgeInsets.only(left: 16.0),
                 child: ListView.builder(
-                  itemCount: module["sections"].length,
+                  itemCount: module.sections!.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int indexSection) {
-                    final sectionName =
-                        module["sections"][indexSection]['name'];
+                    final sectionItem = module.sections![indexSection];
+                    final sectionName = sectionItem.name;
                     return ListTile(
                       title: Text("Section $sectionName"),
                       textColor: Colors.white,
@@ -59,15 +59,15 @@ class ModuleWidget extends StatelessWidget {
                         ],
                       ),
                       onTap: (() async {
-                        List<dynamic> questions =
-                            module["sections"][indexSection]["questions"];
+                        List<dynamic> questions = List.from(
+                            jsonDecode(sectionItem.questions!) as Iterable);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => QuestionsWidget(
                               questions: questions,
-                              moduleId: indexModule,
-                              sectionId: indexSection,
+                              moduleId: module.id,
+                              sectionId: sectionItem.id!,
                               sectionName: sectionName,
                               moduleName: moduleName,
                             ),
@@ -78,7 +78,7 @@ class ModuleWidget extends StatelessWidget {
                   },
                 ),
               )
-            : module["type"] == 'pat'
+            : module.type == 'pat'
                 ? Padding(
                     padding: const EdgeInsets.only(left: 16.0),
                     child: ListTile(
@@ -89,34 +89,36 @@ class ModuleWidget extends StatelessWidget {
                         spacing: 12, // space between two icons
                         children: const <Widget>[
                           Icon(Icons.arrow_forward), // icon-1
-                          // Icon(Icons.message), // icon-2
                         ],
                       ),
                       onTap: (() async {
-                        await prefs.then((SharedPreferences p) {
-                          final studyId = p.getString('study_id');
-                          final now = DateTime.now().microsecondsSinceEpoch;
-                          final String moduleResultID =
-                              '$studyId-$indexModule-$now';
+                        final prefs = await SharedPreferences.getInstance();
 
-                          p.setInt('maxTrials', module["total_trials"]);
-                          p.setInt(
-                              'stepBodySelect', module["step_body_select"]);
-                          p.setInt('numRuns', 0);
-                          p.setInt('completeTrials', 0);
-                          p.setString('currentModuleResultId', moduleResultID);
-                          p.setInt('moduleId', indexModule);
-                        }).whenComplete(() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const StartPatPage()),
-                          );
-                        });
+                        final studyId = prefs.getString('study_id');
+                        final now = DateTime.now().microsecondsSinceEpoch;
+                        final String moduleResultID =
+                            '$studyId-${module.id}-$now';
+
+                        prefs.setInt(
+                            'maxTrials', module.options['total_trials']);
+                        prefs.setInt('stepBodySelect',
+                            module.options['step_body_select']);
+                        prefs.setInt('numRuns', 0);
+                        prefs.setInt('completeTrials', 0);
+                        prefs.setString(
+                            'currentModuleResultId', moduleResultID);
+                        prefs.setInt('moduleId', module.id);
+
+                        // ignore: use_build_context_synchronously
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const StartPatPage()),
+                        );
                       }),
                     ),
                   )
-                : module["type"] == 'smile'
+                : module.type == 'smile'
                     ? Padding(
                         padding: const EdgeInsets.only(left: 16.0),
                         child: ListTile(

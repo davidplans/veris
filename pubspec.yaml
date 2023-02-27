@@ -67,6 +67,21 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+  overlay_loading_progress: ^1.0.0
+
+  # local push notifications
+  flutter_local_notifications: ^13.0.0
+  flutter_native_timezone: ^2.0.0
+  timezone: ^0.9.1
+  rxdart: ^0.27.7
+  flutter_timezone: ^1.0.4
+  image: ^4.0.13
+  device_info_plus: ^8.0.0
+
+  sqflite: ^2.2.4+1
+
+  lodash_flutter: ^0.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
