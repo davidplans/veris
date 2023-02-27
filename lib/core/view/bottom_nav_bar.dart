@@ -1,3 +1,4 @@
+import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/settings/view/settings_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,7 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
+  final studyProtocolHelper = StudyProtocolHelper();
   int _currentIndex = 0;
 
   final pages = [
@@ -34,7 +36,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
           IconButton(
             key: const Key('homePage_logout_iconButton'),
             icon: const Icon(Icons.exit_to_app),
-            onPressed: () => context.read<AuthBloc>().add(AppLogoutRequested()),
+            onPressed: () async {
+              await studyProtocolHelper.cleanInfoAboutCurrentStudyProtocol();
+              // ignore: use_build_context_synchronously
+              context.read<AuthBloc>().add(AppLogoutRequested());
+            },
           )
         ],
       ),

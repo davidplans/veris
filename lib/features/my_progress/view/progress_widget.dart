@@ -49,7 +49,7 @@ class _ProgressWidgetState extends State<ProgressWidget> {
                 const name = 'test1';
                 final moduleName = setDocument.get("moduleName");
                 return ExpansionTile(
-                    title: Text('Section: $moduleName'),
+                    title: Text('Module: $moduleName'),
                     subtitle: Text(setDocument.get("type")),
                     trailing: Text(date),
                     children: [
