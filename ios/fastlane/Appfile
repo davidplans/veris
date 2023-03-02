@@ -1,4 +1,4 @@
-app_identifier("com.davidplans.digitverisfastlanematch") # The bundle identifier of your app
+app_identifier("com.davidplans.digitveris") # The bundle identifier of your app
 apple_id("davidplans@gmail.com") # Your Apple Developer Portal username
 
 itc_team_id("1626541") # App Store Connect Team ID

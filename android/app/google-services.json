@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:270328431400:android:c9b77551769ea62c7c461d",
+        "mobilesdk_app_id": "1:270328431400:android:847d14261b5ff2707c461d",
         "android_client_info": {
-          "package_name": "com.digit.veris"
+          "package_name": "com.davidplans.digitveris"
         }
       },
       "oauth_client": [
@@ -34,7 +34,43 @@
               "client_id": "270328431400-5bgtpjch96564ic3rqf72cupbc8m4t5p.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.digit.veris"
+                "bundle_id": "com.davidplans.digitveris"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270328431400:android:c9b77551769ea62c7c461d",
+        "android_client_info": {
+          "package_name": "com.davidplans.digitveris"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270328431400-5q2h3p2vk5upub71ag22pn7mvif2hs9s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsSfhY6iB74Xej2naiY_1kE4sm5g5d5-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270328431400-5q2h3p2vk5upub71ag22pn7mvif2hs9s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "270328431400-5bgtpjch96564ic3rqf72cupbc8m4t5p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.davidplans.digitveris"
               }
             }
           ]
