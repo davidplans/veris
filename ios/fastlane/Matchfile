@@ -4,7 +4,7 @@ storage_mode("git")
 
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
 
-app_identifier(["com.davidplans.digitveris", "com.davidplans.digitveris"])
+app_identifier(["com.davidplans.digitverisfastlanematch", "com.davidplans.digitverisfastlanematch"])
 username("davidplans@gmail.com") # Your Apple Developer Portal username
 
 # For all available options run `fastlane match --help`

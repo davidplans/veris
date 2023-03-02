@@ -1,4 +1,4 @@
-package com.davidplans.digitveris
+package com.davidplans.digitverisfastlanematch
 
 import io.flutter.embedding.android.FlutterActivity
 

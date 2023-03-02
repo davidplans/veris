@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCsSfhY6iB74Xej2naiY_1kE4sm5g5d5-U',
-    appId: '1:270328431400:android:847d14261b5ff2707c461d',
+    appId: '1:270328431400:android:92518620bad030547c461d',
     messagingSenderId: '270328431400',
     projectId: 'digit-veris',
     storageBucket: 'digit-veris.appspot.com',
@@ -59,12 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC8Ms996qhSS9GiUswVfSkxHIvv6GWbBI4',
-    appId: '1:270328431400:ios:73b3c932d6505fdf7c461d',
+    appId: '1:270328431400:ios:ad57cb36443a08c47c461d',
     messagingSenderId: '270328431400',
     projectId: 'digit-veris',
     storageBucket: 'digit-veris.appspot.com',
     iosClientId:
-        '270328431400-2lpomhjq0smsfpecnmq4edmu1ntcnmkc.apps.googleusercontent.com',
-    iosBundleId: 'com.davidplans.digitveris',
+        '270328431400-845ihhea8ngae4rudpku9u1sj52qceje.apps.googleusercontent.com',
+    iosBundleId: 'com.davidplans.digitverisfastlanematch',
   );
 }
