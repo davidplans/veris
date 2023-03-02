@@ -22,4 +22,9 @@ platform :ios do
     build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
     upload_to_testflight
   end
+  desc "Updated devices list"
+  lane :devices do
+    register_devices(devices_file: "./fastlane/devices.txt")
+    match(type: "development", force_for_new_devices: true)
+  end
 end
