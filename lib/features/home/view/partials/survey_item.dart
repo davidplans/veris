@@ -44,7 +44,7 @@ class SurveyItem extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => QuestionsWidget(
                           questions: questions,
-                          moduleId: module.id,
+                          moduleId: module.uuid,
                           sectionId: sectionItem.id!,
                           sectionName: sectionName,
                           moduleName: module.name,

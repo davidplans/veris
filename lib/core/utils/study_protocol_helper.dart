@@ -16,12 +16,13 @@ var setupMaximumAlerts = 30;
 
 class ModuleForHomePage {
   final int id;
+  final String uuid;
   final String type;
   final String name;
   final dynamic options;
   final List<StudySection>? sections;
 
-  ModuleForHomePage(this.id, this.type, this.name,
+  ModuleForHomePage(this.id, this.type, this.name, this.uuid,
       [this.options, this.sections]);
 }
 
@@ -77,6 +78,7 @@ class StudyProtocolHelper {
         module.id!,
         module.type,
         module.name,
+        module.uuid!,
         jsonDecode(module.options!),
         sections.where((item) => item.completedAt.isEmpty).toList(),
       );

@@ -13,7 +13,7 @@ import 'package:survey_kit/survey_kit.dart';
 // TODO: refactoring here!!!!!!!!!!!!
 class QuestionsWidget extends StatefulWidget {
   final List<dynamic> questions;
-  final int moduleId;
+  final String moduleId;
   final int sectionId;
   final String sectionName;
   final String moduleName;
