@@ -104,6 +104,7 @@ class StudyProtocolHelper {
           await _dbProvider.getStudyModuleById(int.parse(taskInDb.moduleId));
       moduleInDb?.completed = 1;
       await _dbProvider.updateStudyModule(moduleInDb!);
+      await _setupLocalPushAlerts();
     }
   }
 
@@ -415,6 +416,7 @@ class StudyProtocolHelper {
   }
 
   _setupLocalPushAlerts() async {
+    await _notificationService.cancelAllNotifications();
     final List<dynamic> studyTasks = await _dbProvider.getAllStudyModules();
     int alertCount = 0;
     for (int i = 0; i < studyTasks.length; i++) {
