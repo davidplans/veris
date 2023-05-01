@@ -109,7 +109,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                         if (questionResult.valueIdentifier.toString() !=
                             "instruction") {
                           var questionMap = {
-                            'questionId': i,
+                            'questionId': widget.questions[i]["id"],
                             'value': questionResult.valueIdentifier.toString(),
                           };
                           resultData.add(questionMap);
