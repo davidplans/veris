@@ -5,6 +5,8 @@ class ImageConstant {
 
   static String imgKnob = 'assets/images/knob.png';
 
+  static String imgDial = 'assets/images/dial.png';
+
   static String imgHand = 'assets/images/hand.png';
 
   static String imgMannequin2 = 'assets/images/mannequin2.png';
