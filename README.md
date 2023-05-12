@@ -28,3 +28,12 @@ the `lib/src/localization` directory.
 To support additional languages, please visit the tutorial on
 [Internationalizing Flutter
 apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+
+## Get data from Firebase
+0. Install nodejs.
+1. Go to `data-tool` folder 
+   `$ cd data-tool`
+2. Install packages:
+   `$ npm install`
+3. Run getting data:
+   `$ node index.js id=STUDY_ID` (for example: `node index.js id=TEQNECK`)
