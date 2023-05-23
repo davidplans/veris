@@ -43,10 +43,12 @@ async function formatData(data) {
   if (studyId === 'TEQNECK') {
     const protocolData = await fetchJSONData('https://firebasestorage.googleapis.com/v0/b/digit-veris.appspot.com/o/veris_digit_test.json?alt=media&token=d8b7c9b9-0038-47a1-8a5a-474a46027574')
     return ld.map(data, (item) => {
-      if (!protocolData.modules[item.moduleId]) {
+      const moduleInProtocolByName = ld.find(protocolData.modules, {'name': item.moduleName});
+      if (!moduleInProtocolByName) {
         return item;
       }
-      const sectionInProtocol = ld.find(protocolData.modules[item.moduleId].sections, {'name': item.sectionName});
+
+      const sectionInProtocol = ld.find(moduleInProtocolByName.sections, {'name': item.sectionName});
       if (!sectionInProtocol) {
         return item;
       }
@@ -54,7 +56,7 @@ async function formatData(data) {
         element.questionId = sectionInProtocol.questions[element.questionId].id;
         return element;
       });
-      item.moduleId = ld.get(protocolData, `modules[${item.moduleId}].uuid`);
+      item.moduleId = moduleInProtocolByName.uuid;
       return item;
     });
   }
