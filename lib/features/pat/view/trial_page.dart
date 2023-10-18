@@ -398,44 +398,60 @@ class _TrialPageState extends State<TrialPage> {
                       ),
                       const SizedBox(height: 40),
                       Container(
-                          width: 250,
-                          height: 250,
-                          color: Colors.white,
-                          child: LayoutBuilder(builder: (context, constraints) {
-                            return _isFinished
-                                ? Container()
-                                : GestureDetector(
-                                    behavior: HitTestBehavior.translucent,
-                                    onPanUpdate: (details) {
-                                      Offset centerOfGestureDetector = Offset(
-                                          constraints.maxWidth / 2,
-                                          constraints.maxHeight / 2);
-                                      final touchPositionFromCenter =
-                                          details.localPosition -
-                                              centerOfGestureDetector;
+                        width: 250,
+                        height: 250,
+                        color: Colors.white,
+                        child: Stack(
+                          children: [
+                            Image(
+                              image: AssetImage(ImageConstant.imgKnob),
+                            ),
+                            Center(
+                              child: Container(
+                                width: 180,
+                                height: 180,
+                                child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                  return _isFinished
+                                      ? Container()
+                                      : GestureDetector(
+                                          behavior: HitTestBehavior.translucent,
+                                          onPanUpdate: (details) {
+                                            Offset centerOfGestureDetector =
+                                                Offset(constraints.maxWidth / 2,
+                                                    constraints.maxHeight / 2);
+                                            final touchPositionFromCenter =
+                                                details.localPosition -
+                                                    centerOfGestureDetector;
 
-                                      setState(
-                                        () {
-                                          _currentKnobValue =
-                                              ((touchPositionFromCenter
-                                                      .direction /
-                                                  math.pi));
+                                            setState(
+                                              () {
+                                                _currentKnobValue =
+                                                    ((touchPositionFromCenter
+                                                            .direction /
+                                                        math.pi));
 
-                                          finalAngle =
-                                              touchPositionFromCenter.direction;
-                                          print(_currentKnobValue);
-                                        },
-                                      );
-                                    },
-                                    child: Transform.rotate(
-                                      angle: finalAngle,
-                                      child: Image(
-                                        image:
-                                            AssetImage(ImageConstant.imgKnob),
-                                      ),
-                                    ),
-                                  );
-                          })),
+                                                finalAngle =
+                                                    touchPositionFromCenter
+                                                        .direction;
+                                                print(_currentKnobValue);
+                                              },
+                                            );
+                                          },
+                                          child: Transform.rotate(
+                                            angle: finalAngle,
+                                            child: Image(
+                                              image: AssetImage(
+                                                  ImageConstant.imgDial),
+                                            ),
+                                          ),
+                                        );
+                                }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       const SizedBox(height: 40),
                       Center(
                         child: ElevatedButton(

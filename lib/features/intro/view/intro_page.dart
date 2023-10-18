@@ -18,7 +18,7 @@ class _IntroPageState extends State<IntroPage> {
   final studyProtocolHelper = StudyProtocolHelper();
 
   String testURL =
-      'https://firebasestorage.googleapis.com/v0/b/digit-veris.appspot.com/o/veris_digit_v2.json?alt=media&token=e8803f03-3e64-45cb-b948-fff31b932b07';
+      'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test_2.json?alt=media&token=80d0dfa5-8720-4449-bbf0-cf630189768f';
   bool expanded = false;
 
   @override

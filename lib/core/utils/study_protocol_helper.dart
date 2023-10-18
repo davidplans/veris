@@ -16,12 +16,13 @@ var setupMaximumAlerts = 30;
 
 class ModuleForHomePage {
   final int id;
+  final String uuid;
   final String type;
   final String name;
   final dynamic options;
   final List<StudySection>? sections;
 
-  ModuleForHomePage(this.id, this.type, this.name,
+  ModuleForHomePage(this.id, this.type, this.name, this.uuid,
       [this.options, this.sections]);
 }
 
@@ -77,6 +78,7 @@ class StudyProtocolHelper {
         module.id!,
         module.type,
         module.name,
+        module.uuid!,
         jsonDecode(module.options!),
         sections.where((item) => item.completedAt.isEmpty).toList(),
       );
@@ -104,6 +106,7 @@ class StudyProtocolHelper {
           await _dbProvider.getStudyModuleById(int.parse(taskInDb.moduleId));
       moduleInDb?.completed = 1;
       await _dbProvider.updateStudyModule(moduleInDb!);
+      await _setupLocalPushAlerts();
     }
   }
 
@@ -415,6 +418,7 @@ class StudyProtocolHelper {
   }
 
   _setupLocalPushAlerts() async {
+    await _notificationService.cancelAllNotifications();
     final List<dynamic> studyTasks = await _dbProvider.getAllStudyModules();
     int alertCount = 0;
     for (int i = 0; i < studyTasks.length; i++) {

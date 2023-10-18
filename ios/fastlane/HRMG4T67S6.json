@@ -1,0 +1,8 @@
+{
+    "key_id": "HRMG4T67S6",
+    "issuer_id": "69a6de79-5b7d-47e3-e053-5b8c7c11a4d1",
+    "key": "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg95V2HrhcbrYlJ5Kt\nBEl9QUmeKzTy7xpvyWEuHVKXn1+gCgYIKoZIzj0DAQehRANCAASdgtGxpRDnlQ9v\n/bzVSQ+E06NwSc3noFWGFNdoxkdPhlivbcmqKNvlVCxh/UHzAdf8oGtz3Rhe9Lqf\n5sLzGQMe\n-----END PRIVATE KEY-----",
+    "duration": 1200,
+    "in_house": false,
+    "is_key_content_base64": false
+  }

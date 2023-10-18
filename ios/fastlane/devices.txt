@@ -1,0 +1,2 @@
+Device ID	Device Name	Device Platform
+75582afeee2171e05bacde207f71b2baed8f9617	Oleksandr-Klymenko-iphone-10	ios

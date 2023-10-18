@@ -1,4 +1,4 @@
-package com.digit.veris
+package com.davidplans.digitverisfastlanematch
 
 import io.flutter.embedding.android.FlutterActivity
 

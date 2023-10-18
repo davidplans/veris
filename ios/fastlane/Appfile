@@ -1,0 +1,8 @@
+app_identifier("com.davidplans.digitverisfastlanematch") # The bundle identifier of your app
+apple_id("davidplans@gmail.com") # Your Apple Developer Portal username
+
+itc_team_id("1626541") # App Store Connect Team ID
+team_id("7FQT3SN6PR") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
