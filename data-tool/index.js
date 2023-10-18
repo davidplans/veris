@@ -8,7 +8,7 @@ const args = process.argv.slice(2); // The first two elements are node and the s
 // Log the arguments
 const studyId = args[0].split('id=')[1];
 
-const serviceAccount = require("./digit-veris-firebase-adminsdk-cqh4u-766ad1a7ce.json");
+const serviceAccount = require("./digit-veris-firebase-adminsdk.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
