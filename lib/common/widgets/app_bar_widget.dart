@@ -1,9 +1,9 @@
 import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
 
-class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
+class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  AppBarWidget({super.key, required this.title});
+  const AppBarWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

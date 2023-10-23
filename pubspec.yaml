@@ -30,34 +30,34 @@ dependencies:
     sdk: flutter
 
   # firebase
-  firebase_core_platform_interface: 4.5.1
-  firebase_messaging: ^13.0.4
-  firebase_core: ^1.21.1
-  firebase_auth: ^3.7.0
-  cloud_firestore: ^3.4.6
+  firebase_core_platform_interface: ^5.0.0
+  firebase_messaging: ^14.7.1
+  firebase_core: ^2.19.0
+  firebase_auth: ^4.11.1
+  cloud_firestore: ^4.11.0
   
   equatable: ^2.0.3
   flutter_bloc: ^8.0.1
   formz: ^0.4.1
-  google_fonts: ^3.0.1
+  google_fonts: ^4.0.3
   flow_builder: ^0.0.9
   video_player: ^2.4.5
   just_audio: ^0.9.27
   
   # introduction_screen: ^3.0.2
-  intl: ^0.17.0
+  intl: ^0.18.1
   svg_path_parser: ^1.0.0
   shared_preferences: ^2.0.15
-  survey_kit: ^0.1.1
+  survey_kit: ^0.1.2
   dio: ^4.0.6
   path_provider: ^2.0.11
   flutter_widget_from_html: ^0.9.0+1
-  mobile_scanner: ^2.0.0
+  mobile_scanner: ^3.5.0
 
   # Heart
-  charts_flutter: ^0.12.0
+  # charts_flutter: ^0.12.0
   wakelock: ^0.6.1+2
-  camera: ^0.9.7+1
+  camera: ^0.10.5+5
 
 #  # Smile module
 #  get: ^4.6.5

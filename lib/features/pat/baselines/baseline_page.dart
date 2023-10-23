@@ -345,7 +345,7 @@ class _BaselinePageState extends State<BaselinePage>
                               Radius.circular(18),
                             ),
                             color: Colors.white),
-                        child: Chart(_data),
+                        // child: Chart(_data),
                       ),
                     ),
                   ],
