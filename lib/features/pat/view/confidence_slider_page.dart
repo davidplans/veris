@@ -186,7 +186,6 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
                 value: _currentSliderValue,
                 max: 10,
                 divisions: 10,
-                label: _currentSliderValue.round().toString(),
                 onChanged: (double value) {
                   _changeSlider(value);
                 },

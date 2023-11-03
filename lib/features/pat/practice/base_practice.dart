@@ -86,16 +86,14 @@ class _PracticeWidgetState extends State<PracticeWidget>
 
   /// Deinitialize the camera controller
   void _deinitController() async {
-    _player.dispose();
-    _isFinished = true;
-    isCameraInitialized = false;
+    await _player.dispose();
+
     if (_controller == null) return;
     // await _controller.stopImageStream();
     await _controller!.dispose();
     // while (_processing) {}
     // _controller = null;
     if (_timer != null) _timer?.cancel();
-    _isNoFinger = false;
   }
 
   /// Initialize the camera controller
@@ -348,14 +346,20 @@ class _PracticeWidgetState extends State<PracticeWidget>
                       const SizedBox(height: 40),
                       Center(
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 15, 32, 66),
-                            textStyle: TextStyle(color: Colors.white),
-                          ),
-                          child: const Text("Confirm"),
-                          onPressed: () => setState(_deinitController),
-                        ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 15, 32, 66),
+                              textStyle: TextStyle(color: Colors.white),
+                            ),
+                            child: const Text("Confirm"),
+                            onPressed: () {
+                              setState(() {
+                                _isNoFinger = false;
+                                _isFinished = true;
+                                isCameraInitialized = false;
+                              });
+                              _deinitController();
+                            }),
                       )
                     ],
                   )

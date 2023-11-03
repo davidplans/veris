@@ -87,7 +87,6 @@ class _PracticeSliderWidgetState extends State<PracticeSliderWidget> {
                 value: _currentSliderValue,
                 max: 10,
                 divisions: 10,
-                label: _currentSliderValue.round().toString(),
                 onChanged: (double value) {
                   _onChangeSlider(value);
                 },
