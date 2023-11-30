@@ -41,13 +41,6 @@ class _TrialPageState extends State<TrialPage> {
 
   double _max = 0;
 
-  List<double> _instantBPMs = <double>[];
-  List<double> _instantPeriods = <double>[];
-  List<double> _averagePeriods = <double>[];
-  List<double> _instantErrs = <double>[];
-  List<double> _currentDelays = <double>[];
-  List<double> _knobScales = <double>[];
-
   Timer? _timer;
 
   int _counter = 0;
@@ -75,7 +68,20 @@ class _TrialPageState extends State<TrialPage> {
 
   // PROCESSING VARS
 
-  double _range = 1;
+  final int _knobValueRange = 1;
+
+  double instantBpm = 0;
+  double averageBpm = 0;
+  double averagePeriod = 0;
+  double instantPeriod = 0;
+  double instantErr = 0;
+
+  // List<double> _instantBPMs = <double>[];
+  List<double> _currentDelays = <double>[];
+  List<double> _averagePeriods = <double>[];
+  List<double> _instantPeriods = <double>[];
+  List<double> _knobScales = <double>[];
+  List<double> _instantErrs = <double>[];
 
   double _normalisedValue = 0;
 
@@ -91,6 +97,7 @@ class _TrialPageState extends State<TrialPage> {
   void initState() {
     super.initState();
     _initController();
+    _start();
     listSelectSteps.add(_currentStep);
     _getNumTrial();
   }
@@ -99,6 +106,10 @@ class _TrialPageState extends State<TrialPage> {
   void dispose() {
     _deinitController();
     super.dispose();
+  }
+
+  _start() {
+    _currentKnobValue = _randomGeneration(_knobValueRange);
   }
 
   /// Deinitialize the camera controller
@@ -115,7 +126,7 @@ class _TrialPageState extends State<TrialPage> {
   }
 
   void _confirm() async {
-    final instantBPMs = _instantBPMs.map((e) => e.toString()).toList();
+    // final instantBPMs = _instantBPMs.map((e) => e.toString()).toList();
     final instantPeriods = _instantPeriods.map((e) => e.toString()).toList();
     final averagePeriods = _averagePeriods.map((e) => e.toString()).toList();
     final instantErrs = _instantErrs.map((e) => e.toString()).toList();
@@ -126,7 +137,7 @@ class _TrialPageState extends State<TrialPage> {
       _prefs.then((SharedPreferences p) {
         _countTrials++;
         p.setInt('numRuns', _countTrials);
-        p.setStringList('instantBPMs', instantBPMs);
+        // p.setStringList('instantBPMs', instantBPMs);
         p.setStringList('instantPeriods', instantPeriods);
         p.setStringList('averagePeriods', averagePeriods);
         p.setStringList('instantErrs', instantErrs);
@@ -136,7 +147,7 @@ class _TrialPageState extends State<TrialPage> {
       });
     });
 
-    _instantBPMs.clear();
+    // _instantBPMs.clear();
     _instantPeriods.clear();
     _averagePeriods.clear();
     _instantErrs.clear();
@@ -163,7 +174,7 @@ class _TrialPageState extends State<TrialPage> {
 
       // 4. set torch to ON and start image stream
       Future.delayed(const Duration(milliseconds: 500))
-          .then((value) => _controller!.setFlashMode(FlashMode.torch));
+          .then((_) => _controller!.setFlashMode(FlashMode.torch));
 
       // 5. register image streaming callback
 
@@ -179,13 +190,13 @@ class _TrialPageState extends State<TrialPage> {
       });
     } catch (e) {
       print(e);
-      throw e;
+      rethrow;
     }
 
     _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      if (_instantBPMs != null && _instantBPMs.isNotEmpty) {
-        _instantBPMs.clear();
-      }
+      // if (_instantBPMs != null && _instantBPMs.isNotEmpty) {
+      //   _instantBPMs.clear();
+      // }
     });
   }
 
@@ -203,9 +214,9 @@ class _TrialPageState extends State<TrialPage> {
     });
   }
 
-  _randomGen(min, max) {
+  double _randomGeneration(int range) {
     math.Random random = math.Random();
-    double rand = random.nextDouble() * (random.nextBool() ? -1 : 1);
+    double rand = random.nextDouble() * (random.nextBool() ? -range : range);
     return rand;
   }
 
@@ -214,51 +225,54 @@ class _TrialPageState extends State<TrialPage> {
       windowLength, SensorValue(DateTime.now(), 0),
       growable: true);
 
-  void _scanImage(CameraImage image) {
+  Future<void> _scanImage(CameraImage image) async {
     _isNoFinger = !ImageProcessing.isAvailableFingerOnCamera(image);
 
     // get the average value of the image
     double avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
             image.planes.first.bytes.length;
-    if (avg > _max) {
-      _max = avg;
-      _counter++;
-      if (_counter >= 6) {
-        _mainCalculate();
-        _player
-            .setAudioSource(
-                AudioSource.uri(Uri.parse('asset:///assets/sounds/2.mp3')))
-            .then((value) {
-          _player.play().whenComplete(() => _player.stop());
-        });
-        _counter = 0;
-      }
-    } else {
-      _max = 0;
-      _counter = 0;
-    }
+    // if (avg > _max) {
+    //   _max = avg;
+    //   _counter++;
+    // if (_counter >= 6) {
+    //   _mainCalculate();
+    //   _player
+    //       .setAudioSource(
+    //           AudioSource.uri(Uri.parse('asset:///assets/sounds/2.mp3')))
+    //       .then((value) {
+    //     _player.play().whenComplete(() => _player.stop());
+    //   });
+    //   _counter = 0;
+    // }
+    // } else {
+    //   _max = 0;
+    //   _counter = 0;
+    // }
     measureWindow.removeAt(0);
     measureWindow.add(SensorValue(DateTime.now(), avg));
 
-    _udateBPM(avg).then((value) {
-      Future<void>.delayed(Duration(milliseconds: _sampleDelay))
-          .then((onValue) {
-        if (mounted) {
-          setState(() {
-            _processing = false;
-          });
-        }
-      });
-    });
+    final beats = await _udateBPM(avg);
+
+    // _udateBPM(avg).then((value) {
+    //   Future<void>.delayed(Duration(milliseconds: _sampleDelay))
+    //       .then((onValue) {
+    //     if (mounted) {
+    //       setState(() {
+    //         _processing = false;
+    //       });
+    //     }
+    //   });
+    // });
   }
 
   _mainCalculate() {
-    _normalisedValue = (_currentKnobValue + _range) / (2 * _range);
+    _normalisedValue =
+        (_currentKnobValue + _knobValueRange) / (2 * _knobValueRange);
     _shiftedRad = _normalisedValue * (2 * math.pi);
     _rad = (_shiftedRad - math.pi);
     if (_currentKnobValue == 0) {
-      _currentKnobValue = _randomGen(-1, 1);
+      _currentKnobValue = _randomGeneration(_knobValueRange);
     }
   }
 
@@ -326,7 +340,8 @@ class _TrialPageState extends State<TrialPage> {
         _instantErrs.add(instantErr);
       }
       tempBPM = (1 - alpha) * currentValue + alpha * tempBPM;
-      _instantBPMs.add(tempBPM);
+      print('TEMPBPM: ${tempBPM}');
+      // _instantBPMs.add(tempBPM);
 
       setState(() {
         currentValue = tempBPM.toInt();

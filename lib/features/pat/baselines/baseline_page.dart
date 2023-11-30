@@ -213,7 +213,7 @@ class _BaselinePageState extends State<BaselinePage>
     }
 
     setState(() {
-      _data.add(SensorValue(now!, 255 - avg!));
+      _data.add(SensorValue(now, 255 - avg));
     });
   }
 
@@ -235,7 +235,7 @@ class _BaselinePageState extends State<BaselinePage>
 
     return Stack(children: [
       Scaffold(
-        appBar: AppBarWidget(title: "Veris - Baselines"),
+        appBar: const AppBarWidget(title: "Veris - Baselines"),
         floatingActionButton: _measurementWasFinished
             ? const SliderNavigation(
                 nexPage: FingerCameraPage(),

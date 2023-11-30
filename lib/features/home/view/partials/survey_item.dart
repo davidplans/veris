@@ -39,18 +39,18 @@ class SurveyItem extends StatelessWidget {
                   onTap: (() async {
                     List<dynamic> questions = List.from(
                         jsonDecode(sectionItem.questions!) as Iterable);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuestionsWidget(
-                          questions: questions,
-                          moduleId: module.uuid,
-                          sectionId: sectionItem.id!,
-                          sectionName: sectionName,
-                          moduleName: module.name,
-                        ),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => QuestionsWidget(
+                    //       questions: questions,
+                    //       moduleId: module.uuid,
+                    //       sectionId: sectionItem.id!,
+                    //       sectionName: sectionName,
+                    //       moduleName: module.name,
+                    //     ),
+                    //   ),
+                    // );
                   }),
                 );
               },

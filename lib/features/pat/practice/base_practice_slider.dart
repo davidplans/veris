@@ -91,8 +91,8 @@ class _PracticeSliderWidgetState extends State<PracticeSliderWidget> {
                   _onChangeSlider(value);
                 },
               ),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Expanded(child: Text("Not at all \nconfident")),
                   Expanded(
                       child: Text(

@@ -22,7 +22,7 @@ abstract class ImageProcessing {
       if (redAVG > 90 && redAVG < 127.6) {
         result = true;
       }
-      print('redAVG $redAVG');
+      // print('redAVG $redAVG');
     }
 
     return result;

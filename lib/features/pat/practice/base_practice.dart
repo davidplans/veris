@@ -14,8 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 class PracticeWidget extends StatefulWidget {
-  int number;
-  PracticeWidget({super.key, required this.number});
+  final int number;
+  const PracticeWidget({super.key, required this.number});
 
   @override
   State<PracticeWidget> createState() => _PracticeWidgetState();
@@ -131,10 +131,10 @@ class _PracticeWidgetState extends State<PracticeWidget>
       });
     } catch (e) {
       print(e);
-      throw e;
+      rethrow;
     }
 
-    _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       if (_instantBPMs != null && _instantBPMs.isNotEmpty) {
         // print(_instantBPMs.toString());
         // print(_instantBPMs.reduce((a,b) => a + b) / _instantBPMs.length);
@@ -149,14 +149,14 @@ class _PracticeWidgetState extends State<PracticeWidget>
     return rand;
   }
 
-  _onKnobValue(BoxConstraints constraints, DragUpdateDetails details) {
-    KnobRorateModel values =
-        KnobRotateService.prepareCurrentValues(constraints, details);
-    setState(() {
-      _currentKnobValue = values.currentKnobValue;
-      finalAngle = values.finalAngle;
-    });
-  }
+  // _onKnobValue(BoxConstraints constraints, DragUpdateDetails details) {
+  //   KnobRorateModel values =
+  //       KnobRotateService.prepareCurrentValues(constraints, details);
+  //   setState(() {
+  //     _currentKnobValue = values.currentKnobValue;
+  //     finalAngle = values.finalAngle;
+  //   });
+  // }
 
   static const int windowLength = 50;
   final List<SensorValue> measureWindow = List<SensorValue>.filled(
@@ -274,8 +274,8 @@ class _PracticeWidgetState extends State<PracticeWidget>
                 ? Column(
                     children: [
                       Container(
-                        constraints:
-                            BoxConstraints.tightFor(width: 100, height: 130),
+                        constraints: const BoxConstraints.tightFor(
+                            width: 100, height: 130),
                         child: _controller!.buildPreview(),
                       ),
                       const Padding(
@@ -298,7 +298,7 @@ class _PracticeWidgetState extends State<PracticeWidget>
                               image: AssetImage(ImageConstant.imgKnob),
                             ),
                             Center(
-                              child: Container(
+                              child: SizedBox(
                                 width: 180,
                                 height: 180,
                                 child: LayoutBuilder(
@@ -325,7 +325,7 @@ class _PracticeWidgetState extends State<PracticeWidget>
                                                 finalAngle =
                                                     touchPositionFromCenter
                                                         .direction;
-                                                print(_currentKnobValue);
+                                                // print(_currentKnobValue);
                                               },
                                             );
                                           },
@@ -349,7 +349,7 @@ class _PracticeWidgetState extends State<PracticeWidget>
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
                                   const Color.fromARGB(255, 15, 32, 66),
-                              textStyle: TextStyle(color: Colors.white),
+                              textStyle: const TextStyle(color: Colors.white),
                             ),
                             child: const Text("Confirm"),
                             onPressed: () {
@@ -370,55 +370,53 @@ class _PracticeWidgetState extends State<PracticeWidget>
           ? Scaffold(
               appBar: AppBarWidget(
                   title: "Veris - PRACTICE TRIAL ${widget.number.toString()}"),
-              body: Container(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 130),
-                    const Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Text("",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          )),
-                    ),
-                    const SizedBox(height: 40),
-                    Container(
-                        width: 250,
-                        height: 250,
-                        color: Colors.white,
-                        child: const Text('')),
-                    const SizedBox(height: 40),
-                    Center(
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 15, 32, 66),
-                            textStyle: TextStyle(color: Colors.white),
-                          ),
-                          child: const Text("Continue"),
-                          onPressed: () {
-                            switch (widget.number) {
-                              case 1:
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Practice1SliderPage(),
-                                  ),
-                                );
-                                break;
-                              case 2:
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Practice2SliderPage(),
-                                  ),
-                                );
-                            }
-                          }),
-                    ),
-                  ],
-                ),
+              body: Column(
+                children: [
+                  const SizedBox(height: 130),
+                  const Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text("",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        )),
+                  ),
+                  const SizedBox(height: 40),
+                  Container(
+                      width: 250,
+                      height: 250,
+                      color: Colors.white,
+                      child: const Text('')),
+                  const SizedBox(height: 40),
+                  Center(
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 15, 32, 66),
+                          textStyle: const TextStyle(color: Colors.white),
+                        ),
+                        child: const Text("Continue"),
+                        onPressed: () {
+                          switch (widget.number) {
+                            case 1:
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const Practice1SliderPage(),
+                                ),
+                              );
+                              break;
+                            case 2:
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const Practice2SliderPage(),
+                                ),
+                              );
+                          }
+                        }),
+                  ),
+                ],
               ),
             )
           : Container()
