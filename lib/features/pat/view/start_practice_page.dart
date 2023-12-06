@@ -11,7 +11,7 @@ class StartPracticePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: AppBarWidget(title: "Veris"),
-      floatingActionButton: SliderNavigation(nexPage: Practice1Page()),
+      floatingActionButton: SliderNavigation(nextPage: Practice1Page()),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
         padding: EdgeInsets.all(16.0),

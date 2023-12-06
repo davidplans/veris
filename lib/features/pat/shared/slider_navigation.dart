@@ -2,14 +2,14 @@ import 'package:Veris/common/widgets/ui_components/action_button.dart';
 import 'package:flutter/material.dart';
 
 class SliderNavigation extends StatelessWidget {
-  final Widget nexPage;
+  final Widget nextPage;
   final bool isNeedHideBackButton;
   final String backButtonName;
   final String nextButtonName;
 
   const SliderNavigation(
       {Key? key,
-      required this.nexPage,
+      required this.nextPage,
       this.isNeedHideBackButton = false,
       this.backButtonName = 'Back',
       this.nextButtonName = 'Next'})
@@ -45,7 +45,7 @@ class SliderNavigation extends StatelessWidget {
                   action: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => nexPage,
+                        builder: (context) => nextPage,
                       ),
                     );
                   })),

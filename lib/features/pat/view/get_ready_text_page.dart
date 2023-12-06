@@ -4,8 +4,6 @@ import 'package:Veris/features/pat/baselines/baseline_page.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:flutter/material.dart';
 
-
-
 class GetReadyPage extends StatelessWidget {
   const GetReadyPage({super.key});
 
@@ -13,7 +11,7 @@ class GetReadyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: const AppBarWidget(title: "Veris"),
-        floatingActionButton: const SliderNavigation(nexPage: BaselinePage()),
+        floatingActionButton: const SliderNavigation(nextPage: BaselinePage()),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Padding(
           padding: const EdgeInsets.all(16.0),

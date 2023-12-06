@@ -20,7 +20,7 @@ class KnobWidget extends StatefulWidget {
 class _KnobWidgetState extends State<KnobWidget> {
   double _angle = 0.0;
   double _angleKnobView = 0.0;
-  double _lastRadien = 0.0;
+  double lastRadien = 0.0;
 
   Offset lastVector = Offset.zero;
 
@@ -55,7 +55,7 @@ class _KnobWidgetState extends State<KnobWidget> {
           .reduce((value, element) => (value < element) ? value : element);
       double knobValue = [-range, min]
           .reduce((value, element) => (value > element) ? value : element);
-      _lastRadien = value;
+      lastRadien = value;
       widget.onChangedKnobValue(knobValue);
   }
 

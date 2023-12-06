@@ -25,7 +25,7 @@ class _TutorialSliderPageState extends State<TutorialSliderPage> {
     return Scaffold(
       appBar: const AppBarWidget(title: "Veris"),
       floatingActionButton: const SliderNavigation(
-        nexPage: TutorialBodyPage(),
+        nextPage: TutorialBodyPage(),
         nextButtonName: 'Done',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

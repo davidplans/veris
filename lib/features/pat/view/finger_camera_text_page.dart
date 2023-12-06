@@ -12,7 +12,7 @@ class FingerCameraPage extends StatelessWidget {
     return const Scaffold(
         appBar: AppBarWidget(title: "Veris"),
         floatingActionButton: SliderNavigation(
-          nexPage: DelayVideoPage(),
+          nextPage: DelayVideoPage(),
           nextButtonName: 'Next',
           isNeedHideBackButton: true,
         ),

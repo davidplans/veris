@@ -12,7 +12,7 @@ class DontTryPulsePage extends StatelessWidget {
     return const Scaffold(
       appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: SliderNavigation(
-        nexPage: StartPracticePage(),
+        nextPage: StartPracticePage(),
         nextButtonName: 'Continue',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

@@ -30,7 +30,7 @@ abstract class ImageProcessing {
 
   static int _decodeYUV420SPtoRedBlueGreenSum(
       Uint8List yuv420sp, int width, int height, int type) {
-    if (yuv420sp == null) return 0;
+    if (yuv420sp.isEmpty) return 0;
 
     final int frameSize = width * height;
     int sum = 0;
@@ -98,7 +98,7 @@ abstract class ImageProcessing {
      */
   static double decodeBGRA8888toRGB(
       Uint8List yuv420sp, int width, int height, int type) {
-    if (yuv420sp == null) return 0;
+    if (yuv420sp.isEmpty) return 0;
     final int frameSize = width * height;
 
     int sum = _decodeYUV420SPtoRedBlueGreenSum(yuv420sp, width, height, type);

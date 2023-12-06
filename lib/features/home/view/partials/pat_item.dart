@@ -24,7 +24,7 @@ class PatItem extends StatelessWidget {
               trailing: const Wrap(
                 spacing: 12, // space between two icons
                 children: <Widget>[
-                  Icon(Icons.arrow_forward), // icon-1
+                  Icon(Icons.arrow_forward),
                 ],
               ),
               onTap: (() async {

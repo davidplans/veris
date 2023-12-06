@@ -10,7 +10,7 @@ class FindPlacePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
         appBar: AppBarWidget(title: "Veris"),
-        floatingActionButton: SliderNavigation(nexPage: GetReadyPage()),
+        floatingActionButton: SliderNavigation(nextPage: GetReadyPage()),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Padding(
           padding: EdgeInsets.all(16.0),

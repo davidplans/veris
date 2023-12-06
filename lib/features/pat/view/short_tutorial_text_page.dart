@@ -12,7 +12,7 @@ class ShortTutorialPage extends StatelessWidget {
     return const Scaffold(
       appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: SliderNavigation(
-        nexPage: ShortTutorialVideoPage(),
+        nextPage: ShortTutorialVideoPage(),
         nextButtonName: 'Continue',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

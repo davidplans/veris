@@ -238,7 +238,7 @@ class _BaselinePageState extends State<BaselinePage>
         appBar: const AppBarWidget(title: "Veris - Baselines"),
         floatingActionButton: _measurementWasFinished
             ? const SliderNavigation(
-                nexPage: FingerCameraPage(),
+                nextPage: FingerCameraPage(),
                 nextButtonName: 'Continue',
                 isNeedHideBackButton: true,
               )

@@ -2,7 +2,6 @@ import 'package:Veris/features/pat/models/sensor.dart';
 import 'package:Veris/features/pat/services/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class HeartBPM extends StatefulWidget {
   final void Function(int) onBPM;
@@ -74,7 +73,7 @@ class _HeartBPMState extends State<HeartBPM> {
     try {
       List<CameraDescription> cameras = await availableCameras();
       _controller = CameraController(cameras.first, ResolutionPreset.low,
-          enableAudio: false, imageFormatGroup: ImageFormatGroup.yuv420);
+          enableAudio: false);
 
       await _controller!.initialize();
 
@@ -103,13 +102,15 @@ class _HeartBPMState extends State<HeartBPM> {
       growable: true);
 
   void _scanImage(CameraImage image) async {
-    // _isNoFinger = !ImageProcessing.isAvailableFingerOnCamera(image);
+    _isNoFinger = !ImageProcessing.isAvailableFingerOnCamera(image);
     double avg =
         image.planes.first.bytes.reduce((value, element) => value + element) /
             image.planes.first.bytes.length;
 
     measureWindow.removeAt(0);
     measureWindow.add(SensorValue(time: DateTime.now(), value: avg));
+
+    widget.onFingerPresentChanged(_isNoFinger);
 
     _smoothBPM(avg).then((_) {
       Future<void>.delayed(Duration(milliseconds: widget.sampleDelay))
@@ -165,7 +166,6 @@ class _HeartBPMState extends State<HeartBPM> {
         _max = newAvg;
         _counter++;
         if (_counter >= 6) {
-
           _counter = 0;
           widget.onBPM(currentValue);
         }

@@ -18,7 +18,7 @@ class _TutorialBodyPageState extends State<TutorialBodyPage> {
     return Scaffold(
       appBar: const AppBarWidget(title: "Veris"),
       floatingActionButton: const SliderNavigation(
-        nexPage: DontTryPulsePage(),
+        nextPage: DontTryPulsePage(),
         nextButtonName: 'Continue',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

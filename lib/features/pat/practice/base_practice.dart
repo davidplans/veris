@@ -202,19 +202,11 @@ class _PracticeWidgetState extends State<PracticeWidget>
   }
 
   _mainCalculate() {
-    print('NORM1 $_currentKnobValue');
-    print('NORM2 $_range');
-
     _normalisedValue = (_currentKnobValue + _range) / (2 * _range);
-    print('NORM3 $_normalisedValue');
     _shiftedRad = _normalisedValue * (2 * math.pi);
-    print('shiftedRad $_shiftedRad');
     _rad = (_shiftedRad - math.pi);
-    print('rad $_rad');
-
     if (_currentKnobValue == 0) {
       _currentKnobValue = _randomGen(-1, 1);
-      print('RANDOM $_currentKnobValue');
     }
   }
 

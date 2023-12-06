@@ -12,7 +12,7 @@ class KnobPointPage extends StatelessWidget {
     return const Scaffold(
       appBar: AppBarWidget(title: "Veris"),
       floatingActionButton: SliderNavigation(
-        nexPage: ShortTutorialPage(),
+        nextPage: ShortTutorialPage(),
         nextButtonName: 'Continue',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
