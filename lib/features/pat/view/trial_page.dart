@@ -32,7 +32,7 @@ class _TrialPageState extends State<TrialPage> {
   double _instantErr = 0;
   double _averageBpm = 0;
 
-  double _currentKnobValue = 0; 
+  double _currentKnobValue = 0;
 
   final double _secondsPerMin = 60.0;
   final double _shortestDelay = 60.0 / 140.0;
@@ -167,116 +167,113 @@ class _TrialPageState extends State<TrialPage> {
       Scaffold(
         appBar: const AppBarWidget(title: "Veris - TRIALs"),
         body: SizedBox(
-            child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Config',
-                          textAlign: TextAlign.center,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Config',
+                            textAlign: TextAlign.center,
+                          ),
+                          Text('Total trials - $_configMaxTrials',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                          Text('BodySelect - $_configStepBodySelect',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      )),
+                  _isBPMEnabled
+                      ? HeartBPM(
+                          context: context,
+                          onFingerPresentChanged: (isPresent) => setState(() {
+                            _isNoFinger = isPresent;
+                          }),
+                          onBPM: (instantBPM) => setState(() {
+                            if (_instantBPMs.length >= 100) {
+                              _instantBPMs.removeAt(0);
+                            }
+                            _instantBPMs.add(instantBPM);
+                            _beatDetected(instantBPM);
+                          }),
+                        )
+                      : Container(
+                          constraints: const BoxConstraints.tightFor(
+                            width: 100,
+                            height: 130,
+                          ),
                         ),
-                        Text('Total trials - $_configMaxTrials',
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
-                        Text('BodySelect - $_configStepBodySelect',
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
-                      ],
-                    )),
-                _isBPMEnabled
-                    ? HeartBPM(
-                        context: context,
-                        onFingerPresentChanged: (isPresent) => setState(() {
-                          _isNoFinger = isPresent;
-                        }),
-                        onBPM: (instantBPM) => setState(() {
-                          if (_instantBPMs.length >= 100) {
-                            _instantBPMs.removeAt(0);
-                          }
-                          _instantBPMs.add(instantBPM);
-                          _beatDetected(instantBPM);
-                        }),
-                      )
-                    : Container(
-                        constraints: const BoxConstraints.tightFor(
-                          width: 100,
-                          height: 130,
-                        ),
-                      ),
-                Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Complete trial:',
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          "$_completeTrials of $_configMaxTrials",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    )),
-              ],
-            ),
-            const Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Text(
-                  "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                  )),
-            ),
-            const SizedBox(height: 40),
-            Container(
-              width: 250,
-              height: 250,
-              color: Colors.white,
-              child: Stack(children: [
-                Image(
-                  image: AssetImage(ImageConstant.imgKnob),
-                ),
-                KnobWidget(
-                  currentKnobValue: _currentKnobValue,
-                  knobValueRange: _knobValueRange,
-                  onChangedKnobValue: (changedKnobValue) => setState(() {
-                    _currentKnobValue = changedKnobValue;
-                  }),
-                ),
-              ]),
-            ),
-            const SizedBox(height: 40),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 15, 32, 66),
-                  textStyle: const TextStyle(color: Colors.white),
-                ),
-                child: const Text("Confirm"),
-                onPressed: () {
-                  setState(() {
-                    if (_isBPMEnabled) {
-                      _isBPMEnabled = false;
-                    }
-                  });
-                  _confirmAndSave();
-                  _deInit();
-                  Navigator.of(context)
-                      .push<void>(ConfidenceSliderPage.route());
-                  // (listSelectSteps.contains(_countTrials))
-                  //     ? Navigator.of(context).push<void>(BodySelectPage.route())
-                  //     : Navigator.of(context)
-                  //         .push<void>(ConfidenceSliderPage.route());
-                },
+                  Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Complete trial:',
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            "$_completeTrials of $_configMaxTrials",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      )),
+                ],
               ),
-            )
-          ],
-        )),
+              const Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                    "Move the dial until the tone matches your heart-beat, to the best of your perception. Please press confirm when you are done.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    )),
+              ),
+              const SizedBox(height: 40),
+              Container(
+                width: 250,
+                height: 250,
+                color: Colors.white,
+                child: Stack(children: [
+                  Image(
+                    image: AssetImage(ImageConstant.imgKnob),
+                  ),
+                  KnobWidget(
+                    currentKnobValue: _currentKnobValue,
+                    knobValueRange: _knobValueRange,
+                    onChangedKnobValue: (changedKnobValue) => setState(() {
+                      _currentKnobValue = changedKnobValue;
+                    }),
+                  ),
+                ]),
+              ),
+              const SizedBox(height: 40),
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 15, 32, 66),
+                    textStyle: const TextStyle(color: Colors.white),
+                  ),
+                  child: const Text("Confirm"),
+                  onPressed: () {
+                    setState(() {
+                      if (_isBPMEnabled) {
+                        _isBPMEnabled = false;
+                      }
+                    });
+                    _confirmAndSave();
+                    _deInit();
+                    Navigator.of(context)
+                        .push<void>(ConfidenceSliderPage.route());
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
       ),
       WrongFingerPlace(isNoFinger: _isNoFinger),
     ]);

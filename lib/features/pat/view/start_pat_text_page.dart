@@ -1,4 +1,5 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/practice/base_practice_widget.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:Veris/features/pat/view/find_place_text_page.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,8 @@ class StartPatPage extends StatelessWidget {
     return const Scaffold(
         appBar: AppBarWidget(title: "Veris"),
         floatingActionButton: SliderNavigation(
-          nextPage: FindPlacePage(),
+          // nextPage: FindPlacePage(),
+          nextPage: PracticeWidget(),
           isNeedHideBackButton: true,
           nextButtonName: 'Continue',
         ),

@@ -1,5 +1,6 @@
 import 'package:Veris/core/user/user.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/features/pat/practice/base_practice_widget.dart';
 import 'package:Veris/features/pat/services/firebase_service.dart';
 import 'package:Veris/features/pat/view/body_select_page.dart';
 import 'package:Veris/features/pat/view/finish_page.dart';
@@ -10,7 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfidenceSliderPage extends StatefulWidget {
-  const ConfidenceSliderPage({super.key});
+  final int practiceTrialNumber;
+  const ConfidenceSliderPage({super.key, this.practiceTrialNumber = 0});
   static Route route() {
     return MaterialPageRoute<void>(
         builder: (_) => const ConfidenceSliderPage());
@@ -35,13 +37,15 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
   @override
   void initState() {
     super.initState();
-    listSelectSteps.add(_currentStep);
     _getTrialConfig();
   }
 
   _getTrialConfig() async {
-    _calculateStep(_configMaxTrials, _configStepBodySelect);    
     _prefs = await SharedPreferences.getInstance();
+    if (widget.practiceTrialNumber != 0) return;
+
+    listSelectSteps.add(_currentStep);
+    _calculateStep(_configMaxTrials, _configStepBodySelect);
     _completeTrials = await _prefs.getInt('completeTrials') ?? 0;
     _configMaxTrials = await _prefs.getInt('maxTrials') ?? 20;
     _configStepBodySelect = await _prefs.getInt('stepBodySelect') ?? 5;
@@ -72,10 +76,12 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
   @override
   Widget build(BuildContext context) {
     user = context.select((AuthBloc bloc) => bloc.state.user);
-
+    print('PRACTICETRIALNUMBER: ${widget.practiceTrialNumber}');
     return Scaffold(
       appBar: AppBar(
-          title: Text('Veris TRIAL $_currentTrialNumber - CONFIDENCE'),
+          title: Text(widget.practiceTrialNumber == 0
+              ? 'Veris TRIAL $_currentTrialNumber - CONFIDENCE'
+              : 'Veris - PRACTICE TRIAL ${widget.practiceTrialNumber}'),
           automaticallyImplyLeading: false),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -88,9 +94,10 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
               flex: 1,
               child: FloatingActionButton.extended(
                 backgroundColor: const Color(0XFF0F2042),
-                onPressed: () {
+                onPressed: () async {
                   FirebaseService.saveDataToFirebase(user, _currentSliderValue);
                   if (_configMaxTrials == _currentTrialNumber) {
+                    _prefs.remove('completeTrials');
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         duration: Duration(seconds: 5),
@@ -102,15 +109,24 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
                         builder: (context) => const FinishPage(),
                       ),
                     );
-                  } else {
+                  } else if (widget.practiceTrialNumber == 0 ||
+                      widget.practiceTrialNumber == 2) {
                     (listSelectSteps.contains(_completeTrials))
                         ? Navigator.of(context)
                             .push<void>(BodySelectPage.route())
                         : Navigator.of(context).push<void>(
                             TrialPage.route(),
                           );
+                    _prefs.remove('practiceTrialNumber');
+                    if (widget.practiceTrialNumber == 2) return;
                     _completeTrials++;
-                    _prefs.setInt('completeTrials', _completeTrials);
+                    await _prefs.setInt('completeTrials', _completeTrials);
+                  } else {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PracticeWidget(),
+                      ),
+                    );
                   }
                 },
                 label: const Text(

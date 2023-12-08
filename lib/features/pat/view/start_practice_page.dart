@@ -1,4 +1,4 @@
-import 'package:Veris/features/pat/practice/practice1_page.dart';
+import 'package:Veris/features/pat/practice/base_practice_widget.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ class StartPracticePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: AppBarWidget(title: "Veris"),
-      floatingActionButton: SliderNavigation(nextPage: Practice1Page()),
+      floatingActionButton: SliderNavigation(nextPage: PracticeWidget()),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
         padding: EdgeInsets.all(16.0),
