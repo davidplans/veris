@@ -21,10 +21,10 @@ class PatItem extends StatelessWidget {
               title: const Text("Start test"),
               textColor: Colors.white,
               iconColor: Colors.white,
-              trailing: Wrap(
+              trailing: const Wrap(
                 spacing: 12, // space between two icons
-                children: const <Widget>[
-                  Icon(Icons.arrow_forward), // icon-1
+                children: <Widget>[
+                  Icon(Icons.arrow_forward),
                 ],
               ),
               onTap: (() async {

@@ -23,9 +23,9 @@ class _TutorialSliderPageState extends State<TutorialSliderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(title: "Veris"),
+      appBar: const AppBarWidget(title: "Veris"),
       floatingActionButton: const SliderNavigation(
-        nexPage: TutorialBodyPage(),
+        nextPage: TutorialBodyPage(),
         nextButtonName: 'Done',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -60,8 +60,8 @@ class _TutorialSliderPageState extends State<TutorialSliderPage> {
                 _changeSlider(value);
               },
             ),
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Expanded(child: Text("Not at all \nconfident")),
                 Expanded(
                     child: Text(

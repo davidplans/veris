@@ -16,9 +16,9 @@ class _TutorialBodyPageState extends State<TutorialBodyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(title: "Veris"),
+      appBar: const AppBarWidget(title: "Veris"),
       floatingActionButton: const SliderNavigation(
-        nexPage: DontTryPulsePage(),
+        nextPage: DontTryPulsePage(),
         nextButtonName: 'Continue',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -26,12 +26,10 @@ class _TutorialBodyPageState extends State<TutorialBodyPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Container(
-              child: const Text(
-                textAlign: TextAlign.center,
-                "You can feel your heartbeat in different places in your body, such as your chest or your fingers. You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
-                style: TextStyle(fontSize: 16.0),
-              ),
+            const Text(
+              textAlign: TextAlign.center,
+              "You can feel your heartbeat in different places in your body, such as your chest or your fingers. You will be asked to indicate where you felt your heartbeat on a body map (like the one below) once every 5 trials. You can choose any of the highlighted body parts or you can select \"nowhere\" if you haven't felt your heartbeat in any particular place.",
+              style: TextStyle(fontSize: 16.0),
             ),
             const SizedBox(
               height: 20,

@@ -20,7 +20,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   late final NotificationService notificationService;
 
   List<ModuleForHomePage> _modules = [];
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final studyProtocolHelper = StudyProtocolHelper();
   String _bannerUrl = '';
 

@@ -1,15 +1,18 @@
 import 'package:Veris/core/user/user.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/features/pat/practice/base_practice_widget.dart';
+import 'package:Veris/features/pat/services/firebase_service.dart';
+import 'package:Veris/features/pat/view/body_select_page.dart';
 import 'package:Veris/features/pat/view/finish_page.dart';
+import 'package:Veris/features/pat/view/trial_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'trial_page.dart';
-
 class ConfidenceSliderPage extends StatefulWidget {
-  const ConfidenceSliderPage({super.key});
+  final int practiceTrialNumber;
+  const ConfidenceSliderPage({super.key, this.practiceTrialNumber = 0});
   static Route route() {
     return MaterialPageRoute<void>(
         builder: (_) => const ConfidenceSliderPage());
@@ -23,22 +26,31 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
   double _currentSliderValue = 5;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   late User user;
-  late String currentModuleResultId;
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late final _prefs;
   int _completeTrials = 0;
-  late String studyId;
+  List<int> listSelectSteps = [];
+  int _currentStep = 1;
+  int _configMaxTrials = 20;
+  int _configStepBodySelect = 5;
+  int _currentTrialNumber = 0;
 
   @override
   void initState() {
     super.initState();
-    _prefs.then((SharedPreferences p) {
-      _completeTrials = p.getInt('completeTrials') ?? 0;
-      currentModuleResultId = p.getString('currentModuleResultId') ?? '';
-      _completeTrials++;
-      studyId = p.getString('studyId') ?? "";
-      setState(() {});
-    });
-    // _playBeep(_currentValue);
+    _getTrialConfig();
+  }
+
+  _getTrialConfig() async {
+    _prefs = await SharedPreferences.getInstance();
+    if (widget.practiceTrialNumber != 0) return;
+
+    listSelectSteps.add(_currentStep);
+    _calculateStep(_configMaxTrials, _configStepBodySelect);
+    _completeTrials = await _prefs.getInt('completeTrials') ?? 0;
+    _configMaxTrials = await _prefs.getInt('maxTrials') ?? 20;
+    _configStepBodySelect = await _prefs.getInt('stepBodySelect') ?? 5;
+    _currentTrialNumber = await _getCurrentTrialNumber(_completeTrials);
+    setState(() {});
   }
 
   _changeSlider(double value) {
@@ -47,12 +59,29 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
     });
   }
 
+  _calculateStep(int total, int range) {
+    while (total >= _currentStep) {
+      _currentStep += range;
+      if (_currentStep <= total) {
+        listSelectSteps.add(_currentStep);
+      }
+    }
+  }
+
+  Future<int> _getCurrentTrialNumber(int completeTrials) async {
+    completeTrials++;
+    return completeTrials;
+  }
+
   @override
   Widget build(BuildContext context) {
     user = context.select((AuthBloc bloc) => bloc.state.user);
+    print('PRACTICETRIALNUMBER: ${widget.practiceTrialNumber}');
     return Scaffold(
       appBar: AppBar(
-          title: Text('Veris TRIAL $_completeTrials - CONFIDENCE'),
+          title: Text(widget.practiceTrialNumber == 0
+              ? 'Veris TRIAL $_currentTrialNumber - CONFIDENCE'
+              : 'Veris - PRACTICE TRIAL ${widget.practiceTrialNumber}'),
           automaticallyImplyLeading: false),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -66,92 +95,39 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
               child: FloatingActionButton.extended(
                 backgroundColor: const Color(0XFF0F2042),
                 onPressed: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  final maxTrials = prefs.getInt('maxTrials');
-                  final selectedBody = prefs.getString('selectedBody');
-                  final numRuns = prefs.getInt('numRuns');
-                  final knobScales = prefs.getStringList('knobScales');
-                  final instantBPMs = prefs.getStringList('instantBPMs');
-                  final instantPeriods = prefs.getStringList('instantPeriods');
-                  final averagePeriods = prefs.getStringList('averagePeriods');
-                  final instantErrs = prefs.getStringList('instantErrs');
-                  final currentDelays = prefs.getStringList('currentDelays');
-                  prefs.setInt('completeTrials', numRuns ?? 0);
-                  DateTime formatDateTrial = DateTime.now();
-
-                  List<double> doubleInstantBPMs = [];
-                  if (instantBPMs != null) {
-                    doubleInstantBPMs = instantBPMs.map(double.parse).toList();
+                  FirebaseService.saveDataToFirebase(user, _currentSliderValue);
+                  if (_configMaxTrials == _currentTrialNumber) {
+                    _prefs.remove('completeTrials');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(seconds: 5),
+                        content: Text("Data stored! \n Thank you."),
+                      ),
+                    );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const FinishPage(),
+                      ),
+                    );
+                  } else if (widget.practiceTrialNumber == 0 ||
+                      widget.practiceTrialNumber == 2) {
+                    (listSelectSteps.contains(_completeTrials))
+                        ? Navigator.of(context)
+                            .push<void>(BodySelectPage.route())
+                        : Navigator.of(context).push<void>(
+                            TrialPage.route(),
+                          );
+                    _prefs.remove('practiceTrialNumber');
+                    if (widget.practiceTrialNumber == 2) return;
+                    _completeTrials++;
+                    await _prefs.setInt('completeTrials', _completeTrials);
+                  } else {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PracticeWidget(),
+                      ),
+                    );
                   }
-
-                  List<double> doubleInstantPeriods = [];
-                  if (instantPeriods != null) {
-                    doubleInstantPeriods =
-                        instantPeriods.map(double.parse).toList();
-                  }
-
-                  List<double> doubleAveragePeriods = [];
-                  if (averagePeriods != null) {
-                    doubleAveragePeriods =
-                        averagePeriods.map(double.parse).toList();
-                  }
-
-                  List<double> doubleInstantErrs = [];
-                  if (instantErrs != null) {
-                    doubleInstantErrs = instantErrs.map(double.parse).toList();
-                  }
-
-                  List<double> doubleCurrentDelays = [];
-                  if (currentDelays != null) {
-                    doubleCurrentDelays =
-                        currentDelays.map(double.parse).toList();
-                  }
-
-                  List<double> doubleKnobScales = [];
-                  if (knobScales != null) {
-                    doubleKnobScales = knobScales.map(double.parse).toList();
-                  }
-
-                  final trialData = {
-                    "numRuns": numRuns,
-                    "startTrial": formatDateTrial,
-                    "selectedBody": selectedBody,
-                    "confidence": _currentSliderValue,
-                    "endDate": DateTime.now(),
-                    "instantBPMs": doubleInstantBPMs,
-                    "recordedHR": doubleAveragePeriods,
-                    "knobScales": doubleKnobScales,
-                    "currentDelays": doubleCurrentDelays,
-                    "instantPeriods": doubleInstantPeriods,
-                    "averagePeriods": doubleAveragePeriods,
-                    "instantErrs": doubleInstantErrs,
-                  };
-
-                  users
-                      .doc(user.id)
-                      .collection('studies')
-                      .doc(currentModuleResultId)
-                      .collection('trials')
-                      .add(trialData)
-                      .then((_) {
-                    if (maxTrials == numRuns) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          duration: Duration(seconds: 5),
-                          content: Text("Data stored! \n Thank you."),
-                        ),
-                      );
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const FinishPage(),
-                        ),
-                      );
-                    } else {
-                      Navigator.of(context).push<void>(
-                        TrialPage.route(),
-                      );
-                    }
-                  });
                 },
                 label: const Text(
                   "Confirm",
@@ -190,8 +166,8 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
                   _changeSlider(value);
                 },
               ),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Expanded(child: Text("Not at all \nconfident")),
                   Expanded(
                       child: Text(
