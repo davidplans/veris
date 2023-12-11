@@ -9,19 +9,19 @@ class FingerCameraPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
         appBar: AppBarWidget(title: "Veris"),
-        floatingActionButton: const SliderNavigation(
-          nexPage: DelayVideoPage(),
+        floatingActionButton: SliderNavigation(
+          nextPage: DelayVideoPage(),
           nextButtonName: 'Next',
           isNeedHideBackButton: true,
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Center(
             child: Column(
-              children: const [
+              children: [
                 SizedBox(
                   height: 200.0,
                 ),

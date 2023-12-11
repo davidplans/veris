@@ -1,4 +1,5 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/features/pat/practice/base_practice_widget.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:Veris/features/pat/view/find_place_text_page.dart';
 import 'package:flutter/material.dart';
@@ -8,19 +9,20 @@ class StartPatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
         appBar: AppBarWidget(title: "Veris"),
-        floatingActionButton: const SliderNavigation(
-          nexPage: FindPlacePage(),
+        floatingActionButton: SliderNavigation(
+          // nextPage: FindPlacePage(),
+          nextPage: PracticeWidget(),
           isNeedHideBackButton: true,
           nextButtonName: 'Continue',
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Center(
             child: Column(
-              children: const [
+              children: [
                 SizedBox(
                   height: 200.0,
                 ),

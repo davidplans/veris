@@ -9,24 +9,22 @@ class DontTryPulsePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: AppBarWidget(title: "Veris"),
-      floatingActionButton: const SliderNavigation(
-        nexPage: StartPracticePage(),
+      floatingActionButton: SliderNavigation(
+        nextPage: StartPracticePage(),
         nextButtonName: 'Continue',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              child: const Text(
-                textAlign: TextAlign.center,
-                "For the duration of this task, please do not actively try to feel your pulse with your hand; we are only interested in what you feel! You might feel your heartbeat in various bodily locations. Just make sure you pick one and stick to using that one during the task.\n\nWhen you are ready to start, please sit comfortably upright with your earphones on and press “Сontinue”.",
-                style: TextStyle(fontSize: 18.0),
-              ),
+            Text(
+              textAlign: TextAlign.center,
+              "For the duration of this task, please do not actively try to feel your pulse with your hand; we are only interested in what you feel! You might feel your heartbeat in various bodily locations. Just make sure you pick one and stick to using that one during the task.\n\nWhen you are ready to start, please sit comfortably upright with your earphones on and press “Сontinue”.",
+              style: TextStyle(fontSize: 18.0),
             ),
           ],
         ),

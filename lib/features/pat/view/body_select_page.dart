@@ -1,8 +1,8 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/features/pat/models/body.dart';
 import 'package:Veris/features/pat/services/body_select_size_controller.dart';
-import 'package:Veris/features/pat/view/confidence_slider_page.dart';
 import 'package:Veris/features/pat/services/body_svg_parser.dart';
+import 'package:Veris/features/pat/view/trial_page.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -67,8 +67,8 @@ class _BodySelectPageState extends State<BodySelectPage> {
                     ? () {
                         _setSelect();
                         Navigator.of(context).push<void>(
-                          ConfidenceSliderPage.route(),
-                        );
+                            TrialPage.route(),
+                          );
                       }
                     : null,
                 style: ElevatedButton.styleFrom(

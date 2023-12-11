@@ -49,34 +49,36 @@ class _QrScannerState extends State<QrScanner> {
         ),
         body: Stack(children: [
           MobileScanner(
-              allowDuplicates: false,
               controller: cameraController,
-              onDetect: (barcode, args) async {
-                if (barcode.rawValue == null) {
-                  debugPrint('Failed to scan QRcode');
-                } else {
-                  final decodeString = barcode.rawValue!;
-                  setState(() {
-                    code = decodeString;
-                  });
+              onDetect: (capture) async {
+                final List<Barcode> barcodes = capture.barcodes;
+                for (final barcode in barcodes) {
+                  if (barcode.rawValue == null) {
+                    debugPrint('Failed to scan QRcode');
+                  } else {
+                    final decodeString = barcode.rawValue!;
+                    setState(() {
+                      code = decodeString;
+                    });
 
-                  final res = await studyProtocolHelper.getAndSaveStudyProtocol(
-                      context, decodeString);
+                    final res = await studyProtocolHelper
+                        .getAndSaveStudyProtocol(context, decodeString);
 
-                  if (!res) {
-                    return;
+                    if (!res) {
+                      return;
+                    }
+
+                    cameraController.stop();
+                    cameraController.dispose();
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AuthView()),
+                    );
+
+                    debugPrint('Barcode found! $code');
                   }
-
-                  cameraController.stop();
-                  cameraController.dispose();
-
-                  // ignore: use_build_context_synchronously
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AuthView()),
-                  );
-
-                  debugPrint('Barcode found! $code');
                 }
               }),
           Center(
