@@ -13,9 +13,9 @@ class SignUpForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
-        if (state.status.isSubmissionSuccess) {
+        if (state.status.isSuccess) {
           Navigator.of(context).pop();
-        } else if (state.status.isSubmissionFailure) {
+        } else if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -63,7 +63,7 @@ class _EmailInput extends StatelessWidget {
           decoration: InputDecoration(
             labelText: 'email',
             helperText: '',
-            errorText: state.email.invalid ? 'invalid email' : null,
+            errorText: state.email.isNotValid ? 'invalid email' : null,
           ),
         );
       },
@@ -85,7 +85,7 @@ class _PasswordInput extends StatelessWidget {
           decoration: InputDecoration(
             labelText: 'password',
             helperText: '',
-            errorText: state.password.invalid ? 'invalid password' : null,
+            errorText: state.password.isNotValid ? 'invalid password' : null,
           ),
         );
       },
@@ -110,7 +110,7 @@ class _ConfirmPasswordInput extends StatelessWidget {
           decoration: InputDecoration(
             labelText: 'confirm password',
             helperText: '',
-            errorText: state.confirmedPassword.invalid
+            errorText: state.confirmedPassword.isNotValid
                 ? 'passwords do not match'
                 : null,
           ),
@@ -126,7 +126,7 @@ class _SignUpButton extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status.isSubmissionInProgress
+        return state.status.isInProgress
             ? const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF189B8D)))
             : ElevatedButton(
@@ -137,9 +137,7 @@ class _SignUpButton extends StatelessWidget {
                   ),
                   primary: theme.primaryColor,
                 ),
-                onPressed: state.status.isValidated
-                    ? () => context.read<SignUpCubit>().signUpFormSubmitted()
-                    : null,
+                onPressed: () => context.read<SignUpCubit>().signUpFormSubmitted(),
                 child: const Text('SIGN UP'),
               );
       },
