@@ -1,4 +1,4 @@
-class FontSize {
+class FontConstants {
     // FONT FAMILY
   static const String interFontFamily = 'Inter';
 

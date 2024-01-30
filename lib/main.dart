@@ -29,13 +29,6 @@ Future<void> main() async {
 
   bool isStudyProtocolAvailable = sharedPreferences.get('studyId') != null;
 
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-        statusBarColor: Color(0XFF0F2042),
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Color(0xFF000000),
-        systemNavigationBarIconBrightness: Brightness.dark),
-  );
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   final authenticationRepository = AuthenticationRepository();

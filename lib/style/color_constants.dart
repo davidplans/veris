@@ -10,6 +10,7 @@ class ColorConstants {
   //################## Text #####################
   static const textPrimaryColor = Color(0xFF131F44);
   static const textHighlightedColor = Color(0xFF579BA5);
+  static const textSecondaryColor = Color(0xBF131F44);
   static const textDisabledColor = Color(0x66131F44);
   static const textInvertedLigthColor = Color(0xCCFFFFFF);
   static const textInvertedColor = Color(0xFFFFFFFF);
@@ -17,13 +18,14 @@ class ColorConstants {
   static const iconPrimaryColor = Color(0xCC131F44);
   static const iconSecondaryColor = Color(0xFF579BA5);
   static const iconDisableColor = Color(0x66131F44);
-  static const iconInvertedColor = Color(0x33FFFFFF);
+  static const iconInvertedColor = Color(0xFFFFFFFF);
   //################## Button #####################
   static const btnPrimaryDefaultColor = Color(0xFF222D90);
   static const btnPrimaryPressedColor = Color(0xCC222D90);
   static const btnPrimaryDisabledColor = Color(0x1A222D90);
   static const btnOutlineDefaultColor = Color(0x0D222D90);
   static const btnOutlineBoarderColor = Color(0x80222D90);
+  static const btnLogInGoogleColor = Color(0xFF5E82E4);
   //################## Badge #####################
   static const badgeBackgroundGreenColor = Color(0xFFD9F2DB);
   static const badgeBackgroundOrangeColor = Color(0xFFFFF0C3);
@@ -34,7 +36,7 @@ class ColorConstants {
   static const badgeTextGreyColor = Color(0xFF636477);
   static const badgeTextPinkColor = Color(0xFF86288E);
   //################## Separator #####################
-  static const separatorPrimaryColor = Color(0xA1222D90);
+  static const separatorPrimaryColor = Color(0x1A222D90);
   //################## Progress Bar #####################
   static const progressBarPrimaryColor = Color(0xB3222D90); 
   //################## Test #####################
