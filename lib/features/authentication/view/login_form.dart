@@ -1,8 +1,9 @@
 import 'package:Veris/common/widgets/ui_components/input_text_component.dart';
-import 'package:Veris/common/widgets/ui_components/default_button.dart';
+import 'package:Veris/common/widgets/ui_components/custom_button.dart';
 import 'package:Veris/features/authentication/models/login_state.dart';
 import 'package:Veris/features/authentication/services/login_cubit.dart';
 import 'package:Veris/features/authentication/view/signup_page.dart';
+import 'package:Veris/features/intro/view/welcome_page.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,7 @@ class _Divider extends StatelessWidget {
     return const Row(
       children: [
         Expanded(
-          child: Divider(
+            child: Divider(
           height: 1.0,
           color: ColorConstants.separatorPrimaryColor,
         )),
@@ -187,12 +188,12 @@ class _LoginButton extends StatelessWidget {
         return state.status.isInProgress
             ? const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF189B8D)))
-            : DefaultButton(
+            : CustomButton(
                 key: const Key('loginForm_continue_raisedButton'),
                 title: 'Log In',
                 backgroundColor: ColorConstants.btnPrimaryDefaultColor,
                 titleColor: ColorConstants.textInvertedColor,
-                onPressed: (_) =>
+                onPressed: () =>
                     context.read<LoginCubit>().logInWithCredentials(),
               );
       },
@@ -203,13 +204,13 @@ class _LoginButton extends StatelessWidget {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return DefaultButton(
+    return CustomButton(
       key: const Key('loginForm_createAccount_flatButton'),
       title: 'Log in with Google',
       titleColor: ColorConstants.iconInvertedColor,
       backgroundColor: ColorConstants.btnLogInGoogleColor,
       prefixIconPath: "assets/icons/google.svg",
-      onPressed: (_) => Navigator.of(context).push<void>(SignUpPage.route()),
+      onPressed: () => Navigator.of(context).push<void>(WelcomePage.route()),
     );
   }
 }

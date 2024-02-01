@@ -2,14 +2,14 @@ import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class DefaultButton extends StatefulWidget {
+class CustomButton extends StatefulWidget {
   final String title;
   final Color backgroundColor;
   final Color titleColor;
   final String? prefixIconPath;
   final String? sufixIconPath;
-  final Function(dynamic) onPressed;
-  const DefaultButton({
+  final Function() onPressed;
+  const CustomButton({
     super.key,
     required this.title,
     required this.onPressed,
@@ -20,10 +20,10 @@ class DefaultButton extends StatefulWidget {
   });
 
   @override
-  State<DefaultButton> createState() => _DefaultButtonState();
+  State<CustomButton> createState() => _CustomButtonState();
 }
 
-class _DefaultButtonState extends State<DefaultButton> {
+class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
     final bool isPrefixIcon = widget.prefixIconPath != null;
@@ -32,7 +32,7 @@ class _DefaultButtonState extends State<DefaultButton> {
       width: MediaQuery.of(context).size.width,
       height: 46,
       child: TextButton(
-        onPressed: () => widget.onPressed(true),
+        onPressed: () => widget.onPressed(),
         style: TextButton.styleFrom(
           backgroundColor: widget.backgroundColor,
           shape: const RoundedRectangleBorder(
@@ -61,7 +61,6 @@ class _DefaultButtonState extends State<DefaultButton> {
                   fontWeight: FontWeight.w500,
                   fontSize: FontConstants.fontSize16,
                   height: 1.375),
-
             ),
             isSufixIcon
                 ? Row(
