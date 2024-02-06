@@ -4,7 +4,7 @@ class ColorConstants {
   //################## General #####################
   static const generalPrimaryColor = Color(0xFF222D90);
   static const generalSecondaryColor = Color(0xFF579BA5);
-  static const generalWarningColor = Color(0xFFD94C5D);
+  static const generalWarningColor = const Color(0xFFD94C5D);
   static const generalBackgroundColor = Color(0xFFF0F1F9);
   static const generalInvertedColor = Color(0xFFFFFFFF);
   //################## Text #####################

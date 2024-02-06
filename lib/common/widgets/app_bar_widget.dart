@@ -1,4 +1,3 @@
-import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -40,8 +39,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       // ],
       leading: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: SvgPicture.asset(
-          'assets/icons/arrow-backword.svg',
+        child: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: SvgPicture.asset(
+            'assets/icons/arrow-backword.svg',
+          ),
         ),
       ),
       leadingWidth: 48.0,

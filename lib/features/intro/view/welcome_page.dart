@@ -1,20 +1,17 @@
 import 'package:Veris/common/widgets/ui_components/custom_button.dart';
+import 'package:Veris/features/authentication/view/login_page.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class WelcomePage extends StatefulWidget {
-  const WelcomePage({super.key});
+class WelcomePage extends StatelessWidget {
+  const WelcomePage({Key? key}) : super(key: key);
+  static Page page() => const MaterialPage<void>(child: WelcomePage());
   static Route route() {
     return MaterialPageRoute<void>(builder: (_) => const WelcomePage());
   }
 
-  @override
-  State<WelcomePage> createState() => _WelcomePageState();
-}
-
-class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +53,8 @@ class _WelcomePageState extends State<WelcomePage> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 40.0),
+            padding:
+                const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 40.0),
             child: Column(
               children: [
                 CustomButton(
@@ -79,14 +77,17 @@ class _WelcomePageState extends State<WelcomePage> {
                 const SizedBox(
                   height: 12.0,
                 ),
-                const Text(
-                  'I already have an account',
-                  style: TextStyle(
-                    fontFamily: FontConstants.interFontFamily,
-                    fontSize: FontConstants.fontSize16,
-                    fontWeight: FontWeight.w500,
-                    color: ColorConstants.generalPrimaryColor,
-                    height: 1.25,
+                GestureDetector(
+                  onTap: () {},
+                  child: const Text(
+                    'I already have an account',
+                    style: TextStyle(
+                      fontFamily: FontConstants.interFontFamily,
+                      fontSize: FontConstants.fontSize16,
+                      fontWeight: FontWeight.w500,
+                      color: ColorConstants.generalPrimaryColor,
+                      height: 1.25,
+                    ),
                   ),
                 )
               ],

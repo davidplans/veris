@@ -1,3 +1,4 @@
+import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
@@ -13,29 +14,28 @@ class InputTextComponent extends StatefulWidget {
   final String? errorText;
   final bool isEnable;
   final bool isValid;
-  // final bool canValidate;
   final bool autoCapitalize;
   final bool isObscureText;
-  final List<String>? assetsList;
+  final List<String>? iconsList;
   final Color sufixIconColor;
+  final String? iconAction;
 
-  const InputTextComponent({
-    super.key,
-    required this.onChanged,
-    this.controller,
-    this.keyboardType = TextInputType.text,
-    this.labelText = '',
-    this.placeHolderText,
-    this.hintText,
-    this.errorText,
-    this.isEnable = true,
-    this.isValid = false,
-    this.autoCapitalize = false,
-    this.isObscureText = false,
-    this.assetsList, 
-    this.sufixIconColor = ColorConstants.iconPrimaryColor,
-    // this.canValidate = false,
-  });
+  const InputTextComponent(
+      {super.key,
+      required this.onChanged,
+      this.controller,
+      this.keyboardType = TextInputType.text,
+      this.labelText = '',
+      this.placeHolderText,
+      this.hintText,
+      this.errorText,
+      this.isEnable = true,
+      this.isValid = false,
+      this.autoCapitalize = false,
+      this.isObscureText = false,
+      this.iconsList,
+      this.sufixIconColor = ColorConstants.iconPrimaryColor,
+      this.iconAction});
 
   @override
   State<InputTextComponent> createState() => _InputTextComponentState();
@@ -64,90 +64,110 @@ class _InputTextComponentState extends State<InputTextComponent> {
           child: Text(
             widget.labelText,
             style: const TextStyle(
-              fontSize: FontConstants.fontSize14,
-              color: ColorConstants.textPrimaryColor,
-              fontFamily: FontConstants.interFontFamily,
-              fontWeight: FontWeight.w400,
-              height: 1.14286
-            ),
+                fontSize: FontConstants.fontSize14,
+                color: ColorConstants.textPrimaryColor,
+                fontFamily: FontConstants.interFontFamily,
+                fontWeight: FontWeight.w400,
+                height: 1.14286),
           ),
         ),
-        SizedBox(
-          height: 50,
-          child: TextField(
-            autocorrect: false,
-            controller: widget.controller,
-            keyboardType: widget.keyboardType,
-            obscureText: _isObscureText,
-            textCapitalization: widget.autoCapitalize
-                ? TextCapitalization.words
-                : TextCapitalization.none,
-            cursorHeight: 16.0,
-            cursorWidth: 1.0,
-            cursorColor: ColorConstants.textPrimaryColor,
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(
-                    left: 16, top: 8.0, right: 12.0, bottom: 8.0),
-                enabled: widget.isEnable,
-                filled: true,
-                fillColor: ColorConstants.generalInvertedColor,
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(_borderRadius)),
-                  borderSide: BorderSide(
-                    color:ColorConstants.inputBoarderDefaultColor,
-                    width: _borderWidth,
-                  ),
+        TextField(
+          key: const Key('InputTextComponent'),
+          autocorrect: false,
+          controller: widget.controller,
+          keyboardType: widget.keyboardType,
+          obscureText: _isObscureText,
+          textCapitalization: widget.autoCapitalize
+              ? TextCapitalization.words
+              : TextCapitalization.none,
+          cursorHeight: 16.0,
+          cursorWidth: 1.0,
+          cursorColor: ColorConstants.textPrimaryColor,
+          decoration: InputDecoration(
+              errorText: widget.errorText,
+              errorStyle: const TextStyle(
+                  color: ColorConstants.generalWarningColor,
+                  fontFamily: FontConstants.interFontFamily,
+                  fontSize: FontConstants.fontSize13,
+                  fontWeight: FontWeight.w500,
+                  height: 1.23),
+              contentPadding: const EdgeInsets.only(
+                  left: 16, top: 8.0, right: 12.0, bottom: 8.0),
+              enabled: widget.isEnable,
+              filled: true,
+              fillColor: ColorConstants.generalInvertedColor,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+                borderSide: BorderSide(
+                  color: ColorConstants.inputBoarderDefaultColor,
+                  width: _borderWidth,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(_borderRadius)),
-                  borderSide: BorderSide(
-                    color: ColorConstants.inputBoarderFocusedColor,
-                    width: _borderWidth,
-                  ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+                borderSide: BorderSide(
+                  color: ColorConstants.inputBoarderFocusedColor,
+                  width: _borderWidth,
                 ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(_borderRadius)),
-                  borderSide: BorderSide(
-                    color: ColorConstants.generalWarningColor,
-                    width: _borderWidth,
-                  ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+                borderSide: BorderSide(
+                  color: ColorConstants.generalWarningColor,
+                  width: _borderWidth,
                 ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(_borderRadius)),
-                  borderSide: BorderSide(
-                    color: ColorConstants.generalWarningColor,
-                    width: _borderWidth,
-                  ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+                borderSide: BorderSide(
+                  color: ColorConstants.generalWarningColor,
+                  width: _borderWidth,
                 ),
-                labelText: widget.placeHolderText,
-                errorText: null, 
-                hintText: widget.hintText,
-                labelStyle:
-                    const TextStyle(color: ColorConstants.textDisabledColor),
-                suffixIcon: widget.assetsList != null
-                    ? IconButton(
-                        onPressed: () => setState(() {
-                          _visibility = !_visibility;
-                          _isObscureText = !_isObscureText;
-                        }),
-                        icon: SvgPicture.asset(
-                          colorFilter: ColorFilter.mode(widget.sufixIconColor, BlendMode.srcIn),
-                          _visibility
-                              ? widget.assetsList![0]
-                              : widget.assetsList![1],
-                        ),
-                      )
-                    : null),
-            onChanged: ((text) {
-              widget.onChanged(text);
-            }),
-          ),
+              ),
+              labelText: widget.placeHolderText,
+              hintText: widget.hintText,
+              labelStyle:
+                  const TextStyle(color: ColorConstants.textDisabledColor),
+              suffixIcon: widget.iconsList != null
+                  ? IconButton(
+                      onPressed: () => setState(() {
+                        switch (widget.iconAction) {
+                          case MainConstants.visibilityIconAction:
+                            _visibility = !_visibility;
+                            _isObscureText = !_isObscureText;
+                            break;
+                          case MainConstants.cleanIconAction:
+                            widget.controller!.clear();
+                        }
+                      }),
+                      icon: SvgPicture.asset(
+                        colorFilter: ColorFilter.mode(
+                            widget.errorText == null
+                                ? widget.sufixIconColor
+                                : ColorConstants.generalWarningColor,
+                            BlendMode.srcIn),
+                        _visibility
+                            ? widget.iconsList![0]
+                            : widget.iconsList![1],
+                      ),
+                    )
+                  : null),
+          onChanged: ((text) {
+            widget.onChanged(text);
+          }),
         ),
+        // widget.errorText != null
+        //     ? Text(
+        //         widget.errorText!,
+        //         style: TextStyle(
+        //             color: ColorConstants.generalWarningColor,
+        //             fontFamily: FontConstants.interFontFamily,
+        //             fontSize: FontConstants.fontSize13,
+        //             fontWeight: FontWeight.w500,
+        //             height: 1.23),
+        //       )
+        //     : Container()
       ],
     );
   }
