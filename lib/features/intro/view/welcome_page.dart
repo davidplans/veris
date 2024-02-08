@@ -1,5 +1,5 @@
-import 'package:Veris/common/widgets/ui_components/custom_button.dart';
-import 'package:Veris/features/authentication/view/login_page.dart';
+import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
+import 'package:Veris/features/authentication/view/signup_page.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
@@ -57,9 +57,11 @@ class WelcomePage extends StatelessWidget {
                 const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 40.0),
             child: Column(
               children: [
-                CustomButton(
+                MainButtonComponent(
                   title: 'Sign up with Email',
-                  onPressed: (() {}),
+                  onPressed: () {
+                    Navigator.of(context).push(SignUpPage.route());
+                  },
                   backgroundColor: ColorConstants.btnPrimaryDefaultColor,
                   titleColor: ColorConstants.textInvertedColor,
                   prefixIconPath: 'assets/icons/email.svg',
@@ -67,7 +69,7 @@ class WelcomePage extends StatelessWidget {
                 const SizedBox(
                   height: 12.0,
                 ),
-                CustomButton(
+                MainButtonComponent(
                   title: 'Sign up with Google',
                   onPressed: (() {}),
                   backgroundColor: ColorConstants.btnLogInGoogleColor,

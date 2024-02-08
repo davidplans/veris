@@ -2,14 +2,14 @@ import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomButton extends StatefulWidget {
+class MainButtonComponent extends StatefulWidget {
   final String title;
   final Color backgroundColor;
   final Color titleColor;
   final String? prefixIconPath;
   final String? sufixIconPath;
   final Function() onPressed;
-  const CustomButton({
+  const MainButtonComponent({
     super.key,
     required this.title,
     required this.onPressed,
@@ -20,10 +20,10 @@ class CustomButton extends StatefulWidget {
   });
 
   @override
-  State<CustomButton> createState() => _CustomButtonState();
+  State<MainButtonComponent> createState() => _MainButtonComponentState();
 }
 
-class _CustomButtonState extends State<CustomButton> {
+class _MainButtonComponentState extends State<MainButtonComponent> {
   @override
   Widget build(BuildContext context) {
     final bool isPrefixIcon = widget.prefixIconPath != null;

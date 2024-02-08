@@ -1,3 +1,4 @@
+import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -8,7 +9,15 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      title: Text(
+        title,
+        style: const TextStyle(
+            fontFamily: FontConstants.interFontFamily,
+            fontSize: FontConstants.fontSize20,
+            fontWeight: FontWeight.w500,
+            letterSpacing: -0.3,
+            height: 1.3),
+      ),
       // actions: [
       //   IconButton(
       //       onPressed: () {

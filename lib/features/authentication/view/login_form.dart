@@ -1,5 +1,6 @@
+import 'package:Veris/common/widgets/ui_components/divider_component.dart';
 import 'package:Veris/common/widgets/ui_components/input_text_component.dart';
-import 'package:Veris/common/widgets/ui_components/custom_button.dart';
+import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/features/authentication/models/login_state.dart';
 import 'package:Veris/features/authentication/services/login_cubit.dart';
@@ -21,7 +22,7 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   bool _canEmailValidate = false;
   bool _canPasswordValidate = false;
-final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
@@ -86,7 +87,7 @@ final TextEditingController _emailController = TextEditingController();
                                 'assets/icons/close.svg',
                               ]
                             : null,
-                            iconAction: MainConstants.cleanIconAction,
+                        iconAction: MainConstants.cleanIconAction,
                       );
                     },
                   ),
@@ -140,7 +141,7 @@ final TextEditingController _emailController = TextEditingController();
                           ? const CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
                                   Color(0xFF189B8D)))
-                          : CustomButton(
+                          : MainButtonComponent(
                               key: const Key('loginForm_continue_raisedButton'),
                               title: 'Log In',
                               backgroundColor:
@@ -162,7 +163,7 @@ final TextEditingController _emailController = TextEditingController();
                     },
                   ),
                   const SizedBox(height: 12),
-                  const _Divider(),
+                  const DividerComponent(),
                   const SizedBox(height: 12),
                   _SignUpButton(),
                 ],
@@ -171,40 +172,6 @@ final TextEditingController _emailController = TextEditingController();
           ],
         ),
       ),
-    );
-  }
-}
-
-class _Divider extends StatelessWidget {
-  const _Divider();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        Expanded(
-            child: Divider(
-          height: 1.0,
-          color: ColorConstants.separatorPrimaryColor,
-        )),
-        Padding(
-          padding: EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Text(
-            'or',
-            style: TextStyle(
-                fontFamily: FontConstants.interFontFamily,
-                fontSize: FontConstants.fontSize16,
-                fontWeight: FontWeight.w400,
-                height: 1.375,
-                color: ColorConstants.textSecondaryColor),
-          ),
-        ),
-        Expanded(
-            child: Divider(
-          height: 1.0,
-          color: ColorConstants.separatorPrimaryColor,
-        ))
-      ],
     );
   }
 }
@@ -237,7 +204,7 @@ class _ForgotPassword extends StatelessWidget {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomButton(
+    return MainButtonComponent(
       key: const Key('loginForm_createAccount_flatButton'),
       title: 'Log in with Google',
       titleColor: ColorConstants.iconInvertedColor,
