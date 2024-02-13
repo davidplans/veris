@@ -75,24 +75,25 @@ class _SignUpFormState extends State<_SignUpForm>
         }
         return true;
       case 1:
-        if (state.password.isNotValid) {
+        if (state.password.isNotValid || state.confirmedPassword.isNotValid) {
           setState(() {
             _canPasswordValidate = true;
+            _canConfirmValidate = true;
           });
           return false;
         }
         return true;
       case 2:
-        if (state.confirmedPassword.isNotValid) {
-          _canConfirmValidate = true;
-          return false;
-        }
-        return true;
+      // if (state.confirmedPassword.isNotValid) {
+      //   _canConfirmValidate = true;
+      //   return false;
+      // }
+      // return true;
     }
     return false;
   }
 
-  Map<String, dynamic> _getValidationPasswordMessage(SignUpState state) {
+  Map<String, dynamic> _getPasswordErrorMessage(SignUpState state) {
     Map<String, dynamic> messages = {
       'eightCharacters': ['8 characters or more', 'error'],
       'lowercaseLetter': ['A lowercase letter', 'error'],
@@ -105,6 +106,20 @@ class _SignUpFormState extends State<_SignUpForm>
     //   messages['eightCharacters'][1] = 'succes';
     // }
     return messages;
+  }
+
+  Map<String, dynamic>? _getConfirmPasswordErrorMessage(SignUpState state) {
+    if (state.confirmedPassword.value.isEmpty && _canConfirmValidate) {
+      return {
+        'notEnterConfirmPassword': ['Enter password to confirm', 'error']
+      };
+    }
+    if (state.confirmedPassword.isNotValid && _canConfirmValidate) {
+      return {
+        'passwordDoNotMatch': ['Passwords do not match', 'error']
+      };
+    }
+    return null;
   }
 
   @override
@@ -216,17 +231,17 @@ class _SignUpFormState extends State<_SignUpForm>
                                       'signUpForm_passwordInput_textField'),
                                   onChanged: (password) {
                                     _canPasswordValidate = false;
+                                    _canConfirmValidate = false;
                                     context
                                         .read<SignUpCubit>()
                                         .passwordChanged(password);
                                   },
                                   placeHolderText: 'Enter password',
                                   labelText: 'Password',
-                                  isObscureText: true,
                                   hintText: '',
                                   errorText: state.password.isNotValid &&
                                           _canPasswordValidate
-                                      ? _getValidationPasswordMessage(state)
+                                      ? _getPasswordErrorMessage(state)
                                       : null,
                                   iconsList: const [
                                     'assets/icons/visibility.svg',
@@ -247,7 +262,7 @@ class _SignUpFormState extends State<_SignUpForm>
                               builder: (context, state) {
                                 return InputTextComponent(
                                   key: const Key(
-                                      'signUpForm_passwordInput_textField'),
+                                      'signUpForm_confirmedPasswordInput_textField'),
                                   onChanged: (confirmPassword) {
                                     _canConfirmValidate = false;
                                     context
@@ -259,15 +274,7 @@ class _SignUpFormState extends State<_SignUpForm>
                                   labelText: 'Confirm password',
                                   hintText: '',
                                   errorText:
-                                      state.confirmedPassword.value.isEmpty &&
-                                              _canPasswordValidate
-                                          ? {
-                                              'notEnterConfirmPassword': [
-                                                'Enter password to confirm',
-                                                'error'
-                                              ]
-                                            }
-                                          : null,
+                                      _getConfirmPasswordErrorMessage(state),
                                   iconsList: const [
                                     'assets/icons/visibility.svg',
                                     'assets/icons/visibility-off.svg'
@@ -323,18 +330,19 @@ class _SignUpFormState extends State<_SignUpForm>
                 padding: const EdgeInsets.only(bottom: 40.0),
                 child: BlocBuilder<SignUpCubit, SignUpState>(
                   builder: (context, state) {
+                    final nextStepIndex = _controller.index + 1;
                     return MainButtonComponent(
-                      title: (_controller.index + 1) == tabLength
+                      title: (nextStepIndex) == tabLength
                           ? 'Start'
                           : 'Next',
                       onPressed: () {
-                        _getValidationPasswordMessage(state);
-                        activeTabIndex = (_controller.index + 1);
-                        if ((_controller.index + 1) == tabLength) return;
+                        
+                        if (_controller.index + 1 == tabLength) return;
                         final isFormValid =
                             _isStateValid(state, _controller.index);
                         if (isFormValid) {
                           setState(() {
+                            activeTabIndex = nextStepIndex;
                             _controller.animateTo(activeTabIndex);
                           });
                           // context.read<SignUpCubit>().signUpFormSubmitted();
