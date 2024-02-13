@@ -78,9 +78,16 @@ class _LoginFormState extends State<LoginForm> {
                             state.email.value.isNotEmpty,
                         errorText:
                             state.email.value.isEmpty && _canEmailValidate
-                                ? 'Enter email'
+                                ? {
+                                    'notEnterEmail': ['Enter email', 'error']
+                                  }
                                 : state.email.isNotValid && _canEmailValidate
-                                    ? 'Incorrect email'
+                                    ? {
+                                        'notEnterEmail': [
+                                          'Incorrect email',
+                                          'error'
+                                        ]
+                                      }
                                     : null,
                         iconsList: _canEmailValidate
                             ? const [
@@ -109,9 +116,13 @@ class _LoginFormState extends State<LoginForm> {
                             state.password.value.isNotEmpty,
                         errorText: state.password.value.isEmpty &&
                                 _canPasswordValidate
-                            ? 'Enter password'
+                            ? {
+                                'notEnterPassword': ['Enter password']
+                              }
                             : state.password.isNotValid && _canPasswordValidate
-                                ? 'Incorrect password'
+                                ? {
+                                    'incorrectPassword': ['Incorrect password']
+                                  }
                                 : null,
                         iconsList: const [
                           'assets/icons/visibility.svg',

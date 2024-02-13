@@ -11,7 +11,7 @@ class InputTextComponent extends StatefulWidget {
   final String labelText;
   final String? placeHolderText;
   final String? hintText;
-  final String? errorText;
+  final Map<String, dynamic>? errorText;
   final bool isEnable;
   final bool isValid;
   final bool autoCapitalize;
@@ -84,7 +84,6 @@ class _InputTextComponentState extends State<InputTextComponent> {
           cursorWidth: 1.0,
           cursorColor: ColorConstants.textPrimaryColor,
           decoration: InputDecoration(
-              errorText: widget.errorText,
               errorStyle: const TextStyle(
                   color: ColorConstants.generalWarningColor,
                   fontFamily: FontConstants.interFontFamily,
@@ -100,28 +99,18 @@ class _InputTextComponentState extends State<InputTextComponent> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
                 borderSide: BorderSide(
-                  color: ColorConstants.inputBoarderDefaultColor,
+                  color: widget.errorText == null
+                      ? ColorConstants.inputBoarderDefaultColor
+                      : ColorConstants.generalWarningColor,
                   width: _borderWidth,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
                 borderSide: BorderSide(
-                  color: ColorConstants.inputBoarderFocusedColor,
-                  width: _borderWidth,
-                ),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
-                borderSide: BorderSide(
-                  color: ColorConstants.generalWarningColor,
-                  width: _borderWidth,
-                ),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
-                borderSide: BorderSide(
-                  color: ColorConstants.generalWarningColor,
+                  color: widget.errorText == null
+                      ? ColorConstants.inputBoarderFocusedColor
+                      : ColorConstants.generalWarningColor,
                   width: _borderWidth,
                 ),
               ),
@@ -157,17 +146,26 @@ class _InputTextComponentState extends State<InputTextComponent> {
             widget.onChanged(text);
           }),
         ),
-        // widget.errorText != null
-        //     ? Text(
-        //         widget.errorText!,
-        //         style: TextStyle(
-        //             color: ColorConstants.generalWarningColor,
-        //             fontFamily: FontConstants.interFontFamily,
-        //             fontSize: FontConstants.fontSize13,
-        //             fontWeight: FontWeight.w500,
-        //             height: 1.23),
-        //       )
-        //     : Container()
+        widget.errorText != null
+            ? Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (String key in widget.errorText!.keys)
+                      Text(
+                        widget.errorText![key][0],
+                        style: TextStyle(
+                            color: widget.errorText![key][1] == 'error' ? ColorConstants.generalWarningColor : ColorConstants.generalSuccesColor ,
+                            fontFamily: FontConstants.interFontFamily,
+                            fontSize: FontConstants.fontSize13,
+                            fontWeight: FontWeight.w500,
+                            height: 1.23),
+                      ),
+                  ],
+                ),
+              )
+            : Container()
       ],
     );
   }
