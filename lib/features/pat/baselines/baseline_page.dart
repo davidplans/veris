@@ -4,6 +4,7 @@ import 'package:Veris/core/user/user.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
 import 'package:Veris/features/pat/baselines/baseline_helper_service.dart';
 import 'package:Veris/features/pat/baselines/partials/estimated_bpm.dart';
+import 'package:Veris/features/pat/services/get_preferred_camera.dart';
 import 'package:Veris/features/pat/shared/slider_navigation.dart';
 import 'package:Veris/features/pat/shared/wrong_finger_place.dart';
 import 'package:Veris/features/pat/view/finger_camera_text_page.dart';
@@ -174,8 +175,12 @@ class _BaselinePageState extends State<BaselinePage>
 
   Future<void> initCameraAndStartImageStream() async {
     try {
-      List cameras = await availableCameras();
-      _cameraController = CameraController(cameras.first, ResolutionPreset.low);
+      var preferredCamera = await getPreferredCamera();
+      _cameraController = CameraController(
+        preferredCamera,
+        ResolutionPreset.low,
+        enableAudio: false,
+      );
       await _cameraController!.initialize();
       await Future.delayed(const Duration(milliseconds: 100));
       _cameraController!.setFlashMode(FlashMode.torch);
