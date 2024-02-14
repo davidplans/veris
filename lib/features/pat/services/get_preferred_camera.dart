@@ -11,7 +11,7 @@ Future<CameraDescription> getPreferredCamera() async {
 
   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   IosDeviceInfo iosDeviceInfo = await deviceInfoPlugin.iosInfo;
-  String model = iosDeviceInfo.model ?? 'unknown';
+  String model = iosDeviceInfo.utsname.machine ?? 'unknown';
 
   if (model == 'unknown') {
     return cameraTypes.values.first;
@@ -51,10 +51,10 @@ final Map<String, String?> _preferredLenses = {
   'iPhone14,3': 'ultrawide',
   'iPhone14,7': 'rear',
   'iPhone14,8': 'rear',
+  'iPhone15,2': 'ultrawide',
+  'iPhone15,3': 'ultrawide',
 
   // iPhone 15 and later (no data yet):
-  'iPhone15,2': null,
-  'iPhone15,3': null,
 };
 
 Future<Map<String, CameraDescription>> _identifyCameraTypes() async {
