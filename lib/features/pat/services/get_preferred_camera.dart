@@ -11,16 +11,17 @@ Future<CameraDescription> getPreferredCamera() async {
 
   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   IosDeviceInfo iosDeviceInfo = await deviceInfoPlugin.iosInfo;
-  String model = iosDeviceInfo.utsname.machine ?? 'unknown';
+  String machine = iosDeviceInfo.utsname.machine ?? 'unknown';
 
-  if (model == 'unknown') {
+  if (machine == 'unknown') {
     return cameraTypes.values.first;
   }
 
-  String? preferredLens = _preferredLenses[model];
+  String? preferredLens = _preferredLenses[machine];
   return cameraTypes[preferredLens ?? 'unknown'] ?? cameraTypes.values.first;
 }
 
+// List of all: https://gist.github.com/adamawolf/3048717
 final Map<String, String?> _preferredLenses = {
   // iPhone models with telephoto camera:
   'iPhone9,2': 'telephoto',
@@ -54,7 +55,11 @@ final Map<String, String?> _preferredLenses = {
   'iPhone15,2': 'ultrawide',
   'iPhone15,3': 'ultrawide',
 
-  // iPhone 15 and later (no data yet):
+  // iPhone 15:
+  'iPhone15,4': 'rear',
+  'iPhone15,5': 'rear',
+  'iPhone16,1': 'ultrawide',
+  'iPhone16,2': 'ultrawide',
 };
 
 Future<Map<String, CameraDescription>> _identifyCameraTypes() async {
@@ -62,7 +67,7 @@ Future<Map<String, CameraDescription>> _identifyCameraTypes() async {
   Map<String, CameraDescription> cameraTypes = {};
 
   for (CameraDescription camera in cameras) {
-    String cameraType = 'unknown';
+    String cameraType = camera.lensDirection.toString();
 
     if (camera.lensDirection == CameraLensDirection.back) {
       if (camera.sensorOrientation == 90) {
