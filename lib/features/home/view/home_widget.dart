@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Veris/common/widgets/ui_components/colored_badge_container.dart';
 import 'package:Veris/core/utils/notification_service.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/home/view/partials/module_widget.dart';
@@ -116,7 +117,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-
       children: <Widget>[
         // _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
         SvgPicture.asset(
@@ -138,8 +138,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       const Padding(
-                        padding:
-                            EdgeInsets.only(top: 15.0, bottom: 15.0),
+                        padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
@@ -151,12 +150,21 @@ class _HomeWidgetState extends State<HomeWidget> {
                         height: 1.0,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 15.0, bottom: 15.0),
+                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             const Text('Pat Test'),
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            const ColoredBadgeContainer(
+                              containerColor:
+                                  ColorConstants.badgeBackgroundGreenColor,
+                              containerTextColor:
+                                  ColorConstants.badgeTextGreenColor,
+                              containerText: '1/1 today',
+                            ),
                             const Spacer(),
                             SvgPicture.asset('assets/icons/arrow-forward.svg')
                           ],
@@ -174,14 +182,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                   borderRadius: BorderRadius.circular(8.0),
                   color: Colors.white,
                 ),
-                child:  Padding(
+                child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child:  Column(
+                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                     const Padding(
-                        padding:
-                            EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
@@ -193,28 +200,36 @@ class _HomeWidgetState extends State<HomeWidget> {
                         height: 1.0,
                       ),
                       Padding(
-                        padding:
-                           const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                           const Text('About You'),
-                                                    const Spacer(),
+                            const Text('About You'),
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            const ColoredBadgeContainer(
+                              containerColor:
+                                  ColorConstants.badgeBackgroundOrangeColor,
+                              containerTextColor:
+                                  ColorConstants.badgeTextOrangeColor,
+                              containerText: '0/1 today',
+                            ),
+                            const Spacer(),
                             SvgPicture.asset('assets/icons/arrow-forward.svg')
                           ],
                         ),
                       ),
-                     const Divider(
+                      const Divider(
                         height: 1.0,
                       ),
                       Padding(
-                        padding:
-                          const  EdgeInsets.only(top: 15.0, bottom: 15.0),
+                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                           const Text('Questionnaire 1 '),
-                                                                         const Spacer(),
+                            const Text('Questionnaire 1 '),
+                            const Spacer(),
                             SvgPicture.asset('assets/icons/arrow-forward.svg')
                           ],
                         ),
