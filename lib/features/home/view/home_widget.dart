@@ -88,7 +88,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>();
 
-      final bool? granted = await androidImplementation?.requestNotificationsPermission();
+      final bool? granted =
+          await androidImplementation?.requestNotificationsPermission();
       setState(() {
         _notificationsEnabled = granted ?? false;
       });
@@ -114,30 +115,129 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: const Alignment(0, -1 / 3),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          // _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
-          SvgPicture.asset('assets/images/blue_circles.svg',),
-          Expanded(
-            flex: 4,
-            child: ListView.builder(
-                padding: const EdgeInsets.all(0),
-                itemCount: _modules.length,
-                itemBuilder: (BuildContext context, int indexModule) {
-                  final module = _modules[indexModule];
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ModuleWidget(
-                      module: module,
-                    ),
-                  );
-                }),
+    return Stack(
+
+      children: <Widget>[
+        // _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
+        SvgPicture.asset(
+          'assets/images/blue_circles.svg',
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 330.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Padding(
+                        padding:
+                            EdgeInsets.only(top: 15.0, bottom: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text('Tests'),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 1.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 15.0, bottom: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const Text('Pat Test'),
+                            const Spacer(),
+                            SvgPicture.asset('assets/icons/arrow-forward.svg')
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colors.white,
+                ),
+                child:  Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child:  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                     const Padding(
+                        padding:
+                            EdgeInsets.only(top: 15.0, bottom: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text('Questionnaires '),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 1.0,
+                      ),
+                      Padding(
+                        padding:
+                           const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                           const Text('About You'),
+                                                    const Spacer(),
+                            SvgPicture.asset('assets/icons/arrow-forward.svg')
+                          ],
+                        ),
+                      ),
+                     const Divider(
+                        height: 1.0,
+                      ),
+                      Padding(
+                        padding:
+                          const  EdgeInsets.only(top: 15.0, bottom: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                           const Text('Questionnaire 1 '),
+                                                                         const Spacer(),
+                            SvgPicture.asset('assets/icons/arrow-forward.svg')
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        ListView.builder(
+            itemCount: _modules.length,
+            itemBuilder: (BuildContext context, int indexModule) {
+              final module = _modules[indexModule];
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: ModuleWidget(
+                  module: module,
+                ),
+              );
+            }),
+      ],
     );
   }
 }
