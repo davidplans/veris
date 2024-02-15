@@ -1,7 +1,12 @@
+import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
+import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/features/authentication/bloc/auth_event.dart';
 import 'package:Veris/features/settings/view/partials/listtile_with_divider.dart';
 import 'package:Veris/routes/routes.dart';
+import 'package:Veris/style/color_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,33 +54,45 @@ class _SettingsWidgetState extends State<SettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        ListTileWithDivider(title: 'Study Name', value: studyName),
-        ListTileWithDivider(title: 'Author', value: createdBy),
-        ListTileWithDivider(title: 'About this study', value: instructions),
-        ListTileWithDivider(title: 'Support', value: supportEmail),
-        ListTileWithDivider(title: 'Website', value: supportUrl),
-        ListTileWithDivider(title: 'Ethics Information', value: ethics),
-        ListTileWithDivider(title: 'Pls file', value: pls),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: 50,
-          // color: const Color.fromARGB(255, 49, 56, 71),
-          child: Center(
-              child: Column(children: [
-            ElevatedButton(
-              onPressed: () async {
-                await studyProtocolHelper.cleanInfoAboutCurrentStudyProtocol();
-                // ignore: use_build_context_synchronously
-                context.go(Routes.intro.path);
-              },
-              child: const Text("Start with new Study protocol"),
-            ),
-          ])),
-        )
-      ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 30.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTileWithDivider(title: 'Study Name', value: studyName),
+            ListTileWithDivider(title: 'Author', value: createdBy),
+            ListTileWithDivider(title: 'About this study', value: instructions),
+            ListTileWithDivider(title: 'Support', value: supportEmail),
+            ListTileWithDivider(title: 'Website', value: supportUrl),
+            ListTileWithDivider(title: 'Ethics Information', value: ethics),
+            ListTileWithDivider(title: 'Pls file', value: pls),
+            Center(
+                child: Column(children: [
+              MainButtonComponent(
+                title: 'Start with new Study protocol',
+                backgroundColor: ColorConstants.btnPrimaryDefaultColor,
+                titleColor: ColorConstants.textInvertedColor,
+                onPressed: () async {
+                  await studyProtocolHelper
+                      .cleanInfoAboutCurrentStudyProtocol();
+                  // ignore: use_build_context_synchronously
+                  context.go(Routes.intro.path);
+                },
+              ),
+              const SizedBox(height: 20.0,),
+              MainButtonComponent(
+                title: 'Log OUT',
+                backgroundColor: Colors.red,
+                titleColor: ColorConstants.textInvertedColor,
+                onPressed: (){
+                  context.read<AuthBloc>().add(AuthenticationLogoutRequested());
+                },
+              ),
+            ]))
+          ],
+        ),
+      ),
     );
   }
 }

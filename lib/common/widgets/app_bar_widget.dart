@@ -1,6 +1,7 @@
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -49,7 +50,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       leading: Padding(
         padding: const EdgeInsets.all(10.0),
         child: GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () => context.go('/welcome'),
           child: SvgPicture.asset(
             'assets/icons/arrow-backword.svg',
           ),

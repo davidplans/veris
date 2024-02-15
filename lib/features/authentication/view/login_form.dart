@@ -223,7 +223,7 @@ class _SignUpButton extends StatelessWidget {
       backgroundColor: ColorConstants.btnLogInGoogleColor,
       prefixIconPath: "assets/icons/google.svg",
       onPressed: () {
-        context.go(Routes.signup.path);
+        // context.go(Routes.signup.path);
       },
     );
   }
