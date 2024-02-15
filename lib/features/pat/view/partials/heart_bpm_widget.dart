@@ -1,4 +1,5 @@
 import 'package:Veris/features/pat/models/sensor.dart';
+import 'package:Veris/features/pat/services/get_preferred_camera.dart';
 import 'package:Veris/features/pat/services/image_processing.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -71,8 +72,8 @@ class _HeartBPMState extends State<HeartBPM> {
   Future<void> _initController() async {
     if (_controller != null) return;
     try {
-      List<CameraDescription> cameras = await availableCameras();
-      _controller = CameraController(cameras.first, ResolutionPreset.low,
+      var preferredCamera = await getPreferredCamera();
+      _controller = CameraController(preferredCamera, ResolutionPreset.low,
           enableAudio: false);
 
       await _controller!.initialize();
