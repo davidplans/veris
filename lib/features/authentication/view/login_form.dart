@@ -4,12 +4,12 @@ import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/features/authentication/models/login_state.dart';
 import 'package:Veris/features/authentication/services/login_cubit.dart';
-import 'package:Veris/features/intro/view/welcome_page.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -117,11 +117,11 @@ class _LoginFormState extends State<LoginForm> {
                         errorText: state.password.value.isEmpty &&
                                 _canPasswordValidate
                             ? {
-                                'notEnterPassword': ['Enter password']
+                                'notEnterPassword': ['Enter password','error']
                               }
                             : state.password.isNotValid && _canPasswordValidate
                                 ? {
-                                    'incorrectPassword': ['Incorrect password']
+                                    'incorrectPassword': ['Incorrect password','error']
                                   }
                                 : null,
                         iconsList: const [
@@ -222,9 +222,7 @@ class _SignUpButton extends StatelessWidget {
       backgroundColor: ColorConstants.btnLogInGoogleColor,
       prefixIconPath: "assets/icons/google.svg",
       onPressed: () {
-        Navigator.of(context).push<void>(
-          WelcomePage.route(),
-        );
+        context.go('/signup');
       },
     );
   }

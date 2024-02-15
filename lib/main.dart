@@ -4,7 +4,6 @@ import 'core/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/core/bloc_observer.dart';
-import 'package:Veris/core/user/auth_repository.dart';
 import 'package:Veris/app.dart';
 import 'package:flutter/services.dart';
 
@@ -31,9 +30,7 @@ Future<void> main() async {
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  final authenticationRepository = AuthenticationRepository();
   runApp(HealthApp(
-    authenticationRepository: authenticationRepository,
     isStudyProtocolAvailable: isStudyProtocolAvailable,
   ));
 }

@@ -1,4 +1,4 @@
-import 'package:Veris/features/authentication/view/auth_view.dart';
+// import 'package:Veris/features/authentication/view/auth_view.dart';
 import 'package:Veris/features/intro/view/partials/intro_go_to_qr_button.dart';
 import 'package:Veris/features/intro/view/partials/intro_info.dart';
 import 'package:Veris/features/intro/view/partials/intro_mode_switch.dart';
@@ -36,10 +36,10 @@ class _IntroPageState extends State<IntroPage> {
     }
 
     // ignore: use_build_context_synchronously
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AuthView()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const AuthView()),
+    // );
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'package:Veris/core/utils/study_protocol_helper.dart';
-import 'package:Veris/features/authentication/view/auth_view.dart';
+// import 'package:Veris/features/authentication/view/auth_view.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 
@@ -72,10 +72,10 @@ class _QrScannerState extends State<QrScanner> {
                     cameraController.dispose();
 
                     // ignore: use_build_context_synchronously
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AuthView()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => const AuthView()),
+                    // );
 
                     debugPrint('Barcode found! $code');
                   }

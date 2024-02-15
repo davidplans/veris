@@ -6,7 +6,6 @@ import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/authentication/models/signup_state.dart';
 import 'package:Veris/features/authentication/services/signup_cubit.dart';
-import 'package:Veris/features/authentication/view/auth_view.dart';
 import 'package:Veris/features/qr_scanner/qr_scanner.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:flutter/material.dart';
@@ -140,10 +139,10 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
     }
 
     // ignore: use_build_context_synchronously
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AuthView()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const AuthView()),
+    // );
   }
 
   @override
@@ -277,7 +276,6 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
                         children: [
                           _IntroWidget(
                             onUrlAdded: (url) {
-                              print('URL: ${url}');
                               _onSelectedStudyProtocol(context, url);
                             },
                           ),

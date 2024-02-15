@@ -39,7 +39,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             onPressed: () async {
               await studyProtocolHelper.cleanInfoAboutCurrentStudyProtocol();
               // ignore: use_build_context_synchronously
-              context.read<AuthBloc>().add(AppLogoutRequested());
+              context.read<AuthBloc>().add(AuthenticationLogoutRequested());
             },
           )
         ],

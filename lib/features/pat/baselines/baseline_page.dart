@@ -51,7 +51,7 @@ class _BaselinePageState extends State<BaselinePage>
 
   Timer? _timerDuration; // timer for duration
 
-  late User user;
+  late UserModel user;
   bool _isNoFinger = false;
 
   String studyId = "";

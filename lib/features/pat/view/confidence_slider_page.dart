@@ -25,7 +25,7 @@ class ConfidenceSliderPage extends StatefulWidget {
 class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
   double _currentSliderValue = 5;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
-  late User user;
+  late UserModel user;
   late final _prefs;
   int _completeTrials = 0;
   List<int> listSelectSteps = [];

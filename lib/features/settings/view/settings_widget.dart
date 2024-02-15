@@ -1,7 +1,8 @@
 import 'package:Veris/core/utils/study_protocol_helper.dart';
-import 'package:Veris/features/intro/view/intro_page.dart';
 import 'package:Veris/features/settings/view/partials/listtile_with_divider.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsWidget extends StatefulWidget {
@@ -68,9 +69,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               onPressed: () async {
                 await studyProtocolHelper.cleanInfoAboutCurrentStudyProtocol();
                 // ignore: use_build_context_synchronously
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const IntroPage()),
-                );
+                context.go(Routes.intro.path);
               },
               child: const Text("Start with new Study protocol"),
             ),

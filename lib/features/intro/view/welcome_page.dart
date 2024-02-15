@@ -1,16 +1,12 @@
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
-import 'package:Veris/features/authentication/view/signup_page.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
-  static Page page() => const MaterialPage<void>(child: WelcomePage());
-  static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const WelcomePage());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +56,7 @@ class WelcomePage extends StatelessWidget {
                 MainButtonComponent(
                   title: 'Sign up with Email',
                   onPressed: () {
-                    Navigator.of(context).push(SignUpPage.route());
+                    context.go('/signup');
                   },
                   backgroundColor: ColorConstants.btnPrimaryDefaultColor,
                   titleColor: ColorConstants.textInvertedColor,
@@ -80,7 +76,9 @@ class WelcomePage extends StatelessWidget {
                   height: 12.0,
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    context.go('/login');
+                  },
                   child: const Text(
                     'I already have an account',
                     style: TextStyle(

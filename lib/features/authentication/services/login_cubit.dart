@@ -1,13 +1,12 @@
+import 'package:Veris/core/user/authentication_repository.dart';
 import 'package:Veris/features/authentication/models/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/core/user/auth_repository.dart';
 import 'package:Veris/core/utils/form_inputs.dart';
 import 'package:formz/formz.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit(this._authenticationRepository) : super(const LoginState());
-
-  final AuthenticationRepository _authenticationRepository;
+    final AuthenticationRepository authenticationRepository;
+  LoginCubit(this.authenticationRepository) : super(const LoginState());
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -35,7 +34,7 @@ class LoginCubit extends Cubit<LoginState> {
     if (!state.isValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      await _authenticationRepository.logInWithEmailAndPassword(
+      await authenticationRepository.logIn(
         email: state.email.value,
         password: state.password.value,
       );

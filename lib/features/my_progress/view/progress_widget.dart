@@ -15,7 +15,7 @@ class ProgressWidget extends StatefulWidget {
 class _ProgressWidgetState extends State<ProgressWidget> {
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
-  late User user;
+  late UserModel user;
   String studyId = "";
 
   String _formatDate(DateTime time) {

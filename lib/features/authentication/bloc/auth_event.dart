@@ -1,5 +1,5 @@
+import 'package:Veris/core/user/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:Veris/core/user/user.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -8,13 +8,14 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AppLogoutRequested extends AuthEvent {}
+class AuthenticationLogoutRequested extends AuthEvent {}
+class AuthenticationPersistRequested extends AuthEvent {}
 
-class AppUserChanged extends AuthEvent {
-  const AppUserChanged(this.user);
+class AuthenticationStatusChanged extends AuthEvent {
+  const AuthenticationStatusChanged(this.status);
 
-  final User user;
+  final AuthStream status;
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [status];
 }

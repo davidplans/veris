@@ -1,44 +1,59 @@
 import 'dart:async';
 
+import 'package:Veris/core/user/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/core/user/user.dart';
-import 'package:Veris/core/user/auth_repository.dart';
 import 'package:Veris/features/authentication/bloc/auth_event.dart';
 import 'package:Veris/features/authentication/bloc/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({required AuthenticationRepository authenticationRepository})
-      : _authenticationRepository = authenticationRepository,
-        super(
-          authenticationRepository.currentUser.isNotEmpty
-              ? AuthState.authenticated(authenticationRepository.currentUser)
-              : const AuthState.unauthenticated(),
+  final AuthenticationRepository authenticationRepository;
+  late StreamSubscription<AuthStream> authenticationStatusSubscription;
+  AuthBloc({required this.authenticationRepository})
+      : super(
+          const AuthState.unknown(),
         ) {
-    on<AppUserChanged>(_onUserChanged);
-    on<AppLogoutRequested>(_onLogoutRequested);
-    _userSubscription = _authenticationRepository.user.listen(
-      (user) => add(AppUserChanged(user)),
+    on<AuthenticationStatusChanged>(_onUserChanged);
+    on<AuthenticationLogoutRequested>(_onLogoutRequested);
+    on<AuthenticationPersistRequested>(_onPersistRequested);
+    authenticationStatusSubscription = authenticationRepository.status.listen(
+      (status) => add(AuthenticationStatusChanged(status)),
     );
   }
 
-  final AuthenticationRepository _authenticationRepository;
-  late final StreamSubscription<User> _userSubscription;
+  void _onUserChanged(
+      AuthenticationStatusChanged event, Emitter<AuthState> emit) {
+    switch (event.status.status) {
+      case AuthStatus.unauthenticated:
+        return emit(const AuthState.unauthenticated());
 
-  void _onUserChanged(AppUserChanged event, Emitter<AuthState> emit) {
-    emit(
-      event.user.isNotEmpty
-          ? AuthState.authenticated(event.user)
-          : const AuthState.unauthenticated(),
-    );
+      case AuthStatus.authenticated:
+        final user = event.status.user;
+        return emit(AuthState.authenticated(user!));
+
+      case AuthStatus.authenticating:
+        return emit(const AuthState.authenticating());
+
+      case AuthStatus.error:
+        return emit(const AuthState.unauthenticated());
+
+      case AuthStatus.initial:
+        return emit(const AuthState.unknown());
+    }
   }
 
-  void _onLogoutRequested(AppLogoutRequested event, Emitter<AuthState> emit) {
-    unawaited(_authenticationRepository.logOut());
+  void _onLogoutRequested(
+      AuthenticationLogoutRequested event, Emitter<AuthState> emit) {
+    unawaited(authenticationRepository.logOut());
+  }
+
+  void _onPersistRequested(
+      AuthenticationPersistRequested event, Emitter<AuthState> emit) {
+    authenticationRepository.persistUserAuth();
   }
 
   @override
   Future<void> close() {
-    _userSubscription.cancel();
+    authenticationStatusSubscription.cancel();
     return super.close();
   }
 }
