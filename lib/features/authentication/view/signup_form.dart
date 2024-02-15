@@ -7,10 +7,12 @@ import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/authentication/models/signup_state.dart';
 import 'package:Veris/features/authentication/services/signup_cubit.dart';
 import 'package:Veris/features/qr_scanner/qr_scanner.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -335,10 +337,7 @@ class _QRCodeButton extends StatelessWidget {
     return OutlinedButtonComponent(
       title: 'Scan QR code',
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const QrScanner()),
-        );
+        context.go(Routes.scanQR.path);
       },
       backgroundColor: ColorConstants.btnOutlineDefaultColor,
       titleColor: ColorConstants.btnPrimaryDefaultColor,

@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:Veris/core/utils/notification_service.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/home/view/partials/module_widget.dart';
+import 'package:Veris/style/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
-
-  static Page page() => const MaterialPage<void>(child: HomeWidget());
 
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
@@ -20,7 +20,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   late final NotificationService notificationService;
 
   List<ModuleForHomePage> _modules = [];
-  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final studyProtocolHelper = StudyProtocolHelper();
   String _bannerUrl = '';
 
@@ -120,7 +119,8 @@ class _HomeWidgetState extends State<HomeWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
+          // _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
+          SvgPicture.asset('assets/images/blue_circles.svg',),
           Expanded(
             flex: 4,
             child: ListView.builder(

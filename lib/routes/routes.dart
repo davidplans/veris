@@ -7,6 +7,7 @@ import 'package:Veris/features/authentication/view/login_page.dart';
 import 'package:Veris/features/authentication/view/signup_page.dart';
 import 'package:Veris/features/intro/view/intro_page.dart';
 import 'package:Veris/features/intro/view/welcome_page.dart';
+import 'package:Veris/features/qr_scanner/qr_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,7 +16,8 @@ enum Routes {
   login('/login'),
   signup('/signup'),
   home('/home'),
-  intro('/intro');
+  intro('/intro'),
+  scanQR('/scan_qr');
 
   const Routes(this.path);
   final String path;
@@ -53,6 +55,11 @@ class AppRouter {
         path: Routes.intro.path,
         name: Routes.intro.name,
         builder: (context, state) => const IntroPage(),
+      ),
+      GoRoute(
+        path: Routes.scanQR.path,
+        name: Routes.scanQR.name,
+        builder: (context, state) => const QrScanner(),
       ),
     ],
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
