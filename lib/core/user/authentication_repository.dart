@@ -22,8 +22,6 @@ class AuthenticationRepository {
             .add(AuthStream(user: null, status: AuthStatus.unauthenticated));
       } else {
         if (kDebugMode) log('User is signed in!');
-      print("persistUserAuth ${user.email}");
-
         controller.add(AuthStream(
             user: UserModel.fromUser(user), status: AuthStatus.authenticated));
       }

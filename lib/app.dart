@@ -21,7 +21,6 @@ class HealthApp extends StatefulWidget {
 
 class _HealthAppState extends State<HealthApp> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  AppRouter? router;
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
@@ -41,12 +40,12 @@ class _HealthAppState extends State<HealthApp> {
         ],
         child: Builder(
           builder: (context) {
-            router ??= AppRouter(
+           AppRouter appRouter = AppRouter(
                 navigatorKey: navigatorKey, authBloc: context.read<AuthBloc>());
             return MaterialApp.router(
               theme: theme,
               debugShowCheckedModeBanner: false,
-              routerConfig: router?.router,
+              routerConfig: appRouter.router,
             );
           },
         ),

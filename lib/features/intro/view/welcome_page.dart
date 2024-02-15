@@ -1,4 +1,5 @@
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class WelcomePage extends StatelessWidget {
                 MainButtonComponent(
                   title: 'Sign up with Email',
                   onPressed: () {
-                    context.go('/signup');
+                    context.go(Routes.signup.path);
                   },
                   backgroundColor: ColorConstants.btnPrimaryDefaultColor,
                   titleColor: ColorConstants.textInvertedColor,
@@ -77,7 +78,7 @@ class WelcomePage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    context.go('/login');
+                    context.go(Routes.login.path);
                   },
                   child: const Text(
                     'I already have an account',

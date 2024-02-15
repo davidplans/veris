@@ -4,6 +4,7 @@ import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/features/authentication/models/login_state.dart';
 import 'package:Veris/features/authentication/services/login_cubit.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
@@ -222,7 +223,7 @@ class _SignUpButton extends StatelessWidget {
       backgroundColor: ColorConstants.btnLogInGoogleColor,
       prefixIconPath: "assets/icons/google.svg",
       onPressed: () {
-        context.go('/signup');
+        context.go(Routes.signup.path);
       },
     );
   }
