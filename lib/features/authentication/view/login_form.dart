@@ -4,13 +4,11 @@ import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/features/authentication/models/login_state.dart';
 import 'package:Veris/features/authentication/services/login_cubit.dart';
-import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -168,6 +166,7 @@ class _LoginFormState extends State<LoginForm> {
                                     _canPasswordValidate = true;
                                   }
                                 });
+                                FocusManager.instance.primaryFocus?.unfocus();
                                 context
                                     .read<LoginCubit>()
                                     .logInWithCredentials();

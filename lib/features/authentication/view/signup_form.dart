@@ -1,12 +1,15 @@
+import 'dart:developer';
+
 import 'package:Veris/common/widgets/ui_components/divider_component.dart';
 import 'package:Veris/common/widgets/ui_components/input_text_component.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/common/widgets/ui_components/outline_button_component.dart';
+import 'package:Veris/core/user/authentication_repository.dart';
 import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
+import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
 import 'package:Veris/features/authentication/models/signup_state.dart';
 import 'package:Veris/features/authentication/services/signup_cubit.dart';
-import 'package:Veris/features/qr_scanner/qr_scanner.dart';
 import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +60,7 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
   bool _canPasswordValidate = false;
   bool _canConfirmValidate = false;
   final studyProtocolHelper = StudyProtocolHelper();
+  String _studyProtocolUrl = '';
 
   @override
   void initState() {
@@ -137,14 +141,16 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
     final res = await studyProtocolHelper.getAndSaveStudyProtocol(context, url);
 
     if (!res) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red[200],
+        content: const Text('URL study protocol is not vslid!'),
+      ));
       return;
     }
 
     // ignore: use_build_context_synchronously
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const AuthView()),
-    // );
+    context.read<SignUpCubit>().signUpFormSubmitted();
   }
 
   @override
@@ -278,7 +284,9 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
                         children: [
                           _IntroWidget(
                             onUrlAdded: (url) {
-                              _onSelectedStudyProtocol(context, url);
+                              setState(() {
+                                _studyProtocolUrl = url;
+                              });
                             },
                           ),
                           const Padding(
@@ -299,9 +307,12 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
                   builder: (context, state) {
                     final nextStepIndex = _controller.index + 1;
                     return MainButtonComponent(
-                      title: (nextStepIndex) == tabLength ? 'Start' : 'Next',
+                      title: nextStepIndex == tabLength ? 'Start' : 'Next',
                       onPressed: () {
-                        if (nextStepIndex == tabLength) return;
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        if (nextStepIndex == tabLength) {
+                          _onSelectedStudyProtocol(context, _studyProtocolUrl);
+                        }
                         final isFormValid =
                             _isStateValid(state, _controller.index);
                         if (isFormValid) {
@@ -309,12 +320,11 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
                             activeTabIndex = nextStepIndex;
                             _controller.animateTo(activeTabIndex);
                           });
-                          // context.read<SignUpCubit>().signUpFormSubmitted();
                         }
                       },
                       backgroundColor: ColorConstants.btnPrimaryDefaultColor,
                       titleColor: ColorConstants.textInvertedColor,
-                      sufixIconPath: (_controller.index + 1) == tabLength
+                      sufixIconPath: nextStepIndex == tabLength
                           ? null
                           : 'assets/icons/arrow-forward.svg',
                     );
@@ -355,10 +365,10 @@ class _IntroWidget extends StatefulWidget {
 }
 
 class _IntroWidgetState extends State<_IntroWidget> {
-  final TextEditingController _controller = TextEditingController(
-      text:
-          'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test_2.json?alt=media&token=80d0dfa5-8720-4449-bbf0-cf630189768f');
+  final TextEditingController _controller = TextEditingController();
   final studyProtocolHelper = StudyProtocolHelper();
+  final String testUrl =
+      'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test_2.json?alt=media&token=80d0dfa5-8720-4449-bbf0-cf630189768f';
 
   @override
   void dispose() {
@@ -368,16 +378,38 @@ class _IntroWidgetState extends State<_IntroWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return InputTextComponent(
-      controller: _controller,
-      onChanged: (text) {
-        widget.onUrlAdded(text);
-      },
-      keyboardType: TextInputType.url,
-      placeHolderText: 'Enter protocol URL',
-      labelText: 'Study protocol URL',
-      hintText: '',
-      errorText: null,
+    return Column(
+      children: [
+        InputTextComponent(
+          controller: _controller,
+          onChanged: (text) {
+            setState(() {
+              _controller.text = text;
+            });
+          },
+          keyboardType: TextInputType.url,
+          placeHolderText: 'Enter protocol URL',
+          labelText: 'Study protocol URL',
+          hintText: '',
+          errorText: null,
+        ),
+        InkWell(
+          onTap: () {
+            setState(() {
+              widget.onUrlAdded(testUrl);
+            });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.green[200],
+              content: const Text('Pasted!'),
+              duration: const Duration(seconds: 2),
+            ));
+          },
+          child: const Text(
+            "Use Demo protocol",
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -124,106 +124,107 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 330.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text('Tests'),
-                          ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const Padding(
+                          padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text('Tests'),
+                            ],
+                          ),
                         ),
-                      ),
-                      const Divider(
-                        height: 1.0,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Text('Pat Test'),
-                            const SizedBox(
-                              width: 8.0,
-                            ),
-                            const ColoredBadgeContainer(
-                              containerColor:
-                                  ColorConstants.badgeBackgroundGreenColor,
-                              containerTextColor:
-                                  ColorConstants.badgeTextGreenColor,
-                              containerText: '1/1 today',
-                            ),
-                            const Spacer(),
-                            SvgPicture.asset('assets/icons/arrow-forward.svg')
-                          ],
+                        const Divider(
+                          height: 1.0,
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text('Pat Test'),
+                              const SizedBox(
+                                width: 8.0,
+                              ),
+                              const ColoredBadgeContainer(
+                                containerColor:
+                                    ColorConstants.badgeBackgroundGreenColor,
+                                containerTextColor:
+                                    ColorConstants.badgeTextGreenColor,
+                                containerText: '1/1 today',
+                              ),
+                              const Spacer(),
+                              SvgPicture.asset('assets/icons/arrow-forward.svg')
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 15.0,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Colors.white,
+                const SizedBox(
+                  height: 15.0,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text('Questionnaires '),
-                          ],
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const Padding(
+                          padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text('Questionnaires '),
+                            ],
+                          ),
                         ),
-                      ),
-                      const Divider(
-                        height: 1.0,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Text('About You'),
-                            const SizedBox(
-                              width: 8.0,
-                            ),
-                            const ColoredBadgeContainer(
-                              containerColor:
-                                  ColorConstants.badgeBackgroundOrangeColor,
-                              containerTextColor:
-                                  ColorConstants.badgeTextOrangeColor,
-                              containerText: '0/1 today',
-                            ),
-                            const Spacer(),
-                            SvgPicture.asset('assets/icons/arrow-forward.svg')
-                          ],
+                        const Divider(
+                          height: 1.0,
                         ),
-                      ),
-                      const Divider(
-                        height: 1.0,
-                      ),
-                      Padding(
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text('About You'),
+                              const SizedBox(
+                                width: 8.0,
+                              ),
+                              const ColoredBadgeContainer(
+                                containerColor:
+                                    ColorConstants.badgeBackgroundOrangeColor,
+                                containerTextColor:
+                                    ColorConstants.badgeTextOrangeColor,
+                                containerText: '0/1 today',
+                              ),
+                              const Spacer(),
+                              SvgPicture.asset('assets/icons/arrow-forward.svg')
+                            ],
+                          ),
+                        ),
+                        const Divider(
+                          height: 1.0,
+                        ),
+                        Padding(
                         padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -238,20 +239,25 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                 ),
               ),
-            ],
+                        SizedBox(
+            height: 150,
+            child: ListView.builder(
+                itemCount: _modules.length,
+                itemBuilder: (BuildContext context, int indexModule) {
+                  final module = _modules[indexModule];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: ModuleWidget(
+                      module: module,
+                    ),
+                  );
+                }),
+                    ),
+              ],
+            ),
           ),
         ),
-        ListView.builder(
-            itemCount: _modules.length,
-            itemBuilder: (BuildContext context, int indexModule) {
-              final module = _modules[indexModule];
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ModuleWidget(
-                  module: module,
-                ),
-              );
-            }),
+
       ],
     );
   }

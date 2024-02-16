@@ -69,17 +69,17 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             ListTileWithDivider(title: 'Pls file', value: pls),
             Center(
                 child: Column(children: [
-              MainButtonComponent(
-                title: 'Start with new Study protocol',
-                backgroundColor: ColorConstants.btnPrimaryDefaultColor,
-                titleColor: ColorConstants.textInvertedColor,
-                onPressed: () async {
-                  await studyProtocolHelper
-                      .cleanInfoAboutCurrentStudyProtocol();
-                  // ignore: use_build_context_synchronously
-                  context.go(Routes.intro.path);
-                },
-              ),
+              // MainButtonComponent(
+              //   title: 'Start with new Study protocol',
+              //   backgroundColor: ColorConstants.btnPrimaryDefaultColor,
+              //   titleColor: ColorConstants.textInvertedColor,
+              //   onPressed: () async {
+              //     await studyProtocolHelper
+              //         .cleanInfoAboutCurrentStudyProtocol();
+              //     // ignore: use_build_context_synchronously
+              //     context.go(Routes.intro.path);
+              //   },
+              // ),
               const SizedBox(height: 20.0,),
               MainButtonComponent(
                 title: 'Log OUT',

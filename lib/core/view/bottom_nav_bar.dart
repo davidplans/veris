@@ -1,11 +1,7 @@
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/settings/view/settings_widget.dart';
 import 'package:Veris/style/color_constants.dart';
-import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
-import 'package:Veris/features/authentication/bloc/auth_event.dart';
 import 'package:Veris/features/home/view/home_widget.dart';
 import 'package:Veris/features/my_progress/view/progress_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
