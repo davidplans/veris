@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:Veris/core/view/bottom_nav_bar.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
 import 'package:Veris/features/authentication/bloc/auth_state.dart';
+import 'package:Veris/features/authentication/view/forgot_pasword_page.dart';
 import 'package:Veris/features/authentication/view/login_page.dart';
 import 'package:Veris/features/authentication/view/signup_page.dart';
 import 'package:Veris/features/intro/view/intro_page.dart';
@@ -17,7 +19,8 @@ enum Routes {
   signup('/signup'),
   home('/home'),
   intro('/intro'),
-  scanQR('/scan_qr');
+  scanQR('/scan_qr'),
+  forgotPassword('/forgot_password');
 
   const Routes(this.path);
   final String path;
@@ -47,6 +50,11 @@ class AppRouter {
         builder: (context, state) => const SignUpPage(),
       ),
       GoRoute(
+        path: Routes.forgotPassword.path,
+        name: Routes.forgotPassword.name,
+        builder: (context, state) => const ForgotPasswordPage(),
+      ),
+      GoRoute(
         path: Routes.home.path,
         name: Routes.home.name,
         builder: (context, state) => const BottomNavBar(),
@@ -64,6 +72,7 @@ class AppRouter {
     ],
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
     redirect: (context, state) {
+      log('STATE: ${state.matchedLocation}');
       switch (authBloc.state.status) {
         case AuthStatus.authenticated:
           if (state.matchedLocation == Routes.login.path ||
@@ -78,6 +87,9 @@ class AppRouter {
           }
           if (state.matchedLocation == Routes.signup.path) {
             return Routes.signup.path;
+          }
+          if (state.matchedLocation == Routes.forgotPassword.path) {
+            return Routes.forgotPassword.path;
           }
           return Routes.welcome.path;
         case AuthStatus.authenticating:

@@ -441,7 +441,7 @@ class _TabBar extends StatelessWidget {
           child: Container(
             width: width / tabLength,
             decoration: BoxDecoration(
-              color: activeTabIndex == 0
+              color: activeTabIndex >= 0
                   ? ColorConstants.progressBarPrimaryColor
                   : ColorConstants.separatorPrimaryColor,
             ),
@@ -452,7 +452,7 @@ class _TabBar extends StatelessWidget {
           child: Container(
             width: width / tabLength,
             decoration: BoxDecoration(
-              color: activeTabIndex == 1
+              color: activeTabIndex >= 1
                   ? ColorConstants.progressBarPrimaryColor
                   : ColorConstants.separatorPrimaryColor,
             ),
@@ -463,7 +463,7 @@ class _TabBar extends StatelessWidget {
           child: Container(
             width: width / tabLength,
             decoration: BoxDecoration(
-              color: activeTabIndex == 2
+              color: activeTabIndex >= 2
                   ? ColorConstants.progressBarPrimaryColor
                   : ColorConstants.separatorPrimaryColor,
             ),

@@ -119,8 +119,12 @@ class _HomeWidgetState extends State<HomeWidget> {
     return Stack(
       children: <Widget>[
         // _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
-        SvgPicture.asset(
-          'assets/images/blue_circles.svg',
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: SvgPicture.asset(
+            'assets/images/blue_circles.svg',
+            fit: BoxFit.cover,
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 330.0),
