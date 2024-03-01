@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:Veris/core/view/bottom_nav_bar.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
 import 'package:Veris/features/authentication/bloc/auth_state.dart';
-import 'package:Veris/features/authentication/view/forgot_pasword_page.dart';
+import 'package:Veris/features/authentication/view/forgot_pass_page.dart';
 import 'package:Veris/features/authentication/view/login_page.dart';
 import 'package:Veris/features/authentication/view/signup_page.dart';
 import 'package:Veris/features/intro/view/intro_page.dart';
