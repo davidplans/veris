@@ -1,5 +1,7 @@
 # Veris
 
+This work was supported by the Engineering and Physical Sciences Research Council (grant number EP/T022566/1).  DIGIT Lab is a Next Stage Digital Economy Centre.
+
 Veris is an Open Source smartphone application framework that was originally built for the DIGIT.ac.uk project under EPSRC funding in the UK. Its underlying principle is one of protocol-based deployment, whereby a simple JSON-based, human-readable file is read by the application when onboarding a user, which contains information as to what elements the app should display, from questionnaires to data-gathering tasks to content. In this way, a scientist, clinician or designer can build and prototype an app to carry out user research by simply building a protocol file without any programming. It is currently being used in cognitive neuroscience projects in the diagnostics of disorder generally, and within the National Health System in the United Kingdom, for experimental digital biomarker design in autism diagnostics.
 
 Please write to david.plans@rhul.ac.uk if you'd like to be on the waiting list to use Veris or any of its current tools.
