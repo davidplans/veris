@@ -76,7 +76,6 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
   @override
   Widget build(BuildContext context) {
     user = context.select((AuthBloc bloc) => bloc.state.user);
-    print('PRACTICETRIALNUMBER: ${widget.practiceTrialNumber}');
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.practiceTrialNumber == 0

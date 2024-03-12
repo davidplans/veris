@@ -109,17 +109,31 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
   }
 
   Map<String, dynamic> _getPasswordErrorMessage(SignUpState state) {
+    String password = state.password.value.trim().toString();
     Map<String, dynamic> messages = {
       'eightCharacters': ['8 characters or more', 'error'],
       'lowercaseLetter': ['A lowercase letter', 'error'],
+      'uppercaseLetter': ['A uppercase letter', 'error'],
       'numberOrSymbol': ['A number or a symbol', 'error']
     };
+    RegExp lowerRegEx = RegExp(r'(?=.*[a-z])\w+');
+    RegExp upperRegEx = RegExp(r'(?=.*[A-Z])\w+');
+    RegExp numberRegEx = RegExp(r'(?=.*?[0-9])\w+');
+    RegExp symbolRegEx = RegExp(r'(?=.*?[!@#\$&*~])');
+
+
     if (state.password.value.trim().length >= 8) {
       messages['eightCharacters'][1] = 'succes';
     }
-    // if (state.email.value.trim().length >= 8) {
-    //   messages['eightCharacters'][1] = 'succes';
-    // }
+    if (lowerRegEx.hasMatch(password)) {
+      messages['lowercaseLetter'][1] = 'succes';
+    }
+    if (upperRegEx.hasMatch(password)) {
+      messages['uppercaseLetter'][1] = 'succes';
+    }
+    if (numberRegEx.hasMatch(password) || symbolRegEx.hasMatch(password)) {
+      messages['numberOrSymbol'][1] = 'succes';
+    }
     return messages;
   }
 

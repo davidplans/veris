@@ -16,6 +16,7 @@ class Email extends FormzInput<String, EmailValidationError> {
   /// {@macro email}
   const Email.dirty([String value = '']) : super.dirty(value);
 
+  // Alternative -  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"
   static final RegExp _emailRegExp = RegExp(
     r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
   );
@@ -44,8 +45,10 @@ class Password extends FormzInput<String, PasswordValidationError> {
   /// {@macro password}
   const Password.dirty([String value = '']) : super.dirty(value);
 
+  // OLD password regex - r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'
+
   static final _passwordRegExp =
-      RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
 
   @override
   PasswordValidationError? validator(String? value) {

@@ -34,7 +34,6 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         ),
       );
     } catch (catchError) {
-      print('CATCHERROR: ${catchError}');
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
   }
