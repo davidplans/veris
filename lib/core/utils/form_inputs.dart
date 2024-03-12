@@ -48,7 +48,7 @@ class Password extends FormzInput<String, PasswordValidationError> {
   // OLD password regex - r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'
 
   static final _passwordRegExp =
-      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9!@#\$&*~]).{8,}$');
 
   @override
   PasswordValidationError? validator(String? value) {

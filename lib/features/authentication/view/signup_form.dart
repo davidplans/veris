@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:Veris/common/widgets/ui_components/divider_component.dart';
 import 'package:Veris/common/widgets/ui_components/input_text_component.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/common/widgets/ui_components/outline_button_component.dart';
-import 'package:Veris/core/user/authentication_repository.dart';
 import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
-import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
 import 'package:Veris/features/authentication/models/signup_state.dart';
 import 'package:Veris/features/authentication/services/signup_cubit.dart';
 import 'package:Veris/routes/routes.dart';
