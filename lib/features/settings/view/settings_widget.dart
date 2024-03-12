@@ -80,12 +80,23 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               //     context.go(Routes.intro.path);
               //   },
               // ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
+              MainButtonComponent(
+                title: 'Input URL',
+                backgroundColor: const Color.fromARGB(255, 6, 47, 80),
+                titleColor: ColorConstants.textInvertedColor,
+                onPressed: () {
+                  context.go(Routes.intro.path);
+                },
+              ),
+              SizedBox(height: 10.0),
               MainButtonComponent(
                 title: 'Log OUT',
                 backgroundColor: Colors.red,
                 titleColor: ColorConstants.textInvertedColor,
-                onPressed: (){
+                onPressed: () {
                   context.read<AuthBloc>().add(AuthenticationLogoutRequested());
                 },
               ),

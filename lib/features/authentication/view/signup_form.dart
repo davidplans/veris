@@ -1,17 +1,17 @@
 import 'package:Veris/common/widgets/ui_components/divider_component.dart';
 import 'package:Veris/common/widgets/ui_components/input_text_component.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
-import 'package:Veris/common/widgets/ui_components/outline_button_component.dart';
 import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/authentication/models/signup_state.dart';
 import 'package:Veris/features/authentication/services/signup_cubit.dart';
-import 'package:Veris/routes/routes.dart';
+import 'package:Veris/features/authentication/view/partials/input_protocol_url_widget.dart';
+import 'package:Veris/features/authentication/view/partials/qr_code_button.dart';
+import 'package:Veris/features/authentication/view/partials/tab_bar_widget.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:go_router/go_router.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -92,7 +92,6 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
           });
           return false;
         }
-        // context.read<SignUpCubit>().signUpFormSubmitted();
         return true;
       case 2:
       // if (state.confirmedPassword.isNotValid) {
@@ -173,7 +172,7 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
           key: _formKey,
           child: Column(
             children: [
-              _TabBar(
+              TabBarWidget(
                   controller: _controller,
                   tabLength: tabLength,
                   activeTabIndex: activeTabIndex),
@@ -292,7 +291,7 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
                       padding: const EdgeInsets.only(top: 40.0),
                       child: Column(
                         children: [
-                          _IntroWidget(
+                          InputProtocolUrlWidget(
                             onUrlAdded: (url) {
                               setState(() {
                                 _studyProtocolUrl = url;
@@ -303,7 +302,7 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
                             padding: EdgeInsets.symmetric(vertical: 18.0),
                             child: DividerComponent(),
                           ),
-                          const _QRCodeButton(),
+                          const QRCodeButton(),
                           const Spacer(),
                         ],
                       ),
@@ -349,137 +348,8 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
   }
 }
 
-class _QRCodeButton extends StatelessWidget {
-  const _QRCodeButton();
 
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButtonComponent(
-      title: 'Scan QR code',
-      onPressed: () {
-        context.go(Routes.scanQR.path);
-      },
-      backgroundColor: ColorConstants.btnOutlineDefaultColor,
-      titleColor: ColorConstants.btnPrimaryDefaultColor,
-      borderColor: ColorConstants.btnOutlineBoarderColor,
-    );
-  }
-}
 
-class _IntroWidget extends StatefulWidget {
-  final ValueChanged<String> onUrlAdded;
-  const _IntroWidget({required this.onUrlAdded});
 
-  @override
-  State<_IntroWidget> createState() => _IntroWidgetState();
-}
 
-class _IntroWidgetState extends State<_IntroWidget> {
-  final TextEditingController _controller = TextEditingController();
-  final studyProtocolHelper = StudyProtocolHelper();
-  final String testUrl =
-      'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test_2.json?alt=media&token=80d0dfa5-8720-4449-bbf0-cf630189768f';
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        InputTextComponent(
-          controller: _controller,
-          onChanged: (text) {
-            setState(() {
-              _controller.text = text;
-            });
-          },
-          keyboardType: TextInputType.url,
-          placeHolderText: 'Enter protocol URL',
-          labelText: 'Study protocol URL',
-          hintText: '',
-          errorText: null,
-        ),
-        InkWell(
-          onTap: () {
-            setState(() {
-              widget.onUrlAdded(testUrl);
-            });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.green[200],
-              content: const Text('Pasted!'),
-              duration: const Duration(seconds: 2),
-            ));
-          },
-          child: const Text(
-            "Use Demo protocol",
-            style: TextStyle(color: Colors.grey, fontSize: 16),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _TabBar extends StatelessWidget {
-  const _TabBar({
-    required TabController controller,
-    required this.tabLength,
-    required this.activeTabIndex,
-  }) : _controller = controller;
-
-  final TabController _controller;
-  final int tabLength;
-  final int activeTabIndex;
-
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    return TabBar(
-      labelPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-      indicatorColor: Colors.transparent,
-      controller: _controller,
-      dividerHeight: 0,
-      indicatorWeight: 0.1,
-      indicatorSize: TabBarIndicatorSize.tab,
-      tabs: [
-        Tab(
-          height: 4,
-          child: Container(
-            width: width / tabLength,
-            decoration: BoxDecoration(
-              color: activeTabIndex >= 0
-                  ? ColorConstants.progressBarPrimaryColor
-                  : ColorConstants.separatorPrimaryColor,
-            ),
-          ),
-        ),
-        Tab(
-          height: 4,
-          child: Container(
-            width: width / tabLength,
-            decoration: BoxDecoration(
-              color: activeTabIndex >= 1
-                  ? ColorConstants.progressBarPrimaryColor
-                  : ColorConstants.separatorPrimaryColor,
-            ),
-          ),
-        ),
-        Tab(
-          height: 4,
-          child: Container(
-            width: width / tabLength,
-            decoration: BoxDecoration(
-              color: activeTabIndex >= 2
-                  ? ColorConstants.progressBarPrimaryColor
-                  : ColorConstants.separatorPrimaryColor,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
