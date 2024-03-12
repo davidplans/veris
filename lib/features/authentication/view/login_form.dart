@@ -4,13 +4,13 @@ import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/core/utils/main_constants.dart';
 import 'package:Veris/features/authentication/models/login_state.dart';
 import 'package:Veris/features/authentication/services/login_cubit.dart';
-import 'package:Veris/routes/routes.dart';
+import 'package:Veris/features/authentication/view/partials/forgot_password_widget.dart';
+import 'package:Veris/features/authentication/view/partials/sign_up_button.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -146,7 +146,7 @@ class _LoginFormState extends State<LoginForm> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _ForgotPassword(),
+                  const ForgotPasswordWidget(),
                   const SizedBox(height: 10),
                   BlocBuilder<LoginCubit, LoginState>(
                     // buildWhen: (previous, current) =>
@@ -181,7 +181,7 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(height: 12),
                   const DividerComponent(),
                   const SizedBox(height: 12),
-                  _SignUpButton(),
+                  SignUpButton(),
                 ],
               ),
             ),
@@ -192,45 +192,3 @@ class _LoginFormState extends State<LoginForm> {
   }
 }
 
-class _ForgotPassword extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: const Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-            child: Text(
-              "Forgot password?",
-              style: TextStyle(
-                  fontFamily: FontConstants.interFontFamily,
-                  fontSize: FontConstants.fontSize16,
-                  fontWeight: FontWeight.w500,
-                  color: ColorConstants.generalPrimaryColor),
-            ),
-          ),
-        ),
-      ),
-      onTap: () {
-        context.go(Routes.forgotPassword.path);
-      },
-    );
-  }
-}
-
-class _SignUpButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MainButtonComponent(
-      key: const Key('loginForm_createAccount_flatButton'),
-      title: 'Log in with Google',
-      titleColor: ColorConstants.iconInvertedColor,
-      backgroundColor: ColorConstants.btnLogInGoogleColor,
-      prefixIconPath: "assets/icons/google.svg",
-      onPressed: () {
-        // context.go(Routes.signup.path);
-      },
-    );
-  }
-}
