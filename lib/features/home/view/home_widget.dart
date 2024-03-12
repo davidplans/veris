@@ -4,7 +4,6 @@ import 'package:Veris/common/widgets/ui_components/colored_badge_container.dart'
 import 'package:Veris/core/utils/notification_service.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/home/view/partials/module_widget.dart';
-import 'package:Veris/style/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -164,10 +163,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 width: 8.0,
                               ),
                               const ColoredBadgeContainer(
-                                containerColor:
-                                    ColorConstants.badgeBackgroundGreenColor,
-                                containerTextColor:
-                                    ColorConstants.badgeTextGreenColor,
+                                colorKey: 'green',
                                 containerText: '1/1 today',
                               ),
                               const Spacer(),
@@ -214,10 +210,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 width: 8.0,
                               ),
                               const ColoredBadgeContainer(
-                                containerColor:
-                                    ColorConstants.badgeBackgroundOrangeColor,
-                                containerTextColor:
-                                    ColorConstants.badgeTextOrangeColor,
+                                colorKey: 'orange',
                                 containerText: '0/1 today',
                               ),
                               const Spacer(),
