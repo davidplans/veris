@@ -4,7 +4,9 @@ import 'package:Veris/features/intro/view/partials/intro_info.dart';
 import 'package:Veris/features/intro/view/partials/intro_mode_switch.dart';
 import 'package:Veris/features/intro/view/partials/intro_top_bar.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({Key? key}) : super(key: key);
@@ -36,6 +38,7 @@ class _IntroPageState extends State<IntroPage> {
     }
 
     // ignore: use_build_context_synchronously
+    context.go(Routes.home.path);
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => const AuthView()),

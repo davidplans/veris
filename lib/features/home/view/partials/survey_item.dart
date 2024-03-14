@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/pat/view/start_pat_text_page.dart';
 import 'package:Veris/features/surveys/view/questions_widget.dart';
+import 'package:Veris/features/surveys/view/survey_page.dart';
 import 'package:flutter/material.dart';
 
 class SurveyItem extends StatelessWidget {
@@ -39,6 +40,18 @@ class SurveyItem extends StatelessWidget {
                   onTap: (() async {
                     List<dynamic> questions = List.from(
                         jsonDecode(sectionItem.questions!) as Iterable);
+                                           Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SurveyPage(
+                          questions: questions,
+                          moduleId: module.uuid,
+                          sectionId: sectionItem.id!,
+                          sectionName: sectionName,
+                          moduleName: module.name,
+                        ),
+                      ),
+                    );
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(

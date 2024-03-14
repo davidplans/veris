@@ -1,3 +1,4 @@
+import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,6 +14,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: const TextStyle(
+            color: ColorConstants.textSecondaryColor,
             fontFamily: FontConstants.interFontFamily,
             fontSize: FontConstants.fontSize20,
             fontWeight: FontWeight.w500,

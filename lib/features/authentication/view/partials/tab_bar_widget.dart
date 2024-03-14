@@ -2,7 +2,8 @@ import 'package:Veris/style/color_constants.dart';
 import 'package:flutter/material.dart';
 
 class TabBarWidget extends StatelessWidget {
-  const TabBarWidget({super.key, 
+  const TabBarWidget({
+    super.key,
     required TabController controller,
     required this.tabLength,
     required this.activeTabIndex,
@@ -22,41 +23,19 @@ class TabBarWidget extends StatelessWidget {
       dividerHeight: 0,
       indicatorWeight: 0.1,
       indicatorSize: TabBarIndicatorSize.tab,
-      tabs: [
-        Tab(
+      tabs: List.generate(tabLength, (index) {
+        return Tab(
           height: 4,
           child: Container(
             width: width / tabLength,
             decoration: BoxDecoration(
-              color: activeTabIndex >= 0
+              color: activeTabIndex >= index
                   ? ColorConstants.progressBarPrimaryColor
                   : ColorConstants.separatorPrimaryColor,
             ),
           ),
-        ),
-        Tab(
-          height: 4,
-          child: Container(
-            width: width / tabLength,
-            decoration: BoxDecoration(
-              color: activeTabIndex >= 1
-                  ? ColorConstants.progressBarPrimaryColor
-                  : ColorConstants.separatorPrimaryColor,
-            ),
-          ),
-        ),
-        Tab(
-          height: 4,
-          child: Container(
-            width: width / tabLength,
-            decoration: BoxDecoration(
-              color: activeTabIndex >= 2
-                  ? ColorConstants.progressBarPrimaryColor
-                  : ColorConstants.separatorPrimaryColor,
-            ),
-          ),
-        ),
-      ],
+        );
+      }),
     );
   }
 }

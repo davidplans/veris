@@ -154,7 +154,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                           height: 1.0,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          padding:
+                              const EdgeInsets.only(top: 15.0, bottom: 15.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
@@ -178,83 +179,84 @@ class _HomeWidgetState extends State<HomeWidget> {
                 const SizedBox(
                   height: 15.0,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        const Padding(
-                          padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Questionnaires '),
-                            ],
+                // Container(
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(8.0),
+                //     color: Colors.white,
+                //   ),
+                //   child: Padding(
+                //     padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                //     child: Column(
+                //       mainAxisSize: MainAxisSize.min,
+                //       children: <Widget>[
+                //         const Padding(
+                //           padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text('Questionnaires '),
+                //             ],
+                //           ),
+                //         ),
+                //         const Divider(
+                //           height: 1.0,
+                //         ),
+                //         Padding(
+                //           padding:
+                //               const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             children: <Widget>[
+                //               const Text('About You'),
+                //               const SizedBox(
+                //                 width: 8.0,
+                //               ),
+                //               const ColoredBadgeContainer(
+                //                 colorKey: 'orange',
+                //                 containerText: '0/1 today',
+                //               ),
+                //               const Spacer(),
+                //               SvgPicture.asset('assets/icons/arrow-forward.svg')
+                //             ],
+                //           ),
+                //         ),
+                //         const Divider(
+                //           height: 1.0,
+                //         ),
+                //         Padding(
+                //           padding:
+                //               const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             children: <Widget>[
+                //               const Text('Questionnaire 1 '),
+                //               const Spacer(),
+                //               SvgPicture.asset('assets/icons/arrow-forward.svg')
+                //             ],
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                SizedBox(
+                  height: 350,
+                  child: ListView.builder(
+                      itemCount: _modules.length,
+                      itemBuilder: (BuildContext context, int indexModule) {
+                        final module = _modules[indexModule];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 4.0),
+                          child: ModuleWidget(
+                            module: module,
                           ),
-                        ),
-                        const Divider(
-                          height: 1.0,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              const Text('About You'),
-                              const SizedBox(
-                                width: 8.0,
-                              ),
-                              const ColoredBadgeContainer(
-                                colorKey: 'orange',
-                                containerText: '0/1 today',
-                              ),
-                              const Spacer(),
-                              SvgPicture.asset('assets/icons/arrow-forward.svg')
-                            ],
-                          ),
-                        ),
-                        const Divider(
-                          height: 1.0,
-                        ),
-                        Padding(
-                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Text('Questionnaire 1 '),
-                            const Spacer(),
-                            SvgPicture.asset('assets/icons/arrow-forward.svg')
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                        );
+                      },),
                 ),
-              ),
-                        SizedBox(
-            height: 150,
-            child: ListView.builder(
-                itemCount: _modules.length,
-                itemBuilder: (BuildContext context, int indexModule) {
-                  final module = _modules[indexModule];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0),
-                    child: ModuleWidget(
-                      module: module,
-                    ),
-                  );
-                }),
-                    ),
               ],
             ),
           ),
         ),
-
       ],
     );
   }
