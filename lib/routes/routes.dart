@@ -10,6 +10,7 @@ import 'package:Veris/features/authentication/view/signup_page.dart';
 import 'package:Veris/features/intro/view/intro_page.dart';
 import 'package:Veris/features/intro/view/welcome_page.dart';
 import 'package:Veris/features/qr_scanner/qr_scanner.dart';
+import 'package:Veris/features/surveys/view/survey_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,7 +21,8 @@ enum Routes {
   home('/home'),
   intro('/intro'),
   scanQR('/scan_qr'),
-  forgotPassword('/forgot_password');
+  forgotPassword('/forgot_password'),
+  survey('/survey');
 
   const Routes(this.path);
   final String path;
@@ -31,6 +33,7 @@ class AppRouter {
   final AuthBloc authBloc;
   AppRouter({required this.authBloc, required this.navigatorKey});
   late final GoRouter router = GoRouter(
+    debugLogDiagnostics: true,
     navigatorKey: navigatorKey,
     initialLocation: Routes.welcome.path,
     routes: [
@@ -69,6 +72,19 @@ class AppRouter {
         name: Routes.scanQR.name,
         builder: (context, state) => const QrScanner(),
       ),
+      GoRoute(
+          path: Routes.survey.path,
+          name: Routes.survey.name,
+          builder: (context, state) {
+            Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+            return SurveyPage(
+              questions: args['questions'],
+              moduleId: args['moduleId'],
+              sectionId: args['sectionId'],
+              sectionName: args['sectionName'],
+              moduleName: args['moduleName'],
+            );
+          }),
     ],
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
     redirect: (context, state) {
