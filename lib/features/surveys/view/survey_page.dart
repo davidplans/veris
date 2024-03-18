@@ -1,4 +1,5 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/common/widgets/custom_html_widget.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/features/authentication/view/partials/tab_bar_widget.dart';
 import 'package:Veris/features/surveys/view/partials/survey_input_text.dart';
@@ -85,7 +86,21 @@ class _SurveyPageState extends State<SurveyPage>
     for (var item in items) {
       switch (item['type']) {
         case "instruction":
-          steps.add(SingleChildScrollView(child: Text(item['text'])));
+          steps.add(
+            SingleChildScrollView(
+              child: CustomHtmlWidget(
+                htmlText: item['text'],
+                onChanged: (isInstruction) {
+                  if (isInstruction) {
+                    setState(() {
+                      _isSurveyComplete = true;
+                    });
+                  }
+                },
+              ),
+            ),
+          );
+
           break;
         case "text":
           // if (item['subtype'] == 'numeric') {
