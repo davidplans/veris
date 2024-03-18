@@ -1,26 +1,20 @@
+import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:Veris/core/user/authentication_repository.dart';
 import 'package:Veris/features/authentication/services/signup_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/core/user/auth_repository.dart';
 import 'package:Veris/features/authentication/view/signup_form.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
-  static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const SignUpPage());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: BlocProvider<SignUpCubit>(
-          create: (_) => SignUpCubit(context.read<AuthenticationRepository>()),
-          child: const SignUpForm(),
-        ),
+      appBar: const AppBarWidget(title: 'Enter your email'),
+      body: BlocProvider<SignUpCubit>(
+        create: (_) => SignUpCubit(context.read<AuthenticationRepository>()),
+        child: const SignUpForm(),
       ),
     );
   }

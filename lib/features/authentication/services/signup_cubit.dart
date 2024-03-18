@@ -1,7 +1,7 @@
+import 'package:Veris/core/user/authentication_repository.dart';
 import 'package:Veris/features/authentication/models/signup_state.dart';
 import 'package:Veris/core/utils/form_inputs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/core/user/auth_repository.dart';
 import 'package:formz/formz.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
@@ -66,7 +66,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     if (!state.isValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      await _authenticationRepository.signUp(
+      await _authenticationRepository.register(
         email: state.email.value,
         password: state.password.value,
       );

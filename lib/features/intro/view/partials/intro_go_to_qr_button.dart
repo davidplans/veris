@@ -1,5 +1,6 @@
-import 'package:Veris/features/qr_scanner/qr_scanner.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class IntroGoToQRButton extends StatelessWidget {
   const IntroGoToQRButton({
@@ -23,10 +24,7 @@ class IntroGoToQRButton extends StatelessWidget {
             ElevatedButton(
               child: const Text('Scan QR'),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const QrScanner()),
-                );
+                context.go(Routes.scanQR.path);
               },
             ),
           ],
