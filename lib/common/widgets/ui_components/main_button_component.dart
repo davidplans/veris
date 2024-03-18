@@ -1,3 +1,4 @@
+import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,11 +9,11 @@ class MainButtonComponent extends StatefulWidget {
   final Color titleColor;
   final String? prefixIconPath;
   final String? sufixIconPath;
-  final Function() onPressed;
+  final Function()? onPressed;
   const MainButtonComponent({
     super.key,
     required this.title,
-    required this.onPressed,
+    this.onPressed,
     required this.backgroundColor,
     required this.titleColor,
     this.prefixIconPath,
@@ -32,12 +33,13 @@ class _MainButtonComponentState extends State<MainButtonComponent> {
       width: MediaQuery.of(context).size.width,
       height: 46,
       child: TextButton(
-        onPressed: () => widget.onPressed(),
+        onPressed: widget.onPressed,
         style: TextButton.styleFrom(
           backgroundColor: widget.backgroundColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
+          disabledBackgroundColor: ColorConstants.btnPrimaryDisabledColor,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -47,7 +49,7 @@ class _MainButtonComponentState extends State<MainButtonComponent> {
                     children: [
                       SvgPicture.asset(
                           colorFilter: ColorFilter.mode(
-                              widget.titleColor, BlendMode.srcIn),
+                             widget.onPressed != null ? widget.titleColor : ColorConstants.textDisabledColor, BlendMode.srcIn),
                           widget.prefixIconPath!),
                       const SizedBox(width: 8.0),
                     ],
@@ -57,7 +59,7 @@ class _MainButtonComponentState extends State<MainButtonComponent> {
               widget.title,
               style: TextStyle(
                   fontFamily: FontConstants.interFontFamily,
-                  color: widget.titleColor,
+                  color: widget.onPressed != null ? widget.titleColor : ColorConstants.textDisabledColor,
                   fontWeight: FontWeight.w500,
                   fontSize: FontConstants.fontSize16,
                   height: 1.375),
@@ -68,7 +70,7 @@ class _MainButtonComponentState extends State<MainButtonComponent> {
                       const SizedBox(width: 8.0),
                       SvgPicture.asset(
                           colorFilter: ColorFilter.mode(
-                              widget.titleColor, BlendMode.srcIn),
+                              widget.onPressed != null ? widget.titleColor : ColorConstants.textDisabledColor, BlendMode.srcIn),
                           widget.sufixIconPath!),
                     ],
                   )

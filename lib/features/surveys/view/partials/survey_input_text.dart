@@ -3,7 +3,8 @@ import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 
 class SurveyInputText extends StatefulWidget {
-  const SurveyInputText({super.key});
+  final Function(String) onChanged;
+  const SurveyInputText({super.key, required this.onChanged});
 
   @override
   State<SurveyInputText> createState() => _SurveyInputTextState();
@@ -15,6 +16,9 @@ class _SurveyInputTextState extends State<SurveyInputText> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: (text) {
+        widget.onChanged(text);
+      },
       cursorWidth: 1.0,
       style: const TextStyle(
           fontFamily: FontConstants.interFontFamily,

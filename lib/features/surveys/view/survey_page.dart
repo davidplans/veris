@@ -29,7 +29,8 @@ class _SurveyPageState extends State<SurveyPage>
     with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   late TabController _controller;
-  int activeTabIndex = 0;
+  int _activeTabIndex = 0;
+  bool _isSurveyComplete = false;
   // int tabLength = 3;
 
   @override
@@ -37,7 +38,7 @@ class _SurveyPageState extends State<SurveyPage>
     super.initState();
     _controller = TabController(
       length: widget.questions.length,
-      initialIndex: activeTabIndex,
+      initialIndex: _activeTabIndex,
       vsync: this,
     );
   }
@@ -94,7 +95,19 @@ class _SurveyPageState extends State<SurveyPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildTitle(item, index),
-                SurveyInputText(),
+                SurveyInputText(
+                  onChanged: (text) {
+                    if (text != '' && text.isNotEmpty) {
+                      setState(() {
+                        _isSurveyComplete = true;
+                      });
+                    } else {
+                      setState(() {
+                        _isSurveyComplete = false;
+                      });
+                    }
+                  },
+                ),
               ],
             ),
           ));
@@ -119,7 +132,23 @@ class _SurveyPageState extends State<SurveyPage>
           steps.add(SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [_buildTitle(item, index), SurveyRadioButton(options: item['options'] as List,)],
+              children: [
+                _buildTitle(item, index),
+                SurveyRadioButton(
+                  options: item['options'] as List,
+                  onChanged: (isChecked) {
+                    if (isChecked) {
+                      setState(() {
+                        _isSurveyComplete = true;
+                      });
+                    } else {
+                      setState(() {
+                        _isSurveyComplete = false;
+                      });
+                    }
+                  },
+                )
+              ],
             ),
           ));
           break;
@@ -135,7 +164,7 @@ class _SurveyPageState extends State<SurveyPage>
       body: DefaultTabController(
         length: widget.questions.length,
         child: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -143,7 +172,7 @@ class _SurveyPageState extends State<SurveyPage>
                 TabBarWidget(
                     controller: _controller,
                     tabLength: widget.questions.length,
-                    activeTabIndex: activeTabIndex),
+                    activeTabIndex: _activeTabIndex),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 30.0),
@@ -157,8 +186,8 @@ class _SurveyPageState extends State<SurveyPage>
                         child: TabBarView(
                           controller: _controller,
                           physics: const NeverScrollableScrollPhysics(),
-                          children:
-                              _buildQuestions(widget.questions, activeTabIndex),
+                          children: _buildQuestions(
+                              widget.questions, _activeTabIndex),
                         ),
                       ),
                     ),
@@ -166,14 +195,17 @@ class _SurveyPageState extends State<SurveyPage>
                 ),
                 MainButtonComponent(
                   title: 'Next',
-                  onPressed:  () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    final nextStepIndex = _controller.index + 1;
-                    setState(() {
-                      activeTabIndex = nextStepIndex;
-                      _controller.animateTo(activeTabIndex);
-                    });
-                  },
+                  onPressed: _isSurveyComplete
+                      ? () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          final nextStepIndex = _controller.index + 1;
+                          setState(() {
+                            _isSurveyComplete = false;
+                            _activeTabIndex = nextStepIndex;
+                            _controller.animateTo(_activeTabIndex);
+                          });
+                        }
+                      : null,
                   backgroundColor: ColorConstants.btnPrimaryDefaultColor,
                   titleColor: ColorConstants.textInvertedColor,
                   sufixIconPath: 'assets/icons/arrow-forward.svg',

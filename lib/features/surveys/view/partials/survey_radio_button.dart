@@ -3,37 +3,42 @@ import 'package:flutter/material.dart';
 
 class SurveyRadioButton extends StatefulWidget {
   final List<dynamic> options;
-  const SurveyRadioButton({super.key, required this.options});
+  final Function(bool) onChanged;
+  const SurveyRadioButton(
+      {super.key, required this.options, required this.onChanged});
 
   @override
   State<SurveyRadioButton> createState() => _SurveyRadioButtonState();
 }
 
 class _SurveyRadioButtonState extends State<SurveyRadioButton> {
-  String current = '';
- int currentIndex = -1;
+  String _currentValue = '';
+  int _currentIndex = -1;
 
   List<Widget> _buildRadioWidget(List<dynamic> options) {
     List<Widget> listRadioButtons = [];
-   
+
     for (int i = 0; i < options.length; i++) {
       listRadioButtons.add(
         Padding(
           padding: const EdgeInsets.only(bottom: 6.0),
           child: Container(
             decoration: BoxDecoration(
-                color: currentIndex == i ? ColorConstants.testSelectedColor :  ColorConstants.inputBackgroundDisableColor,
+                color: _currentIndex == i
+                    ? ColorConstants.testSelectedColor
+                    : ColorConstants.inputBackgroundDisableColor,
                 borderRadius: BorderRadius.circular(8.0)),
             child: RadioListTile(
               title: Text(options[i]),
               activeColor: ColorConstants.iconSecondaryColor,
               value: options[i].toString(),
-              groupValue: current,
+              groupValue: _currentValue,
               onChanged: (value) {
                 setState(() {
-                  current = value.toString();
-                  currentIndex = i;
+                  _currentValue = value.toString();
+                  _currentIndex = i;
                 });
+                widget.onChanged(true);
               },
             ),
           ),
