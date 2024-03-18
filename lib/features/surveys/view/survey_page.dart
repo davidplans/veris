@@ -2,6 +2,7 @@ import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/features/authentication/view/partials/tab_bar_widget.dart';
 import 'package:Veris/features/surveys/view/partials/survey_input_text.dart';
+import 'package:Veris/features/surveys/view/partials/survey_radio_button.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class _SurveyPageState extends State<SurveyPage>
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15.0 ),
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
           child: Text(
             item['text'],
             style: const TextStyle(
@@ -79,22 +80,23 @@ class _SurveyPageState extends State<SurveyPage>
   }
 
   List<Widget> _buildQuestions(List<dynamic> items, int index) {
-    print(items);
     List<Widget> steps = [];
     for (var item in items) {
       switch (item['type']) {
         case "instruction":
-          steps.add(Text(item['text']));
+          steps.add(SingleChildScrollView(child: Text(item['text'])));
           break;
         case "text":
           // if (item['subtype'] == 'numeric') {
 
-          steps.add(Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTitle(item, index),
-              SurveyInputText(),
-            ],
+          steps.add(SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTitle(item, index),
+                SurveyInputText(),
+              ],
+            ),
           ));
           // }
           // else {
@@ -114,15 +116,11 @@ class _SurveyPageState extends State<SurveyPage>
 
           break;
         case "multi":
-          steps.add(Column(
-            children: [
-              _buildTitle(item, index),
-              Container(
-                color: Colors.amber,
-                width: 100,
-                height: 100,
-              ),
-            ],
+          steps.add(SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [_buildTitle(item, index), SurveyRadioButton(options: item['options'] as List,)],
+            ),
           ));
           break;
       }
@@ -168,7 +166,7 @@ class _SurveyPageState extends State<SurveyPage>
                 ),
                 MainButtonComponent(
                   title: 'Next',
-                  onPressed: () {
+                  onPressed:  () {
                     FocusManager.instance.primaryFocus?.unfocus();
                     final nextStepIndex = _controller.index + 1;
                     setState(() {
