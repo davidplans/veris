@@ -2,6 +2,7 @@ import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/common/widgets/custom_html_widget.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/features/authentication/view/partials/tab_bar_widget.dart';
+import 'package:Veris/features/surveys/view/partials/survey_checkbox.dart';
 import 'package:Veris/features/surveys/view/partials/survey_input_text.dart';
 import 'package:Veris/features/surveys/view/partials/survey_radio_button.dart';
 import 'package:Veris/style/color_constants.dart';
@@ -144,28 +145,56 @@ class _SurveyPageState extends State<SurveyPage>
 
           break;
         case "multi":
-          steps.add(SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildTitle(item, index),
-                SurveyRadioButton(
-                  options: item['options'] as List,
-                  onChanged: (isChecked) {
-                    if (isChecked) {
-                      setState(() {
-                        _isSurveyComplete = true;
-                      });
-                    } else {
-                      setState(() {
-                        _isSurveyComplete = false;
-                      });
-                    }
-                  },
-                )
-              ],
+          steps.add(
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildTitle(item, index),
+                  SurveyRadioButton(
+                    options: item['options'] as List,
+                    onChanged: (isChecked) {
+                      if (isChecked) {
+                        setState(() {
+                          _isSurveyComplete = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isSurveyComplete = false;
+                        });
+                      }
+                    },
+                  )
+                ],
+              ),
             ),
-          ));
+          );
+          break;
+        case "checkbox":
+          steps.add(
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildTitle(item, index),
+                  SurveyCheckBox(
+                    options: item['options'] as List,
+                    onChanged: (isChecked) {
+                      if (isChecked) {
+                        setState(() {
+                          _isSurveyComplete = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isSurveyComplete = false;
+                        });
+                      }
+                    },
+                  )
+                ],
+              ),
+            ),
+          );
           break;
       }
     }
