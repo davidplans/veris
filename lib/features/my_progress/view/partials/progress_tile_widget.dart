@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Veris/common/widgets/ui_components/colored_badge_container.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
@@ -34,7 +32,6 @@ class _ProgressTileWidgetState extends State<ProgressTileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    log(widget.messages!.keys.toList().toString());
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(

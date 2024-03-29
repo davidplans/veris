@@ -20,7 +20,8 @@ class _IntroPageState extends State<IntroPage> {
   final studyProtocolHelper = StudyProtocolHelper();
 
   String testURL =
-      'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test_2.json?alt=media&token=80d0dfa5-8720-4449-bbf0-cf630189768f';
+      // 'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test_2.json?alt=media&token=80d0dfa5-8720-4449-bbf0-cf630189768f';
+      'https://firebasestorage.googleapis.com/v0/b/digit-veris.appspot.com/o/veris_digit_with_pat.json?alt=media&token=50604fa4-5508-4d8e-8cc7-f91aaed80ff8';
   bool expanded = false;
 
   @override
