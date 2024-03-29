@@ -47,4 +47,6 @@ class ColorConstants {
   static const inputBackgroundDisableColor = Color(0x80F0F1F9); 
   static const inputBoarderDefaultColor = Color(0x33222D90); 
   static const inputBoarderFocusedColor = Color(0x66222D90); 
+  //################## Card Shadow #####################
+  static const cardShadowColor = Color(0xFF252D45);
 }

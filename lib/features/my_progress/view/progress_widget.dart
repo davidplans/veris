@@ -15,7 +15,7 @@ class _ProgressWidgetState extends State<ProgressWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: <Widget>[
+      children:[
         // _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
         SizedBox(
           width: MediaQuery.of(context).size.width,

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Veris/common/widgets/ui_components/no_task_widget.dart';
 import 'package:Veris/core/utils/notification_service.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/home/view/partials/module_widget.dart';
@@ -115,7 +116,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: <Widget>[
+      children: [
         // _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
         SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -125,19 +126,30 @@ class _HomeWidgetState extends State<HomeWidget> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 300.0),
-          child: ListView.builder(
-            itemCount: _modules.length,
-            itemBuilder: (BuildContext context, int indexModule) {
-              final module = _modules[indexModule];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: ModuleWidget(
-                  module: module,
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 330.0),
+          child: _modules.isNotEmpty
+              ? MediaQuery.removePadding(
+                removeTop: true,
+                context: context,
+                child: ListView.builder(
+                    itemCount: _modules.length,
+                    itemBuilder: (BuildContext context, int indexModule) {
+                      final module = _modules[indexModule];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: ModuleWidget(
+                          module: module,
+                        ),
+                      );
+                    },
+                  ),
+              )
+              : const NoTaskWidget(
+                  iconPath: 'assets/icons/illustrations/test.svg',
+                  title: 'No active tests yet',
+                  text:
+                      'Once tests are added to the protocol they will appear here',
                 ),
-              );
-            },
-          ),
         ),
       ],
     );
