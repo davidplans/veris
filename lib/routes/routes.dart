@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:Veris/common/widgets/complete_widget.dart';
 import 'package:Veris/core/view/bottom_nav_bar.dart';
 import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
 import 'package:Veris/features/authentication/bloc/auth_state.dart';
@@ -22,7 +23,8 @@ enum Routes {
   intro('/intro'),
   scanQR('/scan_qr'),
   forgotPassword('/forgot_password'),
-  survey('/survey');
+  survey('/survey'),
+  complete('/complete');
 
   const Routes(this.path);
   final String path;
@@ -73,6 +75,18 @@ class AppRouter {
         builder: (context, state) => const QrScanner(),
       ),
       GoRoute(
+          path: Routes.complete.path,
+          name: Routes.complete.name,
+          builder: (context, state) {
+            Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+            return CompleteWidget(
+              iconPath: args['iconPath'],
+              title: args['title'],
+              buttonTitle: args['buttonTitle'],
+              text: args['text'],
+            );
+          }),
+      GoRoute(
           path: Routes.survey.path,
           name: Routes.survey.name,
           builder: (context, state) {
@@ -89,6 +103,8 @@ class AppRouter {
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
     redirect: (context, state) {
       log('STATE: ${state.matchedLocation}');
+      log('EXTRA: ${state.extra}');
+      log('AUTH: ${authBloc.state.status}');
       switch (authBloc.state.status) {
         case AuthStatus.authenticated:
           if (state.matchedLocation == Routes.login.path ||
