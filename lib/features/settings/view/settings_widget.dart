@@ -91,7 +91,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   context.go(Routes.intro.path);
                 },
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               MainButtonComponent(
                 title: 'Log OUT',
                 backgroundColor: Colors.red,
@@ -100,6 +100,19 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   context.read<AuthBloc>().add(AuthenticationLogoutRequested());
                 },
               ),
+              const SizedBox(height: 10.0),
+              MainButtonComponent(
+                  title: 'Test Button',
+                  backgroundColor: Colors.amber,
+                  titleColor: ColorConstants.textInvertedColor,
+                  onPressed: () {
+                    context.go(Routes.complete.path, extra: {
+                      'iconPath': 'assets/icons/illustrations/success_star.svg',
+                      'title': 'Thank you for completing questionnaire',
+                      'buttonTitle': 'Return to home',
+                      'text': 'Test',
+                    });
+                  }),
             ]))
           ],
         ),

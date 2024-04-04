@@ -1,3 +1,4 @@
+import 'package:Veris/common/widgets/ui_components/alert_dialog.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
@@ -21,34 +22,20 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             letterSpacing: -0.3,
             height: 1.3),
       ),
-      // actions: [
-      //   IconButton(
-      //       onPressed: () {
-      //         showDialog(
-      //           context: context,
-      //           builder: (BuildContext context) {
-      //             return AlertDialog(
-      //               title: const Text('Cancel progress?'),
-      //               content: const Text(
-      //                   "Are you sure you want to cancel this module?"),
-      //               actions: [
-      //                 TextButton(
-      //                     onPressed: () {
-      //                       Navigator.of(context).pop();
-      //                     },
-      //                     child: const Text('Cancel')),
-      //                 TextButton(
-      //                     onPressed: () {
-      //                       Routes.goHome(context);
-      //                     },
-      //                     child: const Text('Yes, abort'))
-      //               ],
-      //             );
-      //           },
-      //         );
-      //       },
-      //       icon: const Icon(Icons.home))
-      // ],
+      actions: [
+        IconButton(
+          onPressed: () => AlertDialogWidget.showAlertDialog(
+              context,
+              'Are you sure you want to exit questionnaire? Your progress won’t be saved.',
+              'Yes, exit',
+              'No, stay'),
+          icon: SvgPicture.asset(
+            width: 28.0,
+            height: 28.0,
+            'assets/icons/close.svg',
+          ),
+        ),
+      ],
       leading: Padding(
         padding: const EdgeInsets.all(10.0),
         child: GestureDetector(
