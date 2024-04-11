@@ -6,6 +6,7 @@ import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 
 class PatItem extends StatefulWidget {
   final ModuleForHomePage module;
@@ -98,9 +99,12 @@ class _PatItemState extends State<PatItem> {
               prefs.setInt('moduleId', widget.module.id);
 
               // ignore: use_build_context_synchronously
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const StartPatPage()),
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return const StartPatPage();
+                  },
+                ),
               );
             }),
           )

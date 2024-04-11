@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AlertDialogWidget {
-  static showAlertDialog(
-      BuildContext context, String content, String positiveButtonTitle,
+  static showAlertDialog(BuildContext context, String content,
+      String positiveButtonTitle,
       [negativeButtonTitle]) {
     return showDialog(
       context: context,
@@ -30,7 +30,12 @@ class AlertDialogWidget {
               children: [
                 MainButtonComponent(
                   title: positiveButtonTitle,
-                  onPressed: () => context.go(Routes.home.path),
+                  onPressed: () => context.go(Routes.complete.path,
+                  extra: {
+                    'iconPath': 'assets/icons/illustrations/success_star.svg',
+                    'title': 'Thank you for completing questionnaire',
+                    'buttonTitle': 'Return to home',
+                  }),
                   backgroundColor: ColorConstants.btnPrimaryDefaultColor,
                   titleColor: ColorConstants.textInvertedColor,
                 ),

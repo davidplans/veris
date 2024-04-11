@@ -1,4 +1,5 @@
 import 'package:Veris/common/widgets/ui_components/alert_dialog.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +25,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () => AlertDialogWidget.showAlertDialog(
-              context,
-              'Are you sure you want to exit questionnaire? Your progress won’t be saved.',
-              'Yes, exit',
-              'No, stay'),
+          onPressed: () => context.pushReplacement(Routes.welcome.path),
           icon: SvgPicture.asset(
             width: 28.0,
             height: 28.0,

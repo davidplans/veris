@@ -1,10 +1,12 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/common/widgets/custom_html_widget.dart';
+import 'package:Veris/common/widgets/ui_components/alert_dialog.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/features/authentication/view/partials/tab_bar_widget.dart';
 import 'package:Veris/features/surveys/view/partials/survey_checkbox.dart';
 import 'package:Veris/features/surveys/view/partials/survey_input_text.dart';
 import 'package:Veris/features/surveys/view/partials/survey_radio_button.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
@@ -243,6 +245,14 @@ class _SurveyPageState extends State<SurveyPage>
                       ? () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           final nextStepIndex = _controller.index + 1;
+                          if (widget.questions.length == nextStepIndex) {
+                            AlertDialogWidget.showAlertDialog(
+                                context,
+                                'Are you sure you want to exit questionnaire? Your progress won’t be saved.',
+                                'Yes, exit',
+                                'No, Stay');
+                            return;
+                          }
                           setState(() {
                             _isSurveyComplete = false;
                             _activeTabIndex = nextStepIndex;
