@@ -1,7 +1,7 @@
 import 'package:Veris/common/widgets/ui_components/input_text_component.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
-import 'package:Veris/features/authentication/models/forgot_pass_state.dart';
-import 'package:Veris/features/authentication/services/forgot_pass_cubit.dart';
+import 'package:Veris/features/authentication/bloc/reset/reset_pass_state.dart';
+import 'package:Veris/features/authentication/bloc/reset/reset_pass_cubit.dart';
 import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
@@ -11,16 +11,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
-class ForgotPasswordForm extends StatefulWidget {
-  const ForgotPasswordForm({
+class ResetPasswordForm extends StatefulWidget {
+  const ResetPasswordForm({
     super.key,
   });
 
   @override
-  State<ForgotPasswordForm> createState() => _ForgotPasswordFormState();
+  State<ResetPasswordForm> createState() => _ResetPasswordFormState();
 }
 
-class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
+class _ResetPasswordFormState extends State<ResetPasswordForm> {
   bool _canEmailValidate = false;
   bool _isEmailSent = false;
 
@@ -62,18 +62,18 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
     );
   }
 
-  void _resetPassword(ForgotPasswordState state) {
+  void _resetPassword(ResetPasswordState state) {
     setState(() {
       if (state.email.isNotValid) {
         _canEmailValidate = true;
       }
     });
-    context.read<ForgotPasswordCubit>().resetPassword();
+    context.read<ResetPasswordCubit>().resetPassword();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ForgotPasswordCubit, ForgotPasswordState>(
+    return BlocListener<ResetPasswordCubit, ResetPasswordState>(
       listener: (context, state) {
         if (state.status.isSuccess) {
           ScaffoldMessenger.of(context)
@@ -107,7 +107,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                       const Padding(
                         padding: EdgeInsets.only(top: 30.0, bottom: 20.0),
                         child: Text(
-                          'Forgot password',
+                          'Reset password',
                           style: TextStyle(
                               fontFamily: FontConstants.interFontFamily,
                               fontSize: FontConstants.fontSize24,
@@ -129,7 +129,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                               height: 1.25),
                         ),
                       ),
-                      BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
+                      BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
                           buildWhen: (previous, current) =>
                               previous.email != current.email,
                           builder: ((context, state) {
@@ -150,7 +150,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                               onChanged: (email) {
                                 _canEmailValidate = false;
                                 context
-                                    .read<ForgotPasswordCubit>()
+                                    .read<ResetPasswordCubit>()
                                     .emailChanged(email);
                               },
                             );
@@ -158,7 +158,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                     ],
                   ),
             const Spacer(),
-            BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
+            BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
               buildWhen: (previous, current) =>
                   previous.status != current.status,
               builder: (context, state) {

@@ -2,8 +2,8 @@ import 'package:Veris/common/widgets/ui_components/divider_component.dart';
 import 'package:Veris/common/widgets/ui_components/input_text_component.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/core/utils/main_constants.dart';
-import 'package:Veris/features/authentication/models/login_state.dart';
-import 'package:Veris/features/authentication/services/login_cubit.dart';
+import 'package:Veris/features/authentication/bloc/login/login_state.dart';
+import 'package:Veris/features/authentication/bloc/login/login_cubit.dart';
 import 'package:Veris/features/authentication/view/partials/forgot_password_widget.dart';
 import 'package:Veris/features/authentication/view/partials/sign_up_button.dart';
 import 'package:Veris/style/color_constants.dart';
@@ -146,7 +146,7 @@ class _LoginFormState extends State<LoginForm> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const ForgotPasswordWidget(),
+                  const ResetPasswordWidget(),
                   const SizedBox(height: 10),
                   BlocBuilder<LoginCubit, LoginState>(
                     // buildWhen: (previous, current) =>
@@ -191,4 +191,3 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 }
-

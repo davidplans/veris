@@ -1,5 +1,5 @@
 import 'package:Veris/core/user/authentication_repository.dart';
-import 'package:Veris/features/authentication/models/login_state.dart';
+import 'package:Veris/features/authentication/bloc/login/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/core/utils/form_inputs.dart';
 import 'package:formz/formz.dart';

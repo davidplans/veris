@@ -1,4 +1,3 @@
-import 'package:Veris/common/widgets/ui_components/alert_dialog.dart';
 import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';

@@ -6,7 +6,6 @@ import 'package:Veris/features/authentication/view/partials/tab_bar_widget.dart'
 import 'package:Veris/features/surveys/view/partials/survey_checkbox.dart';
 import 'package:Veris/features/surveys/view/partials/survey_input_text.dart';
 import 'package:Veris/features/surveys/view/partials/survey_radio_button.dart';
-import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';

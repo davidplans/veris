@@ -1,5 +1,5 @@
 import 'package:Veris/core/user/user.dart';
-import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_bloc.dart';
 import 'package:Veris/features/pat/practice/base_practice_widget.dart';
 import 'package:Veris/features/pat/services/firebase_service.dart';
 import 'package:Veris/features/pat/view/body_select_page.dart';

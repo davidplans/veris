@@ -4,8 +4,8 @@ import 'package:Veris/style/font_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class ForgotPasswordWidget extends StatelessWidget {
-  const ForgotPasswordWidget({super.key});
+class ResetPasswordWidget extends StatelessWidget {
+  const ResetPasswordWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ForgotPasswordWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
             child: Text(
-              "Forgot password?",
+              "Reset password?",
               style: TextStyle(
                   fontFamily: FontConstants.interFontFamily,
                   fontSize: FontConstants.fontSize16,

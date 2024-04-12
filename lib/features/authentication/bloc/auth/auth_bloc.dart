@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:Veris/core/user/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/features/authentication/bloc/auth_event.dart';
-import 'package:Veris/features/authentication/bloc/auth_state.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_event.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthenticationRepository authenticationRepository;

@@ -2,8 +2,8 @@ import 'package:Veris/core/utils/form_inputs.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
-class ForgotPasswordState extends Equatable {
-  const ForgotPasswordState({
+class ResetPasswordState extends Equatable {
+  const ResetPasswordState({
     this.email = const Email.pure(),
     this.isValid = false,
     this.status = FormzSubmissionStatus.initial,
@@ -18,13 +18,13 @@ class ForgotPasswordState extends Equatable {
   @override
   List<Object> get props => [email, status];
 
-  ForgotPasswordState copyWith({
+  ResetPasswordState copyWith({
     Email? email,
     bool? isValid,
     FormzSubmissionStatus? status,
     String? errorMessage,
   }) {
-    return ForgotPasswordState(
+    return ResetPasswordState(
       email: email ?? this.email,
       isValid: isValid ?? this.isValid,
       status: status ?? this.status,

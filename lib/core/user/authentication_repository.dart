@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:Veris/core/user/user.dart';
-import 'package:Veris/features/authentication/bloc/auth_state.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 

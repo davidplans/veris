@@ -1,10 +1,10 @@
 import 'package:Veris/core/user/authentication_repository.dart';
-import 'package:Veris/features/authentication/bloc/auth_event.dart';
-import 'package:Veris/features/authentication/services/login_cubit.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_event.dart';
+import 'package:Veris/features/authentication/bloc/login/login_cubit.dart';
 import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_bloc.dart';
 import 'package:Veris/style/theme.dart';
 
 class HealthApp extends StatefulWidget {

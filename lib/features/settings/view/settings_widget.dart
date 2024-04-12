@@ -1,7 +1,7 @@
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
-import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
-import 'package:Veris/features/authentication/bloc/auth_event.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_bloc.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_event.dart';
 import 'package:Veris/features/settings/view/partials/listtile_with_divider.dart';
 import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';

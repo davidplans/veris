@@ -1,6 +1,6 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/core/user/authentication_repository.dart';
-import 'package:Veris/features/authentication/services/login_cubit.dart';
+import 'package:Veris/features/authentication/bloc/login/login_cubit.dart';
 import 'package:Veris/features/authentication/view/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
