@@ -1,4 +1,3 @@
-import 'package:Veris/common/widgets/ui_components/divider_component.dart';
 import 'package:Veris/common/widgets/ui_components/input_text_component.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
 import 'package:Veris/core/utils/main_constants.dart';
@@ -6,7 +5,6 @@ import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/authentication/bloc/signup/signup_state.dart';
 import 'package:Veris/features/authentication/bloc/signup/signup_cubit.dart';
 import 'package:Veris/features/authentication/view/partials/input_protocol_url_widget.dart';
-import 'package:Veris/features/authentication/view/partials/qr_code_button.dart';
 import 'package:Veris/features/authentication/view/partials/tab_bar_widget.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +113,6 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
     RegExp upperRegEx = RegExp(r'(?=.*[A-Z])\w+');
     RegExp numberRegEx = RegExp(r'(?=.*?[0-9])\w+');
     RegExp symbolRegEx = RegExp(r'(?=.*?[!@#\$&*~])');
-
 
     if (state.password.value.trim().length >= 8) {
       messages['eightCharacters'][1] = 'succes';
@@ -289,22 +286,12 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 40.0),
-                      child: Column(
-                        children: [
-                          InputProtocolUrlWidget(
-                            onUrlAdded: (url) {
-                              setState(() {
-                                _studyProtocolUrl = url;
-                              });
-                            },
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 18.0),
-                            child: DividerComponent(),
-                          ),
-                          const QRCodeButton(),
-                          const Spacer(),
-                        ],
+                      child: InputProtocolUrlWidget(
+                        onUrlAdded: (url) {
+                          setState(() {
+                            _studyProtocolUrl = url;
+                          });
+                        },
                       ),
                     ),
                   ],
@@ -347,9 +334,3 @@ class __FormState extends State<_Form> with SingleTickerProviderStateMixin {
     );
   }
 }
-
-
-
-
-
-

@@ -5,14 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class QRCodeButton extends StatelessWidget {
-  const QRCodeButton({super.key});
+  final Function(dynamic) onGetProtocolUrl;
+  const QRCodeButton({super.key, required this.onGetProtocolUrl});
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonComponent(
       title: 'Scan QR code',
-      onPressed: () {
-        context.go(Routes.scanQR.path);
+      onPressed: () async {
+        String? url = await context.pushNamed(Routes.scanQR.name);
+        if (url != null) {
+          onGetProtocolUrl(url);
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red[200],
+            content: Text(url.toString()),
+          ));
+        }
       },
       backgroundColor: ColorConstants.btnOutlineDefaultColor,
       titleColor: ColorConstants.btnPrimaryDefaultColor,

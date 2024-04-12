@@ -1,5 +1,7 @@
+import 'package:Veris/common/widgets/ui_components/divider_component.dart';
 import 'package:Veris/common/widgets/ui_components/input_text_component.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
+import 'package:Veris/features/authentication/view/partials/qr_code_button.dart';
 import 'package:flutter/material.dart';
 
 class InputProtocolUrlWidget extends StatefulWidget {
@@ -43,7 +45,7 @@ class _InputProtocolUrlWidgetState extends State<InputProtocolUrlWidget> {
           onTap: () {
             setState(() {
               widget.onUrlAdded(testUrl);
-               _controller = TextEditingController(text: testUrl);
+              _controller = TextEditingController(text: testUrl);
             });
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.green[200],
@@ -53,9 +55,23 @@ class _InputProtocolUrlWidgetState extends State<InputProtocolUrlWidget> {
           },
           child: const Text(
             "Use Demo protocol",
-            style: TextStyle(color: Color.fromARGB(255, 177, 92, 92), fontSize: 16),
+            style: TextStyle(
+                color: Color.fromARGB(255, 177, 92, 92), fontSize: 16),
           ),
         ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 18.0),
+          child: DividerComponent(),
+        ),
+        QRCodeButton(
+          onGetProtocolUrl: (url) {
+            setState(() {
+              widget.onUrlAdded(url);
+              _controller = TextEditingController(text: url);
+            });
+          },
+        ),
+        const Spacer(),
       ],
     );
   }

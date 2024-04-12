@@ -102,17 +102,20 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               ),
               const SizedBox(height: 10.0),
               MainButtonComponent(
-                  title: 'Test Button',
-                  backgroundColor: Colors.amber,
-                  titleColor: ColorConstants.textInvertedColor,
-                  onPressed: () {
-                    context.go(Routes.complete.path, extra: {
-                      'iconPath': 'assets/icons/illustrations/success_star.svg',
-                      'title': 'Thank you for completing questionnaire',
-                      'buttonTitle': 'Return to home',
-                      'text': 'Test',
-                    });
-                  }),
+                title: 'Test Button',
+                backgroundColor: Colors.amber,
+                titleColor: ColorConstants.textInvertedColor,
+                onPressed: () async {
+                  String? link = await context.pushNamed(Routes.scanQR.name);
+                  if (link != null) {
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: Colors.red[200],
+                      content: Text(link.toString()),
+                    ));
+                  }
+                },
+              ),
             ]))
           ],
         ),

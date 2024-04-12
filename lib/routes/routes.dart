@@ -123,6 +123,9 @@ class AppRouter {
           if (state.matchedLocation == Routes.forgotPassword.path) {
             return Routes.forgotPassword.path;
           }
+          if (state.matchedLocation == Routes.scanQR.path) {
+            return Routes.scanQR.path;
+          }
           return Routes.welcome.path;
         case AuthStatus.authenticating:
           return null;
