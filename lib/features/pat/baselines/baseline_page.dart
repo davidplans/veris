@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:Veris/core/user/user.dart';
-import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_bloc.dart';
 import 'package:Veris/features/pat/baselines/baseline_helper_service.dart';
 import 'package:Veris/features/pat/baselines/partials/estimated_bpm.dart';
 import 'package:Veris/features/pat/services/get_preferred_camera.dart';
@@ -52,7 +52,7 @@ class _BaselinePageState extends State<BaselinePage>
 
   Timer? _timerDuration; // timer for duration
 
-  late User user;
+  late UserModel user;
   bool _isNoFinger = false;
 
   String studyId = "";

@@ -72,7 +72,7 @@ class _BodySelectPageState extends State<BodySelectPage> {
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  backgroundColor: Colors.blue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),

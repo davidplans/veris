@@ -1,10 +1,12 @@
-import 'package:Veris/features/authentication/view/auth_view.dart';
+// import 'package:Veris/features/authentication/view/auth_view.dart';
 import 'package:Veris/features/intro/view/partials/intro_go_to_qr_button.dart';
 import 'package:Veris/features/intro/view/partials/intro_info.dart';
 import 'package:Veris/features/intro/view/partials/intro_mode_switch.dart';
 import 'package:Veris/features/intro/view/partials/intro_top_bar.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({Key? key}) : super(key: key);
@@ -18,7 +20,8 @@ class _IntroPageState extends State<IntroPage> {
   final studyProtocolHelper = StudyProtocolHelper();
 
   String testURL =
-      'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test_2.json?alt=media&token=80d0dfa5-8720-4449-bbf0-cf630189768f';
+      // 'https://firebasestorage.googleapis.com/v0/b/patdeployments.appspot.com/o/veris_test_2.json?alt=media&token=80d0dfa5-8720-4449-bbf0-cf630189768f';
+      'https://firebasestorage.googleapis.com/v0/b/digit-veris.appspot.com/o/veris_digit_with_pat.json?alt=media&token=50604fa4-5508-4d8e-8cc7-f91aaed80ff8';
   bool expanded = false;
 
   @override
@@ -36,10 +39,11 @@ class _IntroPageState extends State<IntroPage> {
     }
 
     // ignore: use_build_context_synchronously
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AuthView()),
-    );
+    context.go(Routes.home.path);
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const AuthView()),
+    // );
   }
 
   @override

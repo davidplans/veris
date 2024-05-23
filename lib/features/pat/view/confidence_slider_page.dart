@@ -1,5 +1,5 @@
 import 'package:Veris/core/user/user.dart';
-import 'package:Veris/features/authentication/bloc/auth_bloc.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_bloc.dart';
 import 'package:Veris/features/pat/practice/base_practice_widget.dart';
 import 'package:Veris/features/pat/services/firebase_service.dart';
 import 'package:Veris/features/pat/view/body_select_page.dart';
@@ -25,7 +25,7 @@ class ConfidenceSliderPage extends StatefulWidget {
 class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
   double _currentSliderValue = 5;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
-  late User user;
+  late UserModel user;
   late final _prefs;
   int _completeTrials = 0;
   List<int> listSelectSteps = [];
@@ -76,7 +76,6 @@ class _ConfidenceSliderPageState extends State<ConfidenceSliderPage> {
   @override
   Widget build(BuildContext context) {
     user = context.select((AuthBloc bloc) => bloc.state.user);
-    print('PRACTICETRIALNUMBER: ${widget.practiceTrialNumber}');
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.practiceTrialNumber == 0

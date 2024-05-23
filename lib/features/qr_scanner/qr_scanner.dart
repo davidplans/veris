@@ -1,5 +1,6 @@
 import 'package:Veris/core/utils/study_protocol_helper.dart';
-import 'package:Veris/features/authentication/view/auth_view.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,15 @@ class _QrScannerState extends State<QrScanner> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Study QR-code Scanner'),
+          leading: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onTap: () => context.go('/home'),
+              child: SvgPicture.asset(
+                'assets/icons/arrow-backword.svg',
+              ),
+            ),
+          ),
           actions: [
             IconButton(
               color: Colors.white,
@@ -57,26 +67,9 @@ class _QrScannerState extends State<QrScanner> {
                     debugPrint('Failed to scan QRcode');
                   } else {
                     final decodeString = barcode.rawValue!;
-                    setState(() {
-                      code = decodeString;
-                    });
-
-                    final res = await studyProtocolHelper
-                        .getAndSaveStudyProtocol(context, decodeString);
-
-                    if (!res) {
-                      return;
-                    }
-
                     cameraController.stop();
                     cameraController.dispose();
-
-                    // ignore: use_build_context_synchronously
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AuthView()),
-                    );
-
+                    context.pop(decodeString);
                     debugPrint('Barcode found! $code');
                   }
                 }

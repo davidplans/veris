@@ -34,9 +34,7 @@ class _KnobWidgetState extends State<KnobWidget> {
     var rad;
     var normalisedValue = (widget.currentKnobValue + widget.knobValueRange) /
         (2 * widget.knobValueRange);
-    // print('NORMALISEDVALUE: ${normalisedValue}');
     var shiftedRad = normalisedValue * (2 * math.pi);
-    // print('SHIFTEDRAD: ${shiftedRad}');
     // var rad = (shiftedRad - math.pi) % (2 * math.pi);
     var result = shiftedRad - math.pi;
     if (result > 0) {
@@ -67,7 +65,6 @@ class _KnobWidgetState extends State<KnobWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print("FROM START KNOB1: ${widget.currentKnobValue}");
     return Center(
       child: Container(
         width: 200,

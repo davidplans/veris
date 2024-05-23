@@ -4,7 +4,6 @@ import 'core/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Veris/core/bloc_observer.dart';
-import 'package:Veris/core/user/auth_repository.dart';
 import 'package:Veris/app.dart';
 import 'package:flutter/services.dart';
 
@@ -29,18 +28,9 @@ Future<void> main() async {
 
   bool isStudyProtocolAvailable = sharedPreferences.get('studyId') != null;
 
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-        statusBarColor: Color(0XFF0F2042),
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Color(0xFF000000),
-        systemNavigationBarIconBrightness: Brightness.dark),
-  );
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  final authenticationRepository = AuthenticationRepository();
   runApp(HealthApp(
-    authenticationRepository: authenticationRepository,
     isStudyProtocolAvailable: isStudyProtocolAvailable,
   ));
 }

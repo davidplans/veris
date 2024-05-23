@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseService {
   static Future<void> saveDataToFirebase(
-      User user, double currentSliderValue) async {
+      UserModel user, double currentSliderValue) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     final prefs = await SharedPreferences.getInstance();
     final selectedBody = prefs.getString('selectedBody');

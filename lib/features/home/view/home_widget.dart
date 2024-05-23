@@ -1,16 +1,16 @@
 import 'dart:io';
 
+import 'package:Veris/common/widgets/ui_components/no_task_widget.dart';
 import 'package:Veris/core/utils/notification_service.dart';
 import 'package:Veris/core/utils/study_protocol_helper.dart';
 import 'package:Veris/features/home/view/partials/module_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
-
-  static Page page() => const MaterialPage<void>(child: HomeWidget());
 
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
@@ -20,7 +20,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   late final NotificationService notificationService;
 
   List<ModuleForHomePage> _modules = [];
-  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final studyProtocolHelper = StudyProtocolHelper();
   String _bannerUrl = '';
 
@@ -89,7 +88,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>();
 
-      final bool? granted = await androidImplementation?.requestNotificationsPermission();
+      final bool? granted =
+          await androidImplementation?.requestNotificationsPermission();
       setState(() {
         _notificationsEnabled = granted ?? false;
       });
@@ -115,29 +115,43 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: const Alignment(0, -1 / 3),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
-          Expanded(
-            flex: 4,
-            child: ListView.builder(
-                padding: const EdgeInsets.all(0),
-                itemCount: _modules.length,
-                itemBuilder: (BuildContext context, int indexModule) {
-                  final module = _modules[indexModule];
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ModuleWidget(
-                      module: module,
-                    ),
-                  );
-                }),
+    return Stack(
+      children: [
+        // _bannerUrl != "" ? Image.network(_bannerUrl) : Container(),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: SvgPicture.asset(
+            'assets/images/blue_circles.svg',
+            fit: BoxFit.cover,
           ),
-        ],
-      ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 330.0),
+          child: _modules.isNotEmpty
+              ? MediaQuery.removePadding(
+                removeTop: true,
+                context: context,
+                child: ListView.builder(
+                    itemCount: _modules.length,
+                    itemBuilder: (BuildContext context, int indexModule) {
+                      final module = _modules[indexModule];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: ModuleWidget(
+                          module: module,
+                        ),
+                      );
+                    },
+                  ),
+              )
+              : const NoTaskWidget(
+                  iconPath: 'assets/icons/illustrations/test.svg',
+                  title: 'No active tests yet',
+                  text:
+                      'Once tests are added to the protocol they will appear here',
+                ),
+        ),
+      ],
     );
   }
 }

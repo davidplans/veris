@@ -1,5 +1,4 @@
 import 'package:Veris/common/widgets/app_bar_widget.dart';
-import 'package:Veris/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class FinishPage extends StatefulWidget {
@@ -26,7 +25,7 @@ class _FinishPageState extends State<FinishPage> {
                   backgroundColor: const Color(0XFF0F2042),
                   // child: const Text("Back", style: TextStyle(color: Colors.white),),
                   onPressed: () {
-                    Routes.goHome(context);
+                    // Routes.goHome(context);
                   },
                   label: const Text(
                     "Exit",
