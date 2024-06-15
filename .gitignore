@@ -53,3 +53,5 @@ app.*.map.json
 
 macos/Flutter/GeneratedPluginRegistrant.swift
 data-tool/digit-veris-firebase-adminsdk.json
+ios/Runner.ipa
+ios/Runner.app.dSYM.zip
