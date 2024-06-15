@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class SurveyCheckBox extends StatefulWidget {
   final List<dynamic> options;
-  final Function(bool) onChanged;
-  const SurveyCheckBox({super.key, required this.onChanged, required this.options});
+  final Function(dynamic) onChanged;
+  const SurveyCheckBox(
+      {super.key, required this.onChanged, required this.options});
 
   @override
   State<SurveyCheckBox> createState() => _SurveyCheckBoxState();
@@ -17,7 +18,7 @@ class _SurveyCheckBoxState extends State<SurveyCheckBox> {
       title: Text("title text"),
       value: _checkedValue,
       onChanged: (newValue) {
-        widget.onChanged(true);
+        widget.onChanged(newValue);
         setState(() {
           _checkedValue = newValue;
         });

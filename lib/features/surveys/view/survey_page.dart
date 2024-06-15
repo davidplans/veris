@@ -2,13 +2,22 @@ import 'package:Veris/common/widgets/app_bar_widget.dart';
 import 'package:Veris/common/widgets/custom_html_widget.dart';
 import 'package:Veris/common/widgets/ui_components/alert_dialog.dart';
 import 'package:Veris/common/widgets/ui_components/main_button_component.dart';
+import 'package:Veris/core/user/user.dart';
+import 'package:Veris/core/utils/study_protocol_helper.dart';
+import 'package:Veris/features/authentication/bloc/auth/auth_bloc.dart';
 import 'package:Veris/features/authentication/view/partials/tab_bar_widget.dart';
 import 'package:Veris/features/surveys/view/partials/survey_checkbox.dart';
 import 'package:Veris/features/surveys/view/partials/survey_input_text.dart';
 import 'package:Veris/features/surveys/view/partials/survey_radio_button.dart';
+import 'package:Veris/routes/routes.dart';
 import 'package:Veris/style/color_constants.dart';
 import 'package:Veris/style/font_constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SurveyPage extends StatefulWidget {
   final List<dynamic> questions;
@@ -33,7 +42,13 @@ class _SurveyPageState extends State<SurveyPage>
   final _formKey = GlobalKey<FormState>();
   late TabController _controller;
   int _activeTabIndex = 0;
-  bool _isSurveyComplete = false;
+  bool _stepWasCompleted = false;
+  List<dynamic> _answers = []; // Store the answers here
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final studyProtocolHelper = StudyProtocolHelper();
+
+  late UserModel user;
   // int tabLength = 3;
 
   @override
@@ -92,12 +107,10 @@ class _SurveyPageState extends State<SurveyPage>
             SingleChildScrollView(
               child: CustomHtmlWidget(
                 htmlText: item['text'],
-                onChanged: (isInstruction) {
-                  if (isInstruction) {
-                    setState(() {
-                      _isSurveyComplete = true;
-                    });
-                  }
+                onChanged: (res) {
+                  setState(() {
+                    _stepWasCompleted = true;
+                  });
                 },
               ),
             ),
@@ -114,15 +127,7 @@ class _SurveyPageState extends State<SurveyPage>
                 _buildTitle(item, index),
                 SurveyInputText(
                   onChanged: (text) {
-                    if (text != '' && text.isNotEmpty) {
-                      setState(() {
-                        _isSurveyComplete = true;
-                      });
-                    } else {
-                      setState(() {
-                        _isSurveyComplete = false;
-                      });
-                    }
+                    _storeAnswerLocally(item, text);
                   },
                 ),
               ],
@@ -154,16 +159,8 @@ class _SurveyPageState extends State<SurveyPage>
                   _buildTitle(item, index),
                   SurveyRadioButton(
                     options: item['options'] as List,
-                    onChanged: (isChecked) {
-                      if (isChecked) {
-                        setState(() {
-                          _isSurveyComplete = true;
-                        });
-                      } else {
-                        setState(() {
-                          _isSurveyComplete = false;
-                        });
-                      }
+                    onChanged: (value) {
+                      _storeAnswerLocally(item, value);
                     },
                   )
                 ],
@@ -180,16 +177,8 @@ class _SurveyPageState extends State<SurveyPage>
                   _buildTitle(item, index),
                   SurveyCheckBox(
                     options: item['options'] as List,
-                    onChanged: (isChecked) {
-                      if (isChecked) {
-                        setState(() {
-                          _isSurveyComplete = true;
-                        });
-                      } else {
-                        setState(() {
-                          _isSurveyComplete = false;
-                        });
-                      }
+                    onChanged: (value) {
+                      _storeAnswerLocally(item, value);
                     },
                   )
                 ],
@@ -202,8 +191,48 @@ class _SurveyPageState extends State<SurveyPage>
     return steps;
   }
 
+  _storeAnswerLocally(dynamic item, dynamic answer) {
+    if (item['required'] && answer.isEmpty) {
+      _stepWasCompleted = false;
+      return;
+    }
+    _answers.add({'questionId': item['id'], 'answer': answer});
+    setState(() {
+      _stepWasCompleted = true;
+    });
+  }
+
+  _saveAnswers() async {
+    String lowerSectionName = widget.sectionName.trim().toLowerCase();
+    String formattedSectionName = lowerSectionName.replaceAll(" ", "_");
+    String formattedSectionId = "${formattedSectionName}_${widget.sectionId}";
+
+    var prefs = await _prefs;
+    var userId = user.id;
+    var studyId = prefs.getString('studyId');
+
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    final moduleData = {
+      "userId": userId,
+      "studyId": studyId,
+      "moduleId": widget.moduleId,
+      "sectionId": formattedSectionId,
+      "sectionName": widget.sectionName,
+      "moduleName": widget.moduleName,
+      "datetime": DateTime.now(),
+      "type": "survey",
+      "values": _answers,
+    };
+    OverlayLoadingProgress.start(context);
+    await users.doc(userId).collection('studies').doc().set(moduleData);
+    await studyProtocolHelper.markTaskAsComplemented(widget.sectionId);
+    OverlayLoadingProgress.stop();
+  }
+
   @override
   Widget build(BuildContext context) {
+    user = context.select((AuthBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: AppBarWidget(title: widget.moduleName),
       body: DefaultTabController(
@@ -240,20 +269,19 @@ class _SurveyPageState extends State<SurveyPage>
                 ),
                 MainButtonComponent(
                   title: 'Next',
-                  onPressed: _isSurveyComplete
-                      ? () {
+                  onPressed: _stepWasCompleted
+                      ? () async {
                           FocusManager.instance.primaryFocus?.unfocus();
                           final nextStepIndex = _controller.index + 1;
                           if (widget.questions.length == nextStepIndex) {
-                            AlertDialogWidget.showAlertDialog(
-                                context,
-                                'Are you sure you want to exit questionnaire? Your progress won’t be saved.',
-                                'Yes, exit',
-                                'No, Stay');
+                            print(_answers);
+                            await _saveAnswers();
+                            // ignore: use_build_context_synchronously
+                            context.go(Routes.home.path);
                             return;
                           }
                           setState(() {
-                            _isSurveyComplete = false;
+                            _stepWasCompleted = false;
                             _activeTabIndex = nextStepIndex;
                             _controller.animateTo(_activeTabIndex);
                           });

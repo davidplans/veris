@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class SurveyRadioButton extends StatefulWidget {
   final List<dynamic> options;
-  final Function(bool) onChanged;
+  final Function(dynamic) onChanged;
   const SurveyRadioButton(
       {super.key, required this.options, required this.onChanged});
 
@@ -38,7 +38,7 @@ class _SurveyRadioButtonState extends State<SurveyRadioButton> {
                   _currentValue = value.toString();
                   _currentIndex = i;
                 });
-                widget.onChanged(true);
+                widget.onChanged(_currentValue);
               },
             ),
           ),
