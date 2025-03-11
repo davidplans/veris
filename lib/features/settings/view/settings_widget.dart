@@ -84,6 +84,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 height: 20.0,
               ),
               MainButtonComponent(
+                title: 'Polar',
+                backgroundColor: const Color.fromARGB(255, 6, 47, 80),
+                titleColor: ColorConstants.textInvertedColor,
+                onPressed: () {
+                  context.go(Routes.polar.path);
+                },
+              ),
+              const SizedBox(height: 10.0),
+              MainButtonComponent(
                 title: 'Input URL',
                 backgroundColor: const Color.fromARGB(255, 6, 47, 80),
                 titleColor: ColorConstants.textInvertedColor,

@@ -8,6 +8,7 @@ import 'package:Veris/features/authentication/bloc/auth/auth_state.dart';
 import 'package:Veris/features/authentication/view/reset_pass_page.dart';
 import 'package:Veris/features/authentication/view/login_page.dart';
 import 'package:Veris/features/authentication/view/signup_page.dart';
+import 'package:Veris/features/home/view/polar_widget.dart';
 import 'package:Veris/features/intro/view/intro_page.dart';
 import 'package:Veris/features/intro/view/welcome_page.dart';
 import 'package:Veris/features/qr_scanner/qr_scanner.dart';
@@ -24,7 +25,8 @@ enum Routes {
   scanQR('/scan_qr'),
   forgotPassword('/forgot_password'),
   survey('/survey'),
-  complete('/complete');
+  complete('/complete'),
+  polar('/polar');
 
   const Routes(this.path);
   final String path;
@@ -69,10 +71,15 @@ class AppRouter {
         name: Routes.intro.name,
         builder: (context, state) => const IntroPage(),
       ),
+      // GoRoute(
+      //   path: Routes.scanQR.path,
+      //   name: Routes.scanQR.name,
+      //   builder: (context, state) => const QrScanner(),
+      // ),
       GoRoute(
-        path: Routes.scanQR.path,
-        name: Routes.scanQR.name,
-        builder: (context, state) => const QrScanner(),
+        path: Routes.polar.path,
+        name: Routes.polar.name,
+        builder: (context, state) => const PolarTest(),
       ),
       GoRoute(
           path: Routes.complete.path,

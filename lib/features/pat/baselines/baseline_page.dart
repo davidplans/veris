@@ -14,10 +14,10 @@ import 'package:Veris/style/theme.dart';
 import 'package:camera/camera.dart';
 import 'package:Veris/features/pat/shared/chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wakelock/wakelock.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:Veris/common/widgets/app_bar_widget.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class BaselinePage extends StatefulWidget {
   const BaselinePage({super.key});
@@ -88,7 +88,7 @@ class _BaselinePageState extends State<BaselinePage>
     }
     _measurementInProgress = false;
     _disposeCameraController();
-    Wakelock.disable();
+    WakelockPlus.disable();
     _animationController!.stop();
     _animationController!.dispose();
     super.dispose();
@@ -97,7 +97,7 @@ class _BaselinePageState extends State<BaselinePage>
   void _startMeasurements() async {
     _prepareCleanDataForGraph();
     await initCameraAndStartImageStream();
-    Wakelock.enable();
+    WakelockPlus.enable();
     _animationController!.repeat(reverse: true);
 
     setState(() {
@@ -111,7 +111,7 @@ class _BaselinePageState extends State<BaselinePage>
 
   void _stopMeasurementsAndSaveData() async {
     _disposeCameraController();
-    Wakelock.disable();
+    WakelockPlus.disable();
 
     _animationController!.stop();
     _animationController!.value = 0.0;
